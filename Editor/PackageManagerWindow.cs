@@ -26,7 +26,7 @@ namespace TalusBackendData.Editor
         private const string TALUS_BACKEND_KEYWORD = "ENABLE_BACKEND";
         private const string ELEPHANT_SCENE_PATH = "Assets/Scenes/Template_Persistent/elephant_scene.unity";
 
-        private static Dictionary<string, TalusPackage> s_Packages = new Dictionary<string, TalusPackage>
+        private static Dictionary<string, TalusPackage> s_Backend_Packages = new Dictionary<string, TalusPackage>
         {
             { "com.talus.talusplayservicesresolver", new TalusPackage("https://github.com/TalusStudio/TalusPlayServicesResolver-Package.git", false) },
             { "com.talus.talusfacebook", new TalusPackage("https://github.com/TalusStudio/TalusFacebook-Package.git", false) },
@@ -82,7 +82,7 @@ namespace TalusBackendData.Editor
                     GUILayout.Space(4);
                     GUILayout.Label($"Installed Talus Packages", EditorStyles.boldLabel);
 
-                    foreach (var package in s_Packages)
+                    foreach (var package in s_Backend_Packages)
                     {
                         if (package.Value.Status)
                         {
@@ -136,9 +136,9 @@ namespace TalusBackendData.Editor
                         package.source != PackageSource.BuiltIn &&
                         package.source != PackageSource.Embedded)
                     {
-                        if (s_Packages.ContainsKey(package.name))
+                        if (s_Backend_Packages.ContainsKey(package.name))
                         {
-                            s_Packages[package.name] = new TalusPackage(s_Packages[package.name].PackageUrl, true);
+                            s_Backend_Packages[package.name] = new TalusPackage(s_Backend_Packages[package.name].PackageUrl, true);
                         }
                     }
                 }
