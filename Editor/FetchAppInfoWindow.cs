@@ -7,9 +7,6 @@ namespace TalusBackendData.Editor
 {
     public class FetchAppInfoWindow : EditorWindow
     {
-        private string _ApiUrl = "http://dashboard.talusstudio.eu.ngrok.io";
-        private string _ApiToken;
-
         private string _AppId;
 
         private string _FetchButton = "Fetch";
@@ -27,16 +24,14 @@ namespace TalusBackendData.Editor
             GUILayout.BeginVertical();
 
             GUILayout.Label("API Settings", EditorStyles.boldLabel);
-            _ApiUrl = EditorGUILayout.TextField("Api Url:", _ApiUrl);
-            _ApiToken = EditorGUILayout.TextField("Api Key:", _ApiToken);
 
-            GUILayout.FlexibleSpace();
+            GUILayout.Space(4);
             GUILayout.Label("App Settings", EditorStyles.boldLabel);
             _AppId = EditorGUILayout.TextField("App ID:", _AppId);
 
             if (GUILayout.Button(_FetchButton))
             {
-                new FetchAppInfo(_ApiUrl, _ApiToken, _AppId).GetInfo(UpdateBackendData);
+                new FetchAppInfo(BackendSettings.ApiUrl, BackendSettings.ApiToken, _AppId).GetInfo(UpdateBackendData);
             }
 
             GUILayout.EndVertical();
