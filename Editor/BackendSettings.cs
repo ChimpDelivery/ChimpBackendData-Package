@@ -1,5 +1,7 @@
 using UnityEditor;
 
+using UnityEngine;
+
 namespace TalusBackendData.Editor
 {
     static class BackendSettings
@@ -13,6 +15,7 @@ namespace TalusBackendData.Editor
             {
                 if (!EditorPrefs.HasKey("Backend_Api_Url"))
                 {
+                    Debug.Log("Backend_Api_Url editor pref not found!");
                     return _ApiUrl;
                 }
 
@@ -31,6 +34,7 @@ namespace TalusBackendData.Editor
             {
                 if (!EditorPrefs.HasKey("Backend_Api_Token"))
                 {
+                    Debug.Log("Backend_Api_Token editor pref not found!");
                     return _ApiToken;
                 }
 

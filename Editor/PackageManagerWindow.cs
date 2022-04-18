@@ -9,12 +9,12 @@ using UnityEngine;
 namespace TalusBackendData.Editor
 {
     [System.Serializable]
-    public class BackendPackage
+    public class TalusPackage
     {
         public string PackageUrl;
         public bool Status;
 
-        public BackendPackage(string url, bool status)
+        public TalusPackage(string url, bool status)
         {
             PackageUrl = url;
             Status = status;
@@ -26,11 +26,11 @@ namespace TalusBackendData.Editor
         private const string TALUS_BACKEND_KEYWORD = "ENABLE_BACKEND";
         private const string ELEPHANT_SCENE_PATH = "Assets/Scenes/Template_Persistent/elephant_scene.unity";
 
-        private static Dictionary<string, BackendPackage> BACKEND_PACKAGES = new Dictionary<string, BackendPackage>
+        private static Dictionary<string, TalusPackage> s_Packages = new Dictionary<string, TalusPackage>
         {
-            { "com.talus.talusplayservicesresolver", new BackendPackage("https://github.com/TalusStudio/TalusPlayServicesResolver-Package.git", false) },
-            { "com.talus.talusfacebook", new BackendPackage("https://github.com/TalusStudio/TalusFacebook-Package.git", false) },
-            { "com.talus.taluselephant", new BackendPackage("https://github.com/TalusStudio/TalusElephant-Package.git", false) }
+            { "com.talus.talusplayservicesresolver", new TalusPackage("https://github.com/TalusStudio/TalusPlayServicesResolver-Package.git", false) },
+            { "com.talus.talusfacebook", new TalusPackage("https://github.com/TalusStudio/TalusFacebook-Package.git", false) },
+            { "com.talus.taluselephant", new TalusPackage("https://github.com/TalusStudio/TalusElephant-Package.git", false) }
         };
 
         private static AddRequest _AddRequest;
@@ -43,7 +43,7 @@ namespace TalusBackendData.Editor
             _ListRequest = Client.List();
             EditorApplication.update += ListProgress;
 
-            var window = (PackageManagerWindow) GetWindow(typeof(PackageManagerWindow));
+            var window = GetWindow<PackageManagerWindow>();
             window.titleContent = new GUIContent("Talus Backend");
             window.Show();
         }
@@ -75,13 +75,20 @@ namespace TalusBackendData.Editor
 
             if (_ListRequest != null)
             {
+                int installedPackageCount = 0;
+
                 if (_ListRequest.IsCompleted)
                 {
                     GUILayout.Space(4);
-                    GUILayout.Label("Installed Backend Packages", EditorStyles.boldLabel);
+                    GUILayout.Label($"Installed Talus Packages", EditorStyles.boldLabel);
 
-                    foreach (var package in BACKEND_PACKAGES)
+                    foreach (var package in s_Packages)
                     {
+                        if (package.Value.Status)
+                        {
+                            ++installedPackageCount;
+                        }
+
                         GUI.backgroundColor = (package.Value.Status) ? Color.green : Color.red;
 
                         if (GUILayout.Button(package.Key))
@@ -98,6 +105,9 @@ namespace TalusBackendData.Editor
                             }
                         }
                     }
+
+                    GUILayout.Space(4);
+                    GUILayout.Label($"Installed package count: {installedPackageCount}", EditorStyles.boldLabel);
                 }
                 else
                 {
@@ -126,9 +136,9 @@ namespace TalusBackendData.Editor
                         package.source != PackageSource.BuiltIn &&
                         package.source != PackageSource.Embedded)
                     {
-                        if (BACKEND_PACKAGES.ContainsKey(package.name))
+                        if (s_Packages.ContainsKey(package.name))
                         {
-                            BACKEND_PACKAGES[package.name] = new BackendPackage(BACKEND_PACKAGES[package.name].PackageUrl, true);
+                            s_Packages[package.name] = new TalusPackage(s_Packages[package.name].PackageUrl, true);
                         }
                     }
                 }
