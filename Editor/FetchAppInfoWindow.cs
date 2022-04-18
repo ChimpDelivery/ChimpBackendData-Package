@@ -17,19 +17,24 @@ namespace TalusBackendData
         private static void Init()
         {
             FetchAppInfoWindow window = (FetchAppInfoWindow) GetWindow(typeof(FetchAppInfoWindow));
+            window.titleContent = new GUIContent("Fetch App Info");
             window.Show();
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-            _AppId = EditorGUILayout.TextField("App ID", _AppId);
-            _ApiToken = EditorGUILayout.TextField("Api Key", _ApiToken);
+            GUILayout.BeginVertical();
+
+            GUILayout.Label("API Settings", EditorStyles.boldLabel);
+            _AppId = EditorGUILayout.TextField("App ID:", _AppId);
+            _ApiToken = EditorGUILayout.TextField("Api Key:", _ApiToken);
 
             if (GUILayout.Button(_FetchButton))
             {
                 new FetchAppInfo(API_URL, _ApiToken, _AppId).GetInfo(UpdateBackendData);
             }
+
+            GUILayout.EndVertical();
         }
 
         private void UpdateBackendData(AppModel app)
