@@ -8,19 +8,6 @@ using UnityEngine;
 
 namespace TalusBackendData.Editor
 {
-    [System.Serializable]
-    public class TalusPackage
-    {
-        public string PackageUrl;
-        public bool Status;
-
-        public TalusPackage(string url, bool status)
-        {
-            PackageUrl = url;
-            Status = status;
-        }
-    }
-
     public class PackageManagerWindow : EditorWindow
     {
         private const string TALUS_BACKEND_KEYWORD = "ENABLE_BACKEND";
@@ -33,14 +20,14 @@ namespace TalusBackendData.Editor
             { "com.talus.taluselephant", new TalusPackage("https://github.com/TalusStudio/TalusElephant-Package.git", false) }
         };
 
-        private static AddRequest _AddRequest;
-        private static RemoveRequest _RemoveRequest;
-        private static ListRequest _ListRequest;
+        private static AddRequest s_AddRequest;
+        private static RemoveRequest s_RemoveRequest;
+        private static ListRequest s_ListRequest;
 
         [MenuItem("TalusKit/Backend/Package Manager", priority = -999)]
         private static void Init()
         {
-            _ListRequest = Client.List();
+            s_ListRequest = Client.List();
             EditorApplication.update += ListProgress;
 
             var window = GetWindow<PackageManagerWindow>();
@@ -67,40 +54,37 @@ namespace TalusBackendData.Editor
             }
 #endif
 
-            if (_ListRequest == null)
+            if (s_ListRequest == null)
             {
-                _ListRequest = Client.List();
+                s_ListRequest = Client.List();
                 EditorApplication.update += ListProgress;
             }
 
-            if (_ListRequest != null)
+            if (s_ListRequest != null)
             {
                 int installedPackageCount = 0;
 
-                if (_ListRequest.IsCompleted)
+                if (s_ListRequest.IsCompleted)
                 {
                     GUILayout.Space(4);
-                    GUILayout.Label($"Installed Talus Packages", EditorStyles.boldLabel);
+                    GUILayout.Label("Installed Talus Packages", EditorStyles.boldLabel);
 
                     foreach (var package in s_Backend_Packages)
                     {
-                        if (package.Value.Status)
-                        {
-                            ++installedPackageCount;
-                        }
+                        if (package.Value.Installed) { ++installedPackageCount; }
 
-                        GUI.backgroundColor = (package.Value.Status) ? Color.green : Color.red;
+                        GUI.backgroundColor = (package.Value.Installed) ? Color.green : Color.red;
 
                         if (GUILayout.Button(package.Key))
                         {
-                            if (package.Value.Status)
+                            if (package.Value.Installed)
                             {
-                                _RemoveRequest = Client.Remove(package.Key);
+                                s_RemoveRequest = Client.Remove(package.Key);
                                 Debug.Log(package.Key + " removing...");
                             }
                             else
                             {
-                                _AddRequest = Client.Add(package.Value.PackageUrl);
+                                s_AddRequest = Client.Add(package.Value.PackageUrl);
                                 Debug.Log(package.Value.PackageUrl + " adding...");
                             }
                         }
@@ -121,14 +105,14 @@ namespace TalusBackendData.Editor
 
         private static void ListProgress()
         {
-            if (!_ListRequest.IsCompleted)
+            if (!s_ListRequest.IsCompleted)
             {
                 return;
             }
 
-            if (_ListRequest.Status == StatusCode.Success)
+            if (s_ListRequest.Status == StatusCode.Success)
             {
-                foreach (var package in _ListRequest.Result)
+                foreach (var package in s_ListRequest.Result)
                 {
                     // Only retrieve packages that are currently installed in the
                     // project (and are neither Built-In nor already Embedded)
@@ -145,7 +129,7 @@ namespace TalusBackendData.Editor
             }
             else
             {
-                Debug.Log(_ListRequest.Error.message);
+                Debug.Log(s_ListRequest.Error.message);
             }
 
             EditorApplication.update -= ListProgress;
