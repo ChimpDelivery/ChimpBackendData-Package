@@ -1,4 +1,4 @@
-﻿namespace TalusBackendData.Editor
+﻿namespace TalusBackendData
 {
     public static class CommandLineParser
     {

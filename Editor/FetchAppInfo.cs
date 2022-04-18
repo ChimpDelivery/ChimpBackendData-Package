@@ -1,39 +1,40 @@
-﻿using System;
+using System;
 using System.Collections;
 
-using TalusBackendData.Editor.Models;
-
-using Unity.EditorCoroutines.Editor;
+using TalusBackendData.Models;
 
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace TalusBackendData.Editor
+using Unity.EditorCoroutines.Editor;
+
+namespace TalusBackendData
 {
     public class FetchAppInfo
     {
-        private string _ApiKey;
         private string _ApiUrl;
+        private string _ApiToken;
         private string _AppId;
 
-        public FetchAppInfo(string apiKey, string apiUrl, string appId)
+        public FetchAppInfo(string apiUrl, string apiToken, string appId)
         {
-            _ApiKey = apiKey;
             _ApiUrl = apiUrl;
+            _ApiToken = apiToken;
             _AppId = appId;
+        }
+
+        public void GetInfo(Action<AppModel> onFetchComplete)
+        {
+            EditorCoroutineUtility.StartCoroutineOwnerless(GetAppInfo(onFetchComplete));
         }
 
         public IEnumerator GetAppInfo(Action<AppModel> onFetchComplete)
         {
-            //string apiKey = CommandLineParser.GetArgument("-apiKey");
-            //string url = CommandLineParser.GetArgument("-apiUrl");
-            //string appId = CommandLineParser.GetArgument("-appId");
-
             string apiUrl = $"{_ApiUrl}/api/appstoreconnect/get-app-list/{_AppId}";
             Debug.Log("[Unity-BackendData-Package] apiUrl: " + apiUrl);
 
             using UnityWebRequest www = UnityWebRequest.Get(apiUrl);
-            www.SetRequestHeader("api-key", _ApiKey);
+            www.SetRequestHeader("api-key", _ApiToken);
 
             yield return www.SendWebRequest();
 

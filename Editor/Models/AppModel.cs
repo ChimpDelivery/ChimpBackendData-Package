@@ -1,4 +1,4 @@
-﻿namespace TalusBackendData.Editor.Models
+﻿namespace TalusBackendData.Models
 {
     [System.Serializable]
     public class AppModel
