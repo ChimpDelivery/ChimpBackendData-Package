@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-using TalusBackendData.Models;
+using TalusBackendData.Editor.Models;
 
-namespace TalusBackendData
+namespace TalusBackendData.Editor
 {
     public class FetchAppInfoWindow : EditorWindow
     {

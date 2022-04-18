@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 
-using TalusBackendData.Models;
+using TalusBackendData.Editor.Models;
 
 using UnityEngine;
 using UnityEngine.Networking;
 
 using Unity.EditorCoroutines.Editor;
 
-namespace TalusBackendData
+namespace TalusBackendData.Editor
 {
     public class FetchAppInfo
     {
