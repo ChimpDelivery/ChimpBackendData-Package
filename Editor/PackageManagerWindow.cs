@@ -37,7 +37,7 @@ namespace TalusBackendData.Editor
         private static RemoveRequest _RemoveRequest;
         private static ListRequest _ListRequest;
 
-        [MenuItem("TalusKit/Backend/Package Manager")]
+        [MenuItem("TalusKit/Backend/Package Manager", priority = -999)]
         private static void Init()
         {
             _ListRequest = Client.List();
