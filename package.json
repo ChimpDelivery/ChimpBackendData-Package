@@ -2,14 +2,12 @@
   "name": "com.talus.talusbackenddata",
   "version": "1.0.0",
   "displayName": "TalusBackendData",
-  "description": "Supplement for jenkins integration",
+  "description": "Supplement for backend integration",
   "unity": "2020.3",
   "unityRelease": "9f1",
   "keywords": [
-    "talusci",
-    "build",
-    "jenkins",
-    "automate"
+    "talusbackend",
+    "package manager"
   ],
   "author": {
     "name": "Talus Studio",
