@@ -9,12 +9,10 @@ namespace TalusBackendData.Editor
     {
         private string _AppId;
 
-        private string _FetchButton = "Fetch";
-
         [MenuItem("TalusKit/Backend/Fetch App Info")]
         private static void Init()
         {
-            FetchAppInfoWindow window = (FetchAppInfoWindow) GetWindow(typeof(FetchAppInfoWindow));
+            FetchAppInfoWindow window = GetWindow<FetchAppInfoWindow>();
             window.titleContent = new GUIContent("Fetch App Info");
             window.Show();
         }
@@ -23,13 +21,11 @@ namespace TalusBackendData.Editor
         {
             GUILayout.BeginVertical();
 
-            GUILayout.Label("API Settings", EditorStyles.boldLabel);
-
             GUILayout.Space(4);
             GUILayout.Label("App Settings", EditorStyles.boldLabel);
             _AppId = EditorGUILayout.TextField("App ID:", _AppId);
 
-            if (GUILayout.Button(_FetchButton))
+            if (GUILayout.Button("Fetch"))
             {
                 new FetchAppInfo(BackendSettings.ApiUrl, BackendSettings.ApiToken, _AppId).GetInfo(UpdateBackendData);
             }
