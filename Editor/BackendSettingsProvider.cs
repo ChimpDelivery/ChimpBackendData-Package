@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor
             return new BackendSettingsProvider();
         }
 
-        public BackendSettingsProvider() : base("Preferences/Talus/Backend", SettingsScope.User)
+        public BackendSettingsProvider() : base("Preferences/Talus/Backend Settings", SettingsScope.User)
         { }
 
         public override bool HasSearchInterest(string searchContext)
