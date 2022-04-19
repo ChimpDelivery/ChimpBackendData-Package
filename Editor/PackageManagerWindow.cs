@@ -16,7 +16,7 @@ namespace TalusBackendData.Editor
         private static RemoveRequest s_RemovePackageRequest;
         private static ListRequest s_ListPackageRequest;
 
-        [MenuItem("TalusKit/Backend/Package Manager", priority = 9999)]
+        [MenuItem("TalusKit/Backend/Package Manager", false, 1)]
         private static void Init()
         {
             PreparePackageList();
