@@ -5,7 +5,7 @@
         
 # ❗ Dependencies 
 - Unity Editor Coroutines Package (https://docs.unity3d.com/Packages/com.unity.editorcoroutines@1.0/manual/index.html)
-- Populate ```Api_Url``` and ```Api_Token``` fields on ```Edit/Preferences/Talus Backend``` editor.
+- Populate ```Api_Url``` and ```Api_Token``` fields on ```Edit/Preferences/Talus/Backend Settings``` editor.
 
 # 💿 Installation
 - Clone repository and extract it.
