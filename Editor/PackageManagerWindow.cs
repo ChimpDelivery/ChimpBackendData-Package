@@ -66,6 +66,7 @@ namespace TalusBackendData.Editor
                             else
                             {
                                 s_AddPackageRequest = Client.Add(package.Value.PackageUrl);
+                                EditorApplication.update += AddProgress;
                                 Debug.Log(package.Value.PackageUrl + " adding...");
                             }
                         }
@@ -132,6 +133,25 @@ namespace TalusBackendData.Editor
             }
 
             EditorApplication.update -= ListProgress;
+        }
+
+        private static void AddProgress()
+        {
+            if (!s_AddPackageRequest.IsCompleted)
+            {
+                return;
+            }
+
+            if (s_AddPackageRequest.Status == StatusCode.Success)
+            {
+                Debug.Log(s_AddPackageRequest.Result.packageId + " added successfully!");
+            }
+            else
+            {
+                Debug.Log(s_AddPackageRequest.Error.message);
+            }
+
+            EditorApplication.update -= AddProgress;
         }
 
         private static void PreparePackageList()
