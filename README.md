@@ -3,9 +3,8 @@
 - To work with backend integration.
 - Don't forget to update ```TALUS_BACKEND_KEYWORD``` and ```ELEPHANT_SCENE_PATH``` in ```PackageManagerWindow.cs``` when necessary.
         
-# ❗ Requirements 
-- Unity 2020.3.9f1 
-- Unity Editor Coroutines Package
+# ❗ Dependencies 
+- Unity Editor Coroutines Package (https://docs.unity3d.com/Packages/com.unity.editorcoroutines@1.0/manual/index.html)
 - Populate ```Api_Url``` and ```Api_Token``` fields on ```Edit/Preferences/Talus Backend``` editor.
 
 # 💿 Installation
