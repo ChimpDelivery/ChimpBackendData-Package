@@ -12,9 +12,9 @@ namespace TalusBackendData.Editor
 {
     public class FetchAppInfo
     {
-        private string _ApiUrl;
-        private string _ApiToken;
-        private string _AppId;
+        private readonly string _ApiUrl;
+        private readonly string _ApiToken;
+        private readonly string _AppId;
 
         public FetchAppInfo(string apiUrl, string apiToken, string appId)
         {
