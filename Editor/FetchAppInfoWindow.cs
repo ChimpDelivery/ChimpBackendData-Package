@@ -7,8 +7,6 @@ namespace TalusBackendData.Editor
 {
     public class FetchAppInfoWindow : EditorWindow
     {
-        private string _AppId;
-
         [MenuItem("TalusKit/Backend/Fetch App Info", false, 10001)]
         private static void Init()
         {
@@ -21,13 +19,27 @@ namespace TalusBackendData.Editor
         {
             GUILayout.BeginVertical();
 
-            GUILayout.Space(4);
-            GUILayout.Label("App Settings", EditorStyles.boldLabel);
-            _AppId = EditorGUILayout.TextField("App ID:", _AppId);
+            GUILayout.Space(8);
 
             if (GUILayout.Button("Fetch"))
             {
-                new FetchAppInfo(BackendSettings.ApiUrl, BackendSettings.ApiToken, _AppId).GetInfo(UpdateBackendData);
+                if (string.IsNullOrEmpty(BackendSettings.ApiUrl))
+                {
+                    Debug.LogError("ApiUrl can not be empty! (Edit/Preferences/Talus/Backend Settings) ");
+                }
+                else if (string.IsNullOrEmpty(BackendSettings.ApiToken))
+                {
+                    Debug.LogError("ApiToken can not be empty! (Edit/Preferences/Talus/Backend Settings)");
+                }
+                else if (string.IsNullOrEmpty(BackendSettings.AppId))
+                {
+                    Debug.LogError("AppId can not be empty! (Edit/Preferences/Talus/Backend Settings)");
+                }
+                else
+                {
+                    Debug.Log("App info fetching...");
+                    new FetchAppInfo(BackendSettings.ApiUrl, BackendSettings.ApiToken, BackendSettings.AppId).GetInfo(UpdateBackendData);
+                }
             }
 
             GUILayout.EndVertical();

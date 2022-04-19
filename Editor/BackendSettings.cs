@@ -8,6 +8,7 @@ namespace TalusBackendData.Editor
     {
         private static string _ApiUrl = "";
         private static string _ApiToken = "";
+        private static string _AppId = "";
 
         internal static string ApiUrl
         {
@@ -44,6 +45,25 @@ namespace TalusBackendData.Editor
             {
                 _ApiToken = value;
                 EditorPrefs.SetString(BackendDefinitions.BackendApiTokenPref, value);
+            }
+        }
+
+        internal static string AppId
+        {
+            get
+            {
+                if (!EditorPrefs.HasKey(BackendDefinitions.BackendAppIdPref))
+                {
+                    Debug.Log("Backend_App_Id editor pref not found!");
+                    return _AppId;
+                }
+
+                return EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref);
+            }
+            set
+            {
+                _AppId = value;
+                EditorPrefs.SetString(BackendDefinitions.BackendAppIdPref, value);
             }
         }
     }
