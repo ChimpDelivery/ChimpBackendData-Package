@@ -9,7 +9,7 @@ namespace TalusBackendData.Editor
     {
         private string _AppId;
 
-        [MenuItem("TalusKit/Backend/Fetch App Info")]
+        [MenuItem("TalusKit/Backend/Fetch App Info", priority = 10000)]
         private static void Init()
         {
             FetchAppInfoWindow window = GetWindow<FetchAppInfoWindow>();
