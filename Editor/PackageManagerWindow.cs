@@ -48,7 +48,7 @@ namespace TalusBackendData.Editor
                 if (s_ListPackageRequest.IsCompleted)
                 {
                     GUILayout.Space(8);
-                    GUILayout.Label("Installed Talus Packages:", EditorStyles.boldLabel);
+                    GUILayout.Label("Backend Packages:", EditorStyles.boldLabel);
 
                     foreach (KeyValuePair<string, TalusPackage> package in s_Backend_Packages)
                     {
