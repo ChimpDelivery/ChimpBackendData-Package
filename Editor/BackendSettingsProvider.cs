@@ -23,10 +23,10 @@ namespace TalusBackendData.Editor
             EditorGUILayout.BeginVertical();
 
             EditorGUILayout.LabelField("Api Url:", EditorStyles.boldLabel);
-            BackendSettings.ApiUrl = EditorGUILayout.TextField(EditorPrefs.GetString("Backend_Api_Url"));
+            BackendSettings.ApiUrl = EditorGUILayout.TextField(EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref));
 
             EditorGUILayout.LabelField("Api Token:", EditorStyles.boldLabel);
-            BackendSettings.ApiToken = EditorGUILayout.TextField(EditorPrefs.GetString("Backend_Api_Token"));
+            BackendSettings.ApiToken = EditorGUILayout.TextField(EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref));
 
             EditorGUILayout.EndVertical();
         }
