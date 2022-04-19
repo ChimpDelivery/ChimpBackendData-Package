@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor
         private static string _ApiToken = "";
         private static string _AppId = "";
 
-        internal static string ApiUrl
+        public static string ApiUrl
         {
             get
             {
@@ -29,7 +29,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        internal static string ApiToken
+        public static string ApiToken
         {
             get
             {
@@ -48,7 +48,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        internal static string AppId
+        public static string AppId
         {
             get
             {
