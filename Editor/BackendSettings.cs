@@ -4,27 +4,27 @@ using UnityEngine;
 
 namespace TalusBackendData.Editor
 {
-    static class BackendSettings
+    public static class BackendSettings
     {
         private static string _ApiUrl = "";
-        internal static string _ApiToken = "";
+        private static string _ApiToken = "";
 
         internal static string ApiUrl
         {
             get
             {
-                if (!EditorPrefs.HasKey("Backend_Api_Url"))
+                if (!EditorPrefs.HasKey(BackendDefinitions.BackendApiUrlPref))
                 {
                     Debug.Log("Backend_Api_Url editor pref not found!");
                     return _ApiUrl;
                 }
 
-                return EditorPrefs.GetString("Backend_Api_Url");
+                return EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             }
             set
             {
                 _ApiUrl = value;
-                EditorPrefs.SetString("Backend_Api_Url", value);
+                EditorPrefs.SetString(BackendDefinitions.BackendApiUrlPref, value);
             }
         }
 
@@ -32,18 +32,18 @@ namespace TalusBackendData.Editor
         {
             get
             {
-                if (!EditorPrefs.HasKey("Backend_Api_Token"))
+                if (!EditorPrefs.HasKey(BackendDefinitions.BackendApiTokenPref))
                 {
                     Debug.Log("Backend_Api_Token editor pref not found!");
                     return _ApiToken;
                 }
 
-                return EditorPrefs.GetString("Backend_Api_Token");
+                return EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             }
             set
             {
                 _ApiToken = value;
-                EditorPrefs.SetString("Backend_Api_Token", value);
+                EditorPrefs.SetString(BackendDefinitions.BackendApiTokenPref, value);
             }
         }
     }

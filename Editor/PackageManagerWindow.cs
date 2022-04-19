@@ -10,24 +10,18 @@ namespace TalusBackendData.Editor
 {
     public class PackageManagerWindow : EditorWindow
     {
-        private const string TALUS_BACKEND_KEYWORD = "ENABLE_BACKEND";
-        private const string ELEPHANT_SCENE_PATH = "Assets/Scenes/Template_Persistent/elephant_scene.unity";
+        private static Dictionary<string, TalusPackage> s_Backend_Packages = new Dictionary<string, TalusPackage>();
 
-        private static Dictionary<string, TalusPackage> s_Backend_Packages = new Dictionary<string, TalusPackage>
-        {
-            { "com.talus.talusplayservicesresolver", new TalusPackage("https://github.com/TalusStudio/TalusPlayServicesResolver-Package.git", false) },
-            { "com.talus.talusfacebook", new TalusPackage("https://github.com/TalusStudio/TalusFacebook-Package.git", false) },
-            { "com.talus.taluselephant", new TalusPackage("https://github.com/TalusStudio/TalusElephant-Package.git", false) }
-        };
-
-        private static AddRequest s_AddRequest;
-        private static RemoveRequest s_RemoveRequest;
-        private static ListRequest s_ListRequest;
+        private static AddRequest s_AddPackageRequest;
+        private static RemoveRequest s_RemovePackageRequest;
+        private static ListRequest s_ListPackageRequest;
 
         [MenuItem("TalusKit/Backend/Package Manager", priority = -999)]
         private static void Init()
         {
-            s_ListRequest = Client.List();
+            PreparePackageList();
+
+            s_ListPackageRequest = Client.List();
             EditorApplication.update += ListProgress;
 
             var window = GetWindow<PackageManagerWindow>();
@@ -38,38 +32,25 @@ namespace TalusBackendData.Editor
         private void OnGUI()
         {
             GUILayout.BeginVertical();
-            GUILayout.Label("Backend Status", EditorStyles.boldLabel);
 
-#if ENABLE_BACKEND
-            GUI.backgroundColor = Color.red;
-            if (GUILayout.Button("Disable Backend"))
-            {
-                DisableBackend();
-            }
-#else
-            GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Enable Backend"))
-            {
-                EnableBackend();
-            }
-#endif
+            int installedPackageCount = 0;
 
-            if (s_ListRequest == null)
+            if (s_ListPackageRequest == null)
             {
-                s_ListRequest = Client.List();
+                PreparePackageList();
+
+                s_ListPackageRequest = Client.List();
                 EditorApplication.update += ListProgress;
             }
 
-            if (s_ListRequest != null)
+            if (s_ListPackageRequest != null)
             {
-                int installedPackageCount = 0;
-
-                if (s_ListRequest.IsCompleted)
+                if (s_ListPackageRequest.IsCompleted)
                 {
-                    GUILayout.Space(4);
-                    GUILayout.Label("Installed Talus Packages", EditorStyles.boldLabel);
+                    GUILayout.Space(8);
+                    GUILayout.Label("Installed Talus Packages:", EditorStyles.boldLabel);
 
-                    foreach (var package in s_Backend_Packages)
+                    foreach (KeyValuePair<string, TalusPackage> package in s_Backend_Packages)
                     {
                         if (package.Value.Installed) { ++installedPackageCount; }
 
@@ -79,25 +60,43 @@ namespace TalusBackendData.Editor
                         {
                             if (package.Value.Installed)
                             {
-                                s_RemoveRequest = Client.Remove(package.Key);
+                                s_RemovePackageRequest = Client.Remove(package.Key);
                                 Debug.Log(package.Key + " removing...");
                             }
                             else
                             {
-                                s_AddRequest = Client.Add(package.Value.PackageUrl);
+                                s_AddPackageRequest = Client.Add(package.Value.PackageUrl);
                                 Debug.Log(package.Value.PackageUrl + " adding...");
                             }
                         }
                     }
-
-                    GUILayout.Space(4);
-                    GUILayout.Label($"Installed package count: {installedPackageCount}", EditorStyles.boldLabel);
                 }
                 else
                 {
-                    GUILayout.Space(4);
+                    GUILayout.Space(8);
                     GUILayout.Label("Fetching...", EditorStyles.boldLabel);
                 }
+            }
+
+            if (installedPackageCount == s_Backend_Packages.Count)
+            {
+                GUI.backgroundColor = Color.green;
+                GUILayout.Space(8);
+                GUILayout.Label("All backend packages installed!", EditorStyles.boldLabel);
+
+#if ENABLE_BACKEND
+                GUI.backgroundColor = Color.red;
+                if (GUILayout.Button("Remove Backend Define Symbol"))
+                {
+                    RemoveBackendSymbol();
+                }
+#else
+                GUI.backgroundColor = Color.green;
+                if (GUILayout.Button("Add Backend Define Symbol"))
+                {
+                    AddBackendSymbol();
+                }
+#endif
             }
 
             GUILayout.EndVertical();
@@ -105,14 +104,14 @@ namespace TalusBackendData.Editor
 
         private static void ListProgress()
         {
-            if (!s_ListRequest.IsCompleted)
+            if (!s_ListPackageRequest.IsCompleted)
             {
                 return;
             }
 
-            if (s_ListRequest.Status == StatusCode.Success)
+            if (s_ListPackageRequest.Status == StatusCode.Success)
             {
-                foreach (var package in s_ListRequest.Result)
+                foreach (var package in s_ListPackageRequest.Result)
                 {
                     // Only retrieve packages that are currently installed in the
                     // project (and are neither Built-In nor already Embedded)
@@ -129,45 +128,37 @@ namespace TalusBackendData.Editor
             }
             else
             {
-                Debug.Log(s_ListRequest.Error.message);
+                Debug.Log(s_ListPackageRequest.Error.message);
             }
 
             EditorApplication.update -= ListProgress;
         }
 
-        private static void DisableBackend()
+        private static void PreparePackageList()
         {
-            if (DefineSymbols.Contains(TALUS_BACKEND_KEYWORD))
+            s_Backend_Packages.Clear();
+
+            foreach (KeyValuePair<string, string> package in BackendDefinitions.BackendPackages)
             {
-                DefineSymbols.Remove(TALUS_BACKEND_KEYWORD);
-                Debug.Log(TALUS_BACKEND_KEYWORD + " define symbol removing...");
+                s_Backend_Packages.Add(package.Key, new TalusPackage(package.Value, false));
             }
-
-            //
-            var editorBuildSettingsScenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-            editorBuildSettingsScenes.Remove(editorBuildSettingsScenes.Find(val => val.path.Contains("elephant")));
-            EditorBuildSettings.scenes = editorBuildSettingsScenes.ToArray();
-
-            Debug.Log("elephant_scene removed from build settings...");
         }
 
-        private static void EnableBackend()
+        private static void RemoveBackendSymbol()
         {
-            if (!DefineSymbols.Contains(TALUS_BACKEND_KEYWORD))
+            if (DefineSymbols.Contains(BackendDefinitions.BackendSymbol))
             {
-                DefineSymbols.Add(TALUS_BACKEND_KEYWORD);
-                Debug.Log(TALUS_BACKEND_KEYWORD + " define symbol adding...");
+                DefineSymbols.Remove(BackendDefinitions.BackendSymbol);
+                Debug.Log(BackendDefinitions.BackendSymbol + " define symbol removing...");
             }
+        }
 
-            //
-            var editorBuildSettingsScenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-            if (editorBuildSettingsScenes.Count > 0 && !editorBuildSettingsScenes[0].path.Contains("elephant"))
+        private static void AddBackendSymbol()
+        {
+            if (!DefineSymbols.Contains(BackendDefinitions.BackendSymbol))
             {
-                var elephantScene = new EditorBuildSettingsScene(ELEPHANT_SCENE_PATH, true);
-                editorBuildSettingsScenes.Insert(0, elephantScene);
-                EditorBuildSettings.scenes = editorBuildSettingsScenes.ToArray();
-
-                Debug.Log("elephant_scene added to build settings...");
+                DefineSymbols.Add(BackendDefinitions.BackendSymbol);
+                Debug.Log(BackendDefinitions.BackendSymbol + " define symbol adding...");
             }
         }
     }
