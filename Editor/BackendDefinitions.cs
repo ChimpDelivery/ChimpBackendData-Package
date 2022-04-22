@@ -6,9 +6,9 @@ namespace TalusBackendData.Editor
     {
         public static readonly string BackendSymbol = "ENABLE_BACKEND";
 
-        public static readonly string BackendApiUrlPref = "Backend_Api_Url";
-        public static readonly string BackendApiTokenPref = "Backend_Api_Token";
-        public static readonly string BackendAppIdPref = "Backend_App_Id";
+        public static readonly string BackendApiUrlPref = "BACKEND_API_URL";
+        public static readonly string BackendApiTokenPref = "BACKEND_API_TOKEN";
+        public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
         public static readonly Dictionary<string, string> BackendPackages = new Dictionary<string, string>
         {

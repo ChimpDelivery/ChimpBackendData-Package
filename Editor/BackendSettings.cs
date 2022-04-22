@@ -1,7 +1,5 @@
 using UnityEditor;
 
-using UnityEngine;
-
 namespace TalusBackendData.Editor
 {
     public static class BackendSettings
@@ -12,16 +10,7 @@ namespace TalusBackendData.Editor
 
         public static string ApiUrl
         {
-            get
-            {
-                if (!EditorPrefs.HasKey(BackendDefinitions.BackendApiUrlPref))
-                {
-                    Debug.Log("Backend_Api_Url editor pref not found!");
-                    return _ApiUrl;
-                }
-
-                return EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
-            }
+            get => EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             set
             {
                 _ApiUrl = value;
@@ -31,16 +20,7 @@ namespace TalusBackendData.Editor
 
         public static string ApiToken
         {
-            get
-            {
-                if (!EditorPrefs.HasKey(BackendDefinitions.BackendApiTokenPref))
-                {
-                    Debug.Log("Backend_Api_Token editor pref not found!");
-                    return _ApiToken;
-                }
-
-                return EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
-            }
+            get => EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             set
             {
                 _ApiToken = value;
@@ -50,16 +30,7 @@ namespace TalusBackendData.Editor
 
         public static string AppId
         {
-            get
-            {
-                if (!EditorPrefs.HasKey(BackendDefinitions.BackendAppIdPref))
-                {
-                    Debug.Log("Backend_App_Id editor pref not found!");
-                    return _AppId;
-                }
-
-                return EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref);
-            }
+            get => EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref);
             set
             {
                 _AppId = value;
