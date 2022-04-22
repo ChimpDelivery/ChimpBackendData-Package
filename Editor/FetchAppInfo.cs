@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 
-using TalusBackendData.Editor.Models;
-
 using UnityEngine;
 using UnityEngine.Networking;
 
 using Unity.EditorCoroutines.Editor;
+
+using TalusBackendData.Editor.Models;
 
 namespace TalusBackendData.Editor
 {

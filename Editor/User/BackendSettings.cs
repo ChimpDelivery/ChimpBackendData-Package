@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace TalusBackendData.Editor
+namespace TalusBackendData.Editor.User
 {
     public static class BackendSettings
     {
