@@ -4,16 +4,11 @@ namespace TalusBackendData.Editor.User
 {
     public static class BackendSettings
     {
-        private static string _ApiUrl = "";
-        private static string _ApiToken = "";
-        private static string _AppId = "";
-
         public static string ApiUrl
         {
             get => EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             set
             {
-                _ApiUrl = value;
                 EditorPrefs.SetString(BackendDefinitions.BackendApiUrlPref, value);
             }
         }
@@ -23,7 +18,6 @@ namespace TalusBackendData.Editor.User
             get => EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             set
             {
-                _ApiToken = value;
                 EditorPrefs.SetString(BackendDefinitions.BackendApiTokenPref, value);
             }
         }
@@ -33,7 +27,6 @@ namespace TalusBackendData.Editor.User
             get => EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref);
             set
             {
-                _AppId = value;
                 EditorPrefs.SetString(BackendDefinitions.BackendAppIdPref, value);
             }
         }
