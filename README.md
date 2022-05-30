@@ -8,7 +8,6 @@
 - Populate ```Api_Url``` and ```Api_Token``` fields on ```Edit/Preferences/Talus/Backend Settings``` editor.
 
 # 💿 Installation
-- Clone repository and extract it.
 - In Unity, 
   - Window->Package Manager->Add Package(Plus Icon)->Add Package From git URL
   - Paste following link to Input Field and press "Add"
