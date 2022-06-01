@@ -88,8 +88,8 @@ namespace TalusBackendData.Editor
                 GUILayout.Label("All backend packages installed!", EditorStyles.boldLabel);
 
 #if ENABLE_BACKEND
-                GUI.backgroundColor = Color.red;
-                if (GUILayout.Button("Remove Backend Define Symbol"))
+                GUI.backgroundColor = Color.green;
+                if (GUILayout.Button("Backend Define Symbol exists."))
                 {
                     RemoveBackendSymbol();
                 }
@@ -102,8 +102,8 @@ namespace TalusBackendData.Editor
                 GUILayout.Label("4. TalusKit/Backend/Fetch App Info");
                 GUILayout.Label("5. Populate RuntimeDataManager scriptable object");
 #else
-                GUI.backgroundColor = Color.green;
-                if (GUILayout.Button("Add Backend Define Symbol"))
+                GUI.backgroundColor = Color.red;
+                if (GUILayout.Button("Backend Define Symbol doesn't exist!"))
                 {
                     AddBackendSymbol();
                 }
