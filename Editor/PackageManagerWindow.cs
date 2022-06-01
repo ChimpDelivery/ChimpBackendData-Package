@@ -33,9 +33,9 @@ namespace TalusBackendData.Editor
 
         private void OnGUI()
         {
-            GUILayout.BeginVertical();
-
             int installedPackageCount = 0;
+
+            GUILayout.BeginVertical();
 
             if (s_ListPackageRequest == null)
             {
@@ -54,23 +54,30 @@ namespace TalusBackendData.Editor
 
                     foreach (KeyValuePair<string, TalusPackageModel> package in s_BackendPackages)
                     {
-                        if (package.Value.installed) { ++installedPackageCount; }
+                        bool isPackageInstalled = package.Value.installed;
 
-                        GUI.backgroundColor = (package.Value.installed) ? Color.green : Color.red;
+                        if (isPackageInstalled)
+                        {
+                            ++installedPackageCount;
+                        }
+
+                        GUI.backgroundColor = (isPackageInstalled) ? Color.green : Color.red;
 
                         if (GUILayout.Button(package.Key))
                         {
-                            if (package.Value.installed)
+                            if (isPackageInstalled)
                             {
                                 s_RemovePackageRequest = Client.Remove(package.Key);
-                                Debug.Log(package.Key + " removing...");
                             }
                             else
                             {
                                 s_AddPackageRequest = Client.Add(package.Value.package_url);
                                 EditorApplication.update += AddProgress;
-                                Debug.Log(package.Value.package_url + " adding...");
                             }
+
+                            Debug.Log(isPackageInstalled ?
+                                package.Key + " removing..." :
+                                package.Value.package_url + " adding...");
                         }
                     }
                 }
@@ -93,6 +100,14 @@ namespace TalusBackendData.Editor
                 {
                     RemoveBackendSymbol();
                 }
+
+                GUILayout.Space(8);
+                GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
+                GUILayout.Label("1. Populate Edit/Preferences/Talus/Backend Settings");
+                GUILayout.Label("2. Install all Backend Packages");
+                GUILayout.Label("3. Add Backend Define Symbol");
+                GUILayout.Label("3. Populate RuntimeDataManager scriptable object");
+                GUILayout.Label("4. TalusKit/Backend/Fetch App Info");
 #else
                 GUI.backgroundColor = Color.green;
                 if (GUILayout.Button("Add Backend Define Symbol"))
@@ -107,25 +122,20 @@ namespace TalusBackendData.Editor
 
         private static void ListProgress()
         {
-            if (!s_ListPackageRequest.IsCompleted)
-            {
-                return;
-            }
+            if (!s_ListPackageRequest.IsCompleted) { return; }
 
             if (s_ListPackageRequest.Status == StatusCode.Success)
             {
                 foreach (var package in s_ListPackageRequest.Result)
                 {
-                    // Only retrieve packages that are currently installed in the
-                    // project (and are neither Built-In nor already Embedded)
-                    if (package.isDirectDependency &&
-                        package.source != PackageSource.BuiltIn &&
-                        package.source != PackageSource.Embedded)
+                    if (package.source != PackageSource.Git) { continue; }
+
+                    if (s_BackendPackages.ContainsKey(package.name))
                     {
-                        if (s_BackendPackages.ContainsKey(package.name))
-                        {
-                            s_BackendPackages[package.name] = new TalusPackageModel(s_BackendPackages[package.name].package_url, true);
-                        }
+                        // Debug.Log(package.name + " hash: " + package.git.hash);
+                        // Debug.Log(package.name + " revision: " + package.git.revision);
+
+                        s_BackendPackages[package.name] = new TalusPackageModel(s_BackendPackages[package.name].package_url, true);
                     }
                 }
             }
@@ -139,19 +149,11 @@ namespace TalusBackendData.Editor
 
         private static void AddProgress()
         {
-            if (!s_AddPackageRequest.IsCompleted)
-            {
-                return;
-            }
+            if (!s_AddPackageRequest.IsCompleted) { return; }
 
-            if (s_AddPackageRequest.Status == StatusCode.Success)
-            {
-                Debug.Log(s_AddPackageRequest.Result.packageId + " added successfully!");
-            }
-            else
-            {
-                Debug.Log(s_AddPackageRequest.Error.message);
-            }
+            Debug.Log(s_AddPackageRequest.Status == StatusCode.Success ?
+                s_AddPackageRequest.Result.packageId + " added successfully!" :
+                s_AddPackageRequest.Error.message);
 
             EditorApplication.update -= AddProgress;
         }
@@ -168,20 +170,18 @@ namespace TalusBackendData.Editor
 
         private static void RemoveBackendSymbol()
         {
-            if (DefineSymbols.Contains(BackendDefinitions.BackendSymbol))
-            {
-                DefineSymbols.Remove(BackendDefinitions.BackendSymbol);
-                Debug.Log(BackendDefinitions.BackendSymbol + " define symbol removing...");
-            }
+            if (!DefineSymbols.Contains(BackendDefinitions.BackendSymbol)) { return; }
+
+            DefineSymbols.Remove(BackendDefinitions.BackendSymbol);
+            Debug.Log(BackendDefinitions.BackendSymbol + " define symbol removing...");
         }
 
         private static void AddBackendSymbol()
         {
-            if (!DefineSymbols.Contains(BackendDefinitions.BackendSymbol))
-            {
-                DefineSymbols.Add(BackendDefinitions.BackendSymbol);
-                Debug.Log(BackendDefinitions.BackendSymbol + " define symbol adding...");
-            }
+            if (DefineSymbols.Contains(BackendDefinitions.BackendSymbol)) { return; }
+
+            DefineSymbols.Add(BackendDefinitions.BackendSymbol);
+            Debug.Log(BackendDefinitions.BackendSymbol + " define symbol adding...");
         }
     }
 }
