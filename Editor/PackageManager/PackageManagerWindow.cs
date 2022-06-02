@@ -157,10 +157,12 @@ namespace TalusBackendData.Editor.PackageManager
             BackendApi api = new BackendApi(apiUrl, apiToken);
             api.GetPackageInfo(packageId, package =>
             {
-                response = packageHash.Equals(package.hash);
+                response = !packageHash.Equals(package.hash);
+
                 Debug.Log("Package url: " + package.url);
                 Debug.Log("Package hash: " + package.hash);
                 Debug.Log("Current hash: " + packageHash);
+                Debug.Log("Response: " + response);
             });
 
             return response;
