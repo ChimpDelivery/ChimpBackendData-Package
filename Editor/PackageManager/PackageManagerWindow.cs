@@ -60,6 +60,8 @@ namespace TalusBackendData.Editor.PackageManager
                     bool isPackageInstalled = package.Value.Exist;
                     bool isUpdateExist = package.Value.UpdateExist;
 
+                    Debug.Log($"{package.Key} {isPackageInstalled} {isUpdateExist}");
+
                     GUI.backgroundColor = (isPackageInstalled) ?
                         ((isUpdateExist) ? Color.yellow : Color.green)
                         : Color.red;
@@ -72,7 +74,6 @@ namespace TalusBackendData.Editor.PackageManager
                         }
                         else
                         {
-                            Debug.Log("adding... " + package.Key);
                             AddBackendPackage(package.Key);
                          }
                     }
@@ -155,15 +156,7 @@ namespace TalusBackendData.Editor.PackageManager
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
-            api.GetPackageInfo(packageId, package =>
-            {
-                response = !packageHash.Equals(package.hash);
-
-                Debug.Log("Package url: " + package.url);
-                Debug.Log("Package hash: " + package.hash);
-                Debug.Log("Current hash: " + packageHash);
-                Debug.Log("Response: " + response);
-            });
+            api.GetPackageInfo(packageId, package => response = !packageHash.Equals(package.hash));
 
             return response;
         }
