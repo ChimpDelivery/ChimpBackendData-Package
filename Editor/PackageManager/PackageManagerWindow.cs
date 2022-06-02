@@ -155,7 +155,13 @@ namespace TalusBackendData.Editor.PackageManager
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
-            api.GetPackageInfo(packageId, package => response = packageHash != package.hash);
+            api.GetPackageInfo(packageId, package =>
+            {
+                response = packageHash != package.hash;
+                Debug.Log("Package url: " + package.url);
+                Debug.Log("Package hash: " + package.hash);
+                Debug.Log("Current hash: " + packageHash);
+            });
 
             return response;
         }
@@ -170,10 +176,12 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     if (!s_BackendPackages.ContainsKey(package.name)) { continue; }
 
-                    string hash = (package.source == PackageSource.Git) ? package.git.hash : "";
-                    bool isUpdateExist = (package.source == PackageSource.Git) ? IsUpdateExist(package.name, package.git.hash) : false;
+                    bool isGitPackage = package.source == PackageSource.Git;
 
-                    s_BackendPackages[package.name] = new PackageStatus(true, hash, isUpdateExist);
+                    string gitHash = isGitPackage ? package.git.hash : "";
+                    bool gitUpdateExist = isGitPackage && IsUpdateExist(package.name, package.git.hash);
+
+                    s_BackendPackages[package.name] = new PackageStatus(true, gitHash, gitUpdateExist);
 
                     ++s_InstalledPackageCount;
                 }
