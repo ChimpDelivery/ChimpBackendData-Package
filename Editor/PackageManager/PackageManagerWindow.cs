@@ -233,10 +233,9 @@ namespace TalusBackendData.Editor.PackageManager
 
         private static void RepaintManagerWindow()
         {
-            if (s_Instance != null)
-            {
-                s_Instance.Repaint();
-            }
+            if (s_Instance == null) { return; }
+
+            s_Instance.Repaint();
         }
     }
 }
