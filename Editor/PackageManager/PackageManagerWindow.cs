@@ -57,9 +57,12 @@ namespace TalusBackendData.Editor.PackageManager
 
                 foreach (var package in s_BackendPackages)
                 {
-                    bool isPackageInstalled = package.Value.Exists;
+                    bool isPackageInstalled = package.Value.Exist;
+                    bool isUpdateExist = package.Value.UpdateExist;
 
-                    GUI.backgroundColor = (isPackageInstalled) ? Color.green : Color.red;
+                    GUI.backgroundColor = (isPackageInstalled) ?
+                        ((isUpdateExist) ? Color.yellow : Color.green)
+                        : Color.red;
 
                     if (GUILayout.Button(package.Key))
                     {
@@ -145,6 +148,18 @@ namespace TalusBackendData.Editor.PackageManager
             EditorApplication.update += ListProgress;
         }
 
+        private static bool IsUpdateExist(string packageId, string packageHash)
+        {
+            bool response = false;
+
+            string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
+            string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
+            BackendApi api = new BackendApi(apiUrl, apiToken);
+            api.GetPackageInfo(packageId, package => response = packageHash != package.hash);
+
+            return response;
+        }
+
         private static void ListProgress()
         {
             if (!s_ListPackageRequest.IsCompleted) { return; }
@@ -156,7 +171,7 @@ namespace TalusBackendData.Editor.PackageManager
                     if (!s_BackendPackages.ContainsKey(package.name)) { continue; }
 
                     string hash = (package.source == PackageSource.Git) ? package.git.hash : "";
-                    bool isUpdateExist = (package.source == PackageSource.Git) ? false : false;
+                    bool isUpdateExist = (package.source == PackageSource.Git) ? IsUpdateExist(package.name, package.git.hash) : false;
 
                     s_BackendPackages[package.name] = new PackageStatus(true, hash, isUpdateExist);
 

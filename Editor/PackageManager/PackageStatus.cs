@@ -3,15 +3,15 @@ namespace TalusBackendData.Editor.PackageManager
     [System.Serializable]
     internal class PackageStatus
     {
-        public bool Exists;
+        public bool Exist;
         public string Hash;
-        public bool UpdateExists;
+        public bool UpdateExist;
 
-        public PackageStatus(bool exists, string hash, bool updateExists)
+        public PackageStatus(bool exist, string hash, bool updateExist)
         {
-            Exists = exists;
+            Exist = exist;
             Hash = hash;
-            UpdateExists = updateExists;
+            UpdateExist = updateExist;
         }
     }
 }
