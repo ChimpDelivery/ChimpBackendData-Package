@@ -66,13 +66,13 @@ namespace TalusBackendData.Editor.PackageManager
 
                     if (GUILayout.Button(package.Key))
                     {
-                        if (isPackageInstalled)
+                        if (!isPackageInstalled || isUpdateExist)
                         {
-                            RemoveBackendPackage(package.Key);
+                            AddBackendPackage(package.Key);
                         }
                         else
                         {
-                            AddBackendPackage(package.Key);
+                            RemoveBackendPackage(package.Key);
                          }
                     }
                 }
