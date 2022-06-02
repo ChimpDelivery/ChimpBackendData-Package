@@ -147,16 +147,16 @@ namespace TalusBackendData.Editor.PackageManager
             EditorApplication.update += ListProgress;
         }
 
-        private static bool IsUpdateExist(string packageId, string packageHash)
+        private static void CheckVersion(string packageId, string packageHash)
         {
-            bool response = false;
-
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
-            api.GetPackageInfo(packageId, package => response = !packageHash.Equals(package.hash));
-
-            return response;
+            api.GetPackageInfo(packageId, package =>
+            {
+                s_BackendPackages[packageId].UpdateExist = !packageHash.Equals(package.hash);
+                RepaintManagerWindow();
+            });
         }
 
         private static void ListProgress()
@@ -170,11 +170,14 @@ namespace TalusBackendData.Editor.PackageManager
                     if (!s_BackendPackages.ContainsKey(package.name)) { continue; }
 
                     bool isGitPackage = package.source == PackageSource.Git;
-
                     string gitHash = isGitPackage ? package.git.hash : "";
-                    bool gitUpdateExist = isGitPackage && IsUpdateExist(package.name, package.git.hash);
 
-                    s_BackendPackages[package.name] = new PackageStatus(true, gitHash, gitUpdateExist);
+                    s_BackendPackages[package.name] = new PackageStatus(true, gitHash, false);
+
+                    if (isGitPackage)
+                    {
+                        CheckVersion(package.name, gitHash);
+                    }
 
                     ++s_InstalledPackageCount;
                 }
