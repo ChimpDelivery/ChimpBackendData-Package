@@ -60,8 +60,6 @@ namespace TalusBackendData.Editor.PackageManager
                     bool isPackageInstalled = package.Value.Exist;
                     bool isUpdateExist = package.Value.UpdateExist;
 
-                    Debug.Log($"{package.Key} {isPackageInstalled} {isUpdateExist}");
-
                     GUI.backgroundColor = (isPackageInstalled) ?
                         ((isUpdateExist) ? Color.yellow : Color.green)
                         : Color.red;
