@@ -128,7 +128,7 @@ namespace TalusBackendData.Editor.PackageManager
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
             api.GetPackageInfo(packageId, package => {
-                s_AddPackageRequest = Client.Add(package.url);
+                s_AddPackageRequest = Client.Add(package.url.TrimEnd('/'));
                 EditorApplication.update += AddProgress;
             });
         }
