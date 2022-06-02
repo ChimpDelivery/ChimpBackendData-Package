@@ -11,7 +11,7 @@ namespace TalusBackendData.Editor
         public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
         public static readonly List<string> BackendPackageList = new List<string>
-{
+        {
             "com.talus.talusbackenddata",
             "com.talus.talusci",
             "com.talus.talusplayservicesresolver",
