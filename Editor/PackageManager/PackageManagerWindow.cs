@@ -79,8 +79,9 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_InstalledPackageCount == s_BackendPackages.Count)
             {
                 GUI.backgroundColor = Color.green;
-                GUILayout.Space(8);
                 GUILayout.Label("All backend packages installed!", EditorStyles.boldLabel);
+
+                GUILayout.Space(8);
 
 #if ENABLE_BACKEND
                 GUI.backgroundColor = Color.green;
@@ -98,6 +99,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             GUILayout.Space(8);
+
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
             GUILayout.Label("1. Install/Update all Backend Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
