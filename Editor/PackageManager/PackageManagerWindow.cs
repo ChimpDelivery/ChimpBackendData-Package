@@ -105,9 +105,9 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
             GUILayout.Label("1. Install/Update all Backend Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
-            GUILayout.Label("3. Populate Edit/Preferences/Talus/Backend Settings");
-            GUILayout.Label("4. TalusKit/Backend/Fetch App Info");
-            GUILayout.Label("5. Populate RuntimeDataManager scriptable object");
+            GUILayout.Label("3. Populate Levels on RuntimeDataManager scriptable object");
+            GUILayout.Label("4. Populate Edit/Preferences/Talus/Backend Settings");
+            GUILayout.Label("5. TalusKit/Backend/Fetch App Info");
 
             GUILayout.EndVertical();
         }
