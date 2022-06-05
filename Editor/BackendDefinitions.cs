@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor
         public static readonly string BackendApiTokenPref = "BACKEND_API_TOKEN";
         public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
-        public static readonly List<string> BackendPackageList = new List<string>
+        public static readonly List<string> Packages = new List<string>
         {
             "com.talus.talusframework",
             "com.talus.taluskit",

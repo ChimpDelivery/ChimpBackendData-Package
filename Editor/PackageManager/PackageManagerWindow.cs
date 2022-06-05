@@ -53,7 +53,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_ListPackageRequest.IsCompleted)
             {
                 GUILayout.Space(8);
-                GUILayout.Label("Backend Packages:", EditorStyles.boldLabel);
+                GUILayout.Label("Packages:", EditorStyles.boldLabel);
 
                 foreach (var package in s_BackendPackages)
                 {
@@ -103,7 +103,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Space(8);
 
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
-            GUILayout.Label("1. Install/Update all Backend Packages");
+            GUILayout.Label("1. Install/Update all Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
             GUILayout.Label("3. Populate Levels on RuntimeDataManager scriptable object");
             GUILayout.Label("4. Populate Edit/Preferences/Talus/Backend Settings");
@@ -138,7 +138,7 @@ namespace TalusBackendData.Editor.PackageManager
             s_InstalledPackageCount = 0;
             s_BackendPackages.Clear();
 
-            foreach (string packageId in BackendDefinitions.BackendPackageList)
+            foreach (string packageId in BackendDefinitions.Packages)
             {
                 s_BackendPackages[packageId] = new PackageStatus(false, "", false);
             }
