@@ -12,6 +12,8 @@ namespace TalusBackendData.Editor
 
         public static readonly List<string> BackendPackageList = new List<string>
         {
+            "com.talus.talusframework",
+            "com.talus.taluskit",
             "com.talus.talusbackenddata",
             "com.talus.talusci",
             "com.talus.talusplayservicesresolver",
