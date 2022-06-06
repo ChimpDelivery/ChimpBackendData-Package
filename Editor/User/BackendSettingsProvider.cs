@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor.User
             return new BackendSettingsProvider();
         }
 
-        public BackendSettingsProvider() : base("Talus Studio/Backend Settings", SettingsScope.Project)
+        public BackendSettingsProvider() : base(BackendSettings.Path, SettingsScope.Project)
         { }
 
         public override bool HasSearchInterest(string searchContext)
@@ -22,7 +22,7 @@ namespace TalusBackendData.Editor.User
         {
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Api Url:", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Api URL:", EditorStyles.boldLabel);
             BackendSettings.ApiUrl = EditorGUILayout.TextField(EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref));
 
             EditorGUILayout.LabelField("Api Token:", EditorStyles.boldLabel);

@@ -4,6 +4,8 @@ namespace TalusBackendData.Editor.User
 {
     public static class BackendSettings
     {
+        public static string Path => "Talus Studio/Backend Settings";
+
         public static string ApiUrl
         {
             get => EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
