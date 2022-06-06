@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using TalusBackendData.Editor.User;
+using TalusBackendData.Editor.Utility;
 
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -77,30 +78,27 @@ namespace TalusBackendData.Editor.PackageManager
 
             GUILayout.BeginVertical();
 
-            if (s_ListPackageRequest.IsCompleted)
+            GUILayout.Space(8);
+            GUILayout.Label($"Packages ({s_BackendPackages.Count}):", EditorStyles.boldLabel);
+
+            foreach (var package in s_BackendPackages)
             {
-                GUILayout.Space(8);
-                GUILayout.Label($"Packages ({s_BackendPackages.Count}):", EditorStyles.boldLabel);
+                bool isPackageInstalled = package.Value.Exist;
+                bool isUpdateExist = package.Value.UpdateExist;
 
-                foreach (var package in s_BackendPackages)
+                GUI.backgroundColor = (isPackageInstalled) ?
+                    ((isUpdateExist) ? Color.yellow : Color.green)
+                    : Color.red;
+
+                if (GUILayout.Button(package.Key))
                 {
-                    bool isPackageInstalled = package.Value.Exist;
-                    bool isUpdateExist = package.Value.UpdateExist;
-
-                    GUI.backgroundColor = (isPackageInstalled) ?
-                        ((isUpdateExist) ? Color.yellow : Color.green)
-                        : Color.red;
-
-                    if (GUILayout.Button(package.Key))
+                    if (!isPackageInstalled || isUpdateExist)
                     {
-                        if (!isPackageInstalled || isUpdateExist)
-                        {
-                            AddBackendPackage(package.Key);
-                        }
-                        else
-                        {
-                            RemoveBackendPackage(package.Key);
-                        }
+                        AddBackendPackage(package.Key);
+                    }
+                    else
+                    {
+                        RemoveBackendPackage(package.Key);
                     }
                 }
             }

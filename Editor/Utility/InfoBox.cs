@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace TalusBackendData.Editor
+namespace TalusBackendData.Editor.Utility
 {
     public static class InfoBox
     {
@@ -11,5 +11,5 @@ namespace TalusBackendData.Editor
                 okAction?.Invoke();
             }
         }
-}
+    }
 }
