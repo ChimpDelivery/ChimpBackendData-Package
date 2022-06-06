@@ -126,7 +126,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
             GUILayout.Label("1. Install/Update all Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
-            GUILayout.Label("3. Populate 'TalusKit/Backend/Project Settings' and click 'Update Settings' button");
+            GUILayout.Label("3. Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
 
             GUILayout.EndVertical();
         }
