@@ -100,7 +100,7 @@ namespace TalusBackendData.Editor.PackageManager
                         else
                         {
                             RemoveBackendPackage(package.Key);
-                         }
+                        }
                     }
                 }
             }
