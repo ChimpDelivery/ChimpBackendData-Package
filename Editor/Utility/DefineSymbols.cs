@@ -7,7 +7,7 @@ namespace TalusBackendData.Editor.Utility
 {
     public static class DefineSymbols
     {
-        private const char DEFINE_SEPARATOR = ';';
+        private const char _DefineSeperator = ';';
         private static readonly List<string> _AllDefines = new List<string>();
 
         public static void Add(params string[] defines)
@@ -38,12 +38,17 @@ namespace TalusBackendData.Editor.Utility
 
         private static IEnumerable<string> GetDefines() =>
             PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup)
-                          .Split(DEFINE_SEPARATOR)
+                          .Split(_DefineSeperator)
                           .ToList();
 
-        private static void UpdateDefines(List<string> allDefines) =>
+        private static void UpdateDefines(List<string> allDefines)
+        {
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup,
-                string.Join(DEFINE_SEPARATOR.ToString(), allDefines.ToArray())
+                string.Join(_DefineSeperator.ToString(), allDefines.ToArray())
             );
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
     }
 }

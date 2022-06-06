@@ -103,24 +103,28 @@ namespace TalusBackendData.Editor.PackageManager
                 }
             }
 
+            bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
+
             if (s_InstalledPackageCount == s_BackendPackages.Count)
             {
                 GUILayout.Space(8);
                 GUILayout.Label($"Backend Define Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
 
-#if ENABLE_BACKEND
-                GUI.backgroundColor = Color.green;
-                if (GUILayout.Button("Backend Define Symbol exists."))
+                GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
+                if (symbolCheck)
                 {
-                    RemoveBackendSymbol();
+                    if (GUILayout.Button("Backend Define Symbol exists."))
+                    {
+                        RemoveBackendSymbol();
+                    }
                 }
-#else
-                GUI.backgroundColor = Color.red;
-                if (GUILayout.Button("Backend Define Symbol doesn't exist!"))
+                else
                 {
-                    AddBackendSymbol();
+                    if (GUILayout.Button("Backend Define Symbol doesn't exist!"))
+                    {
+                        AddBackendSymbol();
+                    }
                 }
-#endif
             }
 
             GUI.backgroundColor = default;
@@ -132,7 +136,6 @@ namespace TalusBackendData.Editor.PackageManager
             GUI.backgroundColor = packageCheck ? Color.green : Color.red;
             GUILayout.Toggle(packageCheck, "Install & Update all packages");
 
-            bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
             GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
             GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
 
