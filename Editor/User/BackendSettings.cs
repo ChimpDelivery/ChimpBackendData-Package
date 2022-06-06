@@ -15,11 +15,5 @@ namespace TalusBackendData.Editor.User
             get => EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             set => EditorPrefs.SetString(BackendDefinitions.BackendApiTokenPref, value);
         }
-
-        public static string AppId
-        {
-            get => EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref);
-            set => EditorPrefs.SetString(BackendDefinitions.BackendAppIdPref, value);
-        }
     }
 }

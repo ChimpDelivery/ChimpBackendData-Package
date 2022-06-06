@@ -8,7 +8,6 @@ namespace TalusBackendData.Editor
 
         public static readonly string BackendApiUrlPref = "BACKEND_API_URL";
         public static readonly string BackendApiTokenPref = "BACKEND_API_TOKEN";
-        public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
         public static readonly List<string> Packages = new List<string>
         {

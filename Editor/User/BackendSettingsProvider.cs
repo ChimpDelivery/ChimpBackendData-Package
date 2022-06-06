@@ -28,9 +28,6 @@ namespace TalusBackendData.Editor.User
             EditorGUILayout.LabelField("Api Token:", EditorStyles.boldLabel);
             BackendSettings.ApiToken = EditorGUILayout.TextField(EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref));
 
-            EditorGUILayout.LabelField("App ID:", EditorStyles.boldLabel);
-            BackendSettings.AppId = EditorGUILayout.TextField(EditorPrefs.GetString(BackendDefinitions.BackendAppIdPref));
-
             EditorGUILayout.EndVertical();
         }
     }
