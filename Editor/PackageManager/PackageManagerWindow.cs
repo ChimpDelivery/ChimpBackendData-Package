@@ -145,12 +145,16 @@ namespace TalusBackendData.Editor.PackageManager
 
         private static void RemoveBackendPackage(string packageId)
         {
+            if (s_RemovePackageRequest != null || !s_RemovePackageRequest.IsCompleted) { return; }
+
             s_RemovePackageRequest = Client.Remove(packageId);
             EditorApplication.update += RemoveProgress;
         }
 
         private static void AddBackendPackage(string packageId)
         {
+            if (s_AddPackageRequest != null || !s_AddPackageRequest.IsCompleted) { return; }
+
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
