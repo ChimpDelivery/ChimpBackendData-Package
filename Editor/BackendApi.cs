@@ -54,8 +54,6 @@ namespace TalusBackendData.Editor
 
                 yield return null;
 
-                Debug.Log($"[TalusBackendData-Package] Api response: {model}");
-
                 onFetchComplete(model);
             }
         }
