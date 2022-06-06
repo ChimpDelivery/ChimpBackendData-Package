@@ -223,11 +223,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
             else
             {
-                InfoBox.Create(
-                    "Error :(",
-                    s_ListPackageRequest.Error.message,
-                    "OK"
-                );
+                InfoBox.Create("Error :(", s_ListPackageRequest.Error.message, "OK");
             }
 
             EditorApplication.update -= ListProgress;
@@ -243,11 +239,7 @@ namespace TalusBackendData.Editor.PackageManager
                 s_AddPackageRequest.Result.packageId + " added successfully!" :
                 s_AddPackageRequest.Error.message;
 
-            InfoBox.Create(
-                $"{addPackageStatus} !",
-                message,
-                "OK"
-            );
+            InfoBox.Create($"{addPackageStatus} !", message, "OK");
 
             EditorApplication.update -= AddProgress;
             RepaintManagerWindow();
@@ -262,11 +254,7 @@ namespace TalusBackendData.Editor.PackageManager
                 s_RemovePackageRequest.PackageIdOrName + " removed successfully!" :
                 s_RemovePackageRequest.Error.message;
 
-            InfoBox.Create(
-                $"{removePackageStatus} !",
-                message,
-                "OK"
-            );
+            InfoBox.Create($"{removePackageStatus} !", message, "OK");
 
             EditorApplication.update -= RemoveProgress;
             RepaintManagerWindow();
