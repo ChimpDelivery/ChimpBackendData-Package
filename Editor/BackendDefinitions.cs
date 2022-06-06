@@ -17,6 +17,7 @@ namespace TalusBackendData.Editor
             "com.talus.taluskit",
             "com.talus.talusbackenddata",
             "com.talus.talusci",
+            "com.talus.talussettings",
             "com.talus.talusplayservicesresolver",
             "com.talus.talusfacebook",
             "com.talus.taluselephant"
