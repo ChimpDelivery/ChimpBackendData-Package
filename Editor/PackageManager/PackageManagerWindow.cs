@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using TalusBackendData.Editor.User;
+
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -23,11 +25,30 @@ namespace TalusBackendData.Editor.PackageManager
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
         {
-            PreparePackageData();
+            if (string.IsNullOrEmpty(BackendSettings.ApiUrl))
+            {
+                EditorUtility.DisplayDialog(
+                    "TalusBackendData-Package",
+                    "'Api URL' can not be empty!\n(Edit/Project Settings/Talus Studio/Backend Settings)",
+                    "OK, I understand"
+                );
+            }
+            else if (string.IsNullOrEmpty(BackendSettings.ApiToken))
+            {
+                EditorUtility.DisplayDialog(
+                    "TalusBackendData-Package",
+                    "'Api Token' can not be empty!\n(Edit/Project Settings/Talus Studio/Backend Settings)",
+                    "OK, I understand"
+                );
+            }
+            else
+            {
+                PreparePackageData();
 
-            s_Instance = GetWindow<PackageManagerWindow>();
-            s_Instance.titleContent = new GUIContent("Talus Backend");
-            s_Instance.Show();
+                s_Instance = GetWindow<PackageManagerWindow>();
+                s_Instance.titleContent = new GUIContent("Talus Package Manager");
+                s_Instance.Show();
+            }
         }
 
         private void OnFocus()
@@ -105,8 +126,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
             GUILayout.Label("1. Install/Update all Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
-            GUILayout.Label("3. Populate 'Edit/Project Settings/Talus Studio/Backend Settings'");
-            GUILayout.Label("4. Populate 'TalusKit/Backend/Project Settings' and click 'Update Settings' button");
+            GUILayout.Label("3. Populate 'TalusKit/Backend/Project Settings' and click 'Update Settings' button");
 
             GUILayout.EndVertical();
         }
