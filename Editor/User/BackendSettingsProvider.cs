@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace TalusBackendData.Editor.User
 {
-    class BackendSettingsProvider : SettingsProvider
+    public class BackendSettingsProvider : SettingsProvider
     {
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor.User
             return new BackendSettingsProvider();
         }
 
-        public BackendSettingsProvider() : base("Preferences/Talus/Backend Settings", SettingsScope.User)
+        public BackendSettingsProvider() : base("Talus Studio/Backend Settings", SettingsScope.Project)
         { }
 
         public override bool HasSearchInterest(string searchContext)
