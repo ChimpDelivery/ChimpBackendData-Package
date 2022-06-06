@@ -112,7 +112,7 @@ namespace TalusBackendData.Editor.PackageManager
                     else
                     {
                         InfoBox.Create("Are you sure ?",
-                            $"You are about to remove the {package.Key} package!",
+                            $"You are about to remove the '{package.Key}' package!",
                             "Yes, I know",
                             "Cancel",
                             () => RemoveBackendPackage(package.Key));
@@ -133,7 +133,7 @@ namespace TalusBackendData.Editor.PackageManager
                     if (GUILayout.Button("Backend Define Symbol exists."))
                     {
                         InfoBox.Create("Are you sure ?",
-                            "You are about to remove the Backend Define Symbol!",
+                            "You are about to remove the 'Backend Define Symbol' definition!",
                             "Yes, I know",
                             "Cancel",
                             () => RemoveBackendSymbol());
