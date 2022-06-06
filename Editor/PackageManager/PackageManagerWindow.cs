@@ -11,18 +11,18 @@ using UnityEngine;
 
 namespace TalusBackendData.Editor.PackageManager
 {
-    public class PackageManagerWindow : EditorWindow
+    internal class PackageManagerWindow : EditorWindow
     {
+        private static PackageManagerWindow s_Instance;
+
         private static Dictionary<string, PackageStatus> s_BackendPackages = new Dictionary<string, PackageStatus>();
 
         private static ListRequest s_ListPackageRequest;
         private static AddRequest s_AddPackageRequest;
         private static RemoveRequest s_RemovePackageRequest;
 
-        private static PackageManagerWindow s_Instance;
-
         private static int s_InstalledPackageCount = 0;
-        private static int s_UpdateCount = 0;
+        private static int s_RenewablePackageCount = 0;
 
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
@@ -128,7 +128,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Space(8);
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
 
-            bool packageCheck = (s_InstalledPackageCount == s_BackendPackages.Count) && s_UpdateCount == 0;
+            bool packageCheck = (s_InstalledPackageCount == s_BackendPackages.Count) && s_RenewablePackageCount == 0;
             GUI.backgroundColor = packageCheck ? Color.green : Color.red;
             GUILayout.Toggle(packageCheck, "Install & Update all packages");
 
@@ -163,7 +163,7 @@ namespace TalusBackendData.Editor.PackageManager
         private static void PreparePackageData()
         {
             s_InstalledPackageCount = 0;
-            s_UpdateCount = 0;
+            s_RenewablePackageCount = 0;
             s_BackendPackages.Clear();
 
             foreach (string packageId in BackendDefinitions.Packages)
@@ -187,7 +187,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                 if (updateExist)
                 {
-                    ++s_UpdateCount;
+                    ++s_RenewablePackageCount;
                 }
 
                 RepaintManagerWindow();

@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace TalusBackendData.Editor.User
 {
-    public class BackendSettingsProvider : SettingsProvider
+    internal class BackendSettingsProvider : SettingsProvider
     {
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
