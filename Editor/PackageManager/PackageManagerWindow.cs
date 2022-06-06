@@ -81,7 +81,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_InstalledPackageCount == s_BackendPackages.Count)
             {
                 GUI.backgroundColor = Color.green;
-                GUILayout.Label("All backend packages installed!", EditorStyles.boldLabel);
+                GUILayout.Label("All packages installed!", EditorStyles.boldLabel);
 
                 GUILayout.Space(8);
 
@@ -105,9 +105,8 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
             GUILayout.Label("1. Install/Update all Packages");
             GUILayout.Label("2. Add Backend Define Symbol");
-            GUILayout.Label("3. Populate Levels on RuntimeDataManager scriptable object");
-            GUILayout.Label("4. Populate Edit/Preferences/Talus/Backend Settings");
-            GUILayout.Label("5. TalusKit/Backend/Fetch App Info");
+            GUILayout.Label("3. Populate 'Edit/Project Settings/Talus Studio/Backend Settings'");
+            GUILayout.Label("4. Populate 'TalusKit/Backend/Project Settings' and click 'Update Settings' button");
 
             GUILayout.EndVertical();
         }
