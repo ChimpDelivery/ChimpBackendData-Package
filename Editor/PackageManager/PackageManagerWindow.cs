@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace TalusBackendData.Editor.PackageManager
 {
+    /// <summary>
+    ///     List/Add/Remove Talus Packages
+    /// </summary>
     internal class PackageManagerWindow : EditorWindow
     {
         private static PackageManagerWindow s_Instance;
@@ -60,10 +63,16 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void OnFocus()
         {
-            if (s_ListPackageRequest == null)
-            {
-                PreparePackageData();
-            }
+            if (s_ListPackageRequest != null) { return; }
+
+            PreparePackageData();
+        }
+
+        private void OnLostFocus()
+        {
+            if (s_ListPackageRequest != null) { return; }
+
+            PreparePackageData();
         }
 
         private void OnGUI()
@@ -71,7 +80,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_ListPackageRequest == null || !s_ListPackageRequest.IsCompleted)
             {
                 GUILayout.Space(8);
-                GUILayout.Label("Fetching...", EditorStyles.boldLabel);
+                GUILayout.Label("Preparing package list...", EditorStyles.boldLabel);
 
                 return;
             }
