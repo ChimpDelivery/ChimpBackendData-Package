@@ -50,13 +50,13 @@ namespace TalusBackendData.Editor
             }
             else
             {
-                var appModel = JsonUtility.FromJson<T>(www.downloadHandler.text);
+                var model = JsonUtility.FromJson<T>(www.downloadHandler.text);
 
                 yield return null;
 
-                Debug.Log($"[TalusBackendData-Package] Api response: {appModel}");
+                Debug.Log($"[TalusBackendData-Package] Api response: {model}");
 
-                onFetchComplete(appModel);
+                onFetchComplete(model);
             }
         }
     }
