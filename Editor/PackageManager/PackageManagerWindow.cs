@@ -28,27 +28,23 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (string.IsNullOrEmpty(BackendSettings.ApiUrl))
             {
-                if (EditorUtility.DisplayDialog(
-                    "TalusBackendData-Package | Error!",
+                InfoBox.Create(
+                    "TalusSettings-Package | Error!",
                     "'Api URL' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
                     "Open Settings",
-                    "Close"
-                ))
-                {
-                    SettingsService.OpenProjectSettings(BackendSettings.Path);
-                }
+                    "Close",
+                    () => SettingsService.OpenProjectSettings(BackendSettings.Path)
+                );
             }
             else if (string.IsNullOrEmpty(BackendSettings.ApiToken))
             {
-                if (EditorUtility.DisplayDialog(
-                    "TalusBackendData-Package | Error!",
+                InfoBox.Create(
+                    "TalusSettings-Package | Error!",
                     "'Api Token' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
                     "Open Settings",
-                    "Close"
-                ))
-                {
-                    SettingsService.OpenProjectSettings(BackendSettings.Path);
-                }
+                    "Close",
+                    () => SettingsService.OpenProjectSettings(BackendSettings.Path)
+                );
             }
             else
             {
