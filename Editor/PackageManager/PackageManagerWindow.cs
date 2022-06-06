@@ -114,7 +114,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private static void RemoveBackendPackage(string packageId)
         {
-            Debug.Log("Remove package: " + packageId);
+            Debug.Log($"[TalusBackendData-Package] Remove package: {packageId}");
 
             s_RemovePackageRequest = Client.Remove(packageId);
             EditorApplication.update += RemoveProgress;
@@ -122,7 +122,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private static void AddBackendPackage(string packageId)
         {
-            Debug.Log("Add package: " + packageId);
+            Debug.Log($"[TalusBackendData-Package] Add package: {packageId}");
 
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
@@ -220,7 +220,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (!DefineSymbols.Contains(BackendDefinitions.BackendSymbol)) { return; }
 
             DefineSymbols.Remove(BackendDefinitions.BackendSymbol);
-            Debug.Log(BackendDefinitions.BackendSymbol + " define symbol removing...");
+            Debug.Log($"[TalusBackendData-Package] {BackendDefinitions.BackendSymbol} define symbol removing...");
         }
 
         private static void AddBackendSymbol()
@@ -228,7 +228,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (DefineSymbols.Contains(BackendDefinitions.BackendSymbol)) { return; }
 
             DefineSymbols.Add(BackendDefinitions.BackendSymbol);
-            Debug.Log(BackendDefinitions.BackendSymbol + " define symbol adding...");
+            Debug.Log($"[TalusBackendData-Package] {BackendDefinitions.BackendSymbol} define symbol adding...");
         }
 
         private static void RepaintManagerWindow()
