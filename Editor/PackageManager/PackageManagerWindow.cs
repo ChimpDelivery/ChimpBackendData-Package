@@ -21,6 +21,7 @@ namespace TalusBackendData.Editor.PackageManager
         private static PackageManagerWindow s_Instance;
 
         private static int s_InstalledPackageCount = 0;
+        private static int s_UpdateCount = 0;
 
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
@@ -46,6 +47,7 @@ namespace TalusBackendData.Editor.PackageManager
                 PreparePackageData();
 
                 s_Instance = GetWindow<PackageManagerWindow>();
+                s_Instance.minSize = new Vector2(500, 400);
                 s_Instance.titleContent = new GUIContent("Talus Package Manager");
                 s_Instance.Show();
             }
@@ -74,7 +76,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_ListPackageRequest.IsCompleted)
             {
                 GUILayout.Space(8);
-                GUILayout.Label("Packages:", EditorStyles.boldLabel);
+                GUILayout.Label($"Packages ({s_BackendPackages.Count}):", EditorStyles.boldLabel);
 
                 foreach (var package in s_BackendPackages)
                 {
@@ -101,10 +103,8 @@ namespace TalusBackendData.Editor.PackageManager
 
             if (s_InstalledPackageCount == s_BackendPackages.Count)
             {
-                GUI.backgroundColor = Color.green;
-                GUILayout.Label("All packages installed!", EditorStyles.boldLabel);
-
                 GUILayout.Space(8);
+                GUILayout.Label($"Backend Define Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
 
 #if ENABLE_BACKEND
                 GUI.backgroundColor = Color.green;
@@ -121,12 +121,29 @@ namespace TalusBackendData.Editor.PackageManager
 #endif
             }
 
-            GUILayout.Space(8);
+            GUI.backgroundColor = default;
 
+            GUILayout.Space(8);
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
-            GUILayout.Label("1. Install/Update all Packages");
-            GUILayout.Label("2. Add Backend Define Symbol");
-            GUILayout.Label("3. Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
+
+            GUIStyle stepOneToggle = EditorStyles.toggle;
+            GUIStyle stepTwoToggle = EditorStyles.toggle;
+            GUIStyle stepThreeToggle = EditorStyles.toggle;
+
+            GUI.backgroundColor = ((s_InstalledPackageCount == s_BackendPackages.Count) && s_UpdateCount == 0)
+                ? Color.green
+                : Color.red;
+            GUILayout.Label("Install/Update all Packages", stepOneToggle);
+
+            GUI.backgroundColor = DefineSymbols.Contains(BackendDefinitions.BackendSymbol)
+                ? Color.green
+                : Color.red;
+            GUILayout.Label("Add Backend Define Symbol", stepTwoToggle);
+
+            GUI.backgroundColor = (PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"))
+                ? Color.red
+                : Color.green;
+            GUILayout.Label("Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button", stepThreeToggle);
 
             GUILayout.EndVertical();
         }
@@ -155,6 +172,7 @@ namespace TalusBackendData.Editor.PackageManager
         private static void PreparePackageData()
         {
             s_InstalledPackageCount = 0;
+            s_UpdateCount = 0;
             s_BackendPackages.Clear();
 
             foreach (string packageId in BackendDefinitions.Packages)
@@ -173,7 +191,14 @@ namespace TalusBackendData.Editor.PackageManager
             BackendApi api = new BackendApi(apiUrl, apiToken);
             api.GetPackageInfo(packageId, package =>
             {
-                s_BackendPackages[packageId].UpdateExist = !packageHash.Equals(package.hash);
+                bool updateExist = !packageHash.Equals(package.hash);
+                s_BackendPackages[packageId].UpdateExist = updateExist;
+
+                if (updateExist)
+                {
+                    ++s_UpdateCount;
+                }
+
                 RepaintManagerWindow();
             });
         }
