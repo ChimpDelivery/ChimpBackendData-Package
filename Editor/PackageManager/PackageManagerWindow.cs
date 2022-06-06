@@ -68,19 +68,23 @@ namespace TalusBackendData.Editor.PackageManager
             PreparePackageData();
         }
 
-        private void OnLostFocus()
-        {
-            if (s_ListPackageRequest != null) { return; }
-
-            PreparePackageData();
-        }
-
         private void OnGUI()
         {
             if (s_ListPackageRequest == null || !s_ListPackageRequest.IsCompleted)
             {
+                GUI.backgroundColor = Color.yellow;
                 GUILayout.Space(8);
-                GUILayout.Label("Preparing package list...", EditorStyles.boldLabel);
+                GUILayout.Label("Preparing package list...", EditorStyles.foldoutHeader);
+
+                return;
+            }
+
+            if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            {
+                GUI.backgroundColor = Color.yellow;
+                    ;
+                GUILayout.Space(8);
+                GUILayout.Label("Wait for editor reloading...", EditorStyles.foldoutHeader);
 
                 return;
             }
@@ -107,7 +111,11 @@ namespace TalusBackendData.Editor.PackageManager
                     }
                     else
                     {
-                        RemoveBackendPackage(package.Key);
+                        InfoBox.Create("Are you sure ?",
+                            $"You are about to remove the {package.Key} package!",
+                            "Yes, I know",
+                            "Cancel",
+                            () => RemoveBackendPackage(package.Key));
                     }
                 }
             }
@@ -124,7 +132,11 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     if (GUILayout.Button("Backend Define Symbol exists."))
                     {
-                        RemoveBackendSymbol();
+                        InfoBox.Create("Are you sure ?",
+                            "You are about to remove the Backend Define Symbol!",
+                            "Yes, I know",
+                            "Cancel",
+                            () => RemoveBackendSymbol());
                     }
                 }
                 else
