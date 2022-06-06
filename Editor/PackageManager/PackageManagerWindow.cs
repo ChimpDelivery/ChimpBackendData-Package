@@ -30,7 +30,7 @@ namespace TalusBackendData.Editor.PackageManager
             if (string.IsNullOrEmpty(BackendSettings.ApiUrl))
             {
                 InfoBox.Create(
-                    "TalusSettings-Package | Error !",
+                    "Error :(",
                     "'Api URL' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
                     "Open Settings",
                     "Close",
@@ -40,7 +40,7 @@ namespace TalusBackendData.Editor.PackageManager
             else if (string.IsNullOrEmpty(BackendSettings.ApiToken))
             {
                 InfoBox.Create(
-                    "TalusSettings-Package | Error !",
+                    "Error :(",
                     "'Api Token' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
                     "Open Settings",
                     "Close",
@@ -220,7 +220,7 @@ namespace TalusBackendData.Editor.PackageManager
             else
             {
                 InfoBox.Create(
-                    "TalusSettings-Package | Error !",
+                    "Error :(",
                     s_ListPackageRequest.Error.message,
                     "OK"
                 );
@@ -240,7 +240,7 @@ namespace TalusBackendData.Editor.PackageManager
                 s_AddPackageRequest.Error.message;
 
             InfoBox.Create(
-                $"TalusSettings-Package | {addPackageStatus} !",
+                $"{addPackageStatus} !",
                 message,
                 "OK"
             );
@@ -259,7 +259,7 @@ namespace TalusBackendData.Editor.PackageManager
                 s_RemovePackageRequest.Error.message;
 
             InfoBox.Create(
-                $"TalusSettings-Package | {removePackageStatus} !",
+                $"{removePackageStatus} !",
                 message,
                 "OK"
             );
