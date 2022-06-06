@@ -147,16 +147,12 @@ namespace TalusBackendData.Editor.PackageManager
 
         private static void RemoveBackendPackage(string packageId)
         {
-            Debug.Log($"[TalusBackendData-Package] Remove package: {packageId}");
-
             s_RemovePackageRequest = Client.Remove(packageId);
             EditorApplication.update += RemoveProgress;
         }
 
         private static void AddBackendPackage(string packageId)
         {
-            Debug.Log($"[TalusBackendData-Package] Add package: {packageId}");
-
             string apiUrl = EditorPrefs.GetString(BackendDefinitions.BackendApiUrlPref);
             string apiToken = EditorPrefs.GetString(BackendDefinitions.BackendApiTokenPref);
             BackendApi api = new BackendApi(apiUrl, apiToken);
@@ -225,7 +221,11 @@ namespace TalusBackendData.Editor.PackageManager
             }
             else
             {
-                Debug.Log(s_ListPackageRequest.Error.message);
+                InfoBox.Create(
+                    "TalusSettings-Package | Error!",
+                    s_ListPackageRequest.Error.message,
+                    "OK"
+                );
             }
 
             EditorApplication.update -= ListProgress;
@@ -236,9 +236,16 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (!s_AddPackageRequest.IsCompleted) { return; }
 
-            Debug.Log(s_AddPackageRequest.Status == StatusCode.Success ?
+            StatusCode addPackageStatus = s_AddPackageRequest.Status;
+            string message = addPackageStatus == StatusCode.Success ?
                 s_AddPackageRequest.Result.packageId + " added successfully!" :
-                s_AddPackageRequest.Error.message);
+                s_AddPackageRequest.Error.message;
+
+            InfoBox.Create(
+                $"TalusSettings-Package | {addPackageStatus}",
+                message,
+                "OK"
+            );
 
             EditorApplication.update -= AddProgress;
             RepaintManagerWindow();
@@ -248,9 +255,16 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (!s_RemovePackageRequest.IsCompleted) { return; }
 
-            Debug.Log(s_RemovePackageRequest.Status == StatusCode.Success ?
+            StatusCode removePackageStatus = s_RemovePackageRequest.Status;
+            string message = removePackageStatus == StatusCode.Success ?
                 s_RemovePackageRequest.PackageIdOrName + " removed successfully!" :
-                s_AddPackageRequest.Error.message);
+                s_RemovePackageRequest.Error.message;
+
+            InfoBox.Create(
+                $"TalusSettings-Package | {removePackageStatus}",
+                message,
+                "OK"
+            );
 
             EditorApplication.update -= RemoveProgress;
             RepaintManagerWindow();
