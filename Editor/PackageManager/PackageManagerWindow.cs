@@ -126,24 +126,17 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Space(8);
             GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
 
-            GUIStyle stepOneToggle = EditorStyles.toggle;
-            GUIStyle stepTwoToggle = EditorStyles.toggle;
-            GUIStyle stepThreeToggle = EditorStyles.toggle;
+            bool packageCheck = (s_InstalledPackageCount == s_BackendPackages.Count) && s_UpdateCount == 0;
+            GUI.backgroundColor = packageCheck ? Color.green : Color.red;
+            GUILayout.Toggle(packageCheck, "Install & Update all packages");
 
-            GUI.backgroundColor = ((s_InstalledPackageCount == s_BackendPackages.Count) && s_UpdateCount == 0)
-                ? Color.green
-                : Color.red;
-            GUILayout.Label("Install/Update all Packages", stepOneToggle);
+            bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
+            GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
+            GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
 
-            GUI.backgroundColor = DefineSymbols.Contains(BackendDefinitions.BackendSymbol)
-                ? Color.green
-                : Color.red;
-            GUILayout.Label("Add Backend Define Symbol", stepTwoToggle);
-
-            GUI.backgroundColor = (PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"))
-                ? Color.red
-                : Color.green;
-            GUILayout.Label("Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button", stepThreeToggle);
+            bool dataCheck = !(PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"));
+            GUI.backgroundColor = dataCheck ? Color.green : Color.red;
+            GUILayout.Toggle(dataCheck, "Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
 
             GUILayout.EndVertical();
         }
