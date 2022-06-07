@@ -84,6 +84,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             GUILayout.BeginVertical();
 
+            // package list
             GUILayout.Space(8);
             GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
@@ -101,43 +102,37 @@ namespace TalusBackendData.Editor.PackageManager
                     }
                     else
                     {
-                        InfoBox.Create("Are you sure ?",
+                        InfoBox.ShowConfirmation(
                             $"You are about to remove the '{package.Key}' package!",
-                            "Yes, I know",
-                            "Cancel",
-                            () => RemovePackage(package.Key));
+                            () => RemovePackage(package.Key)
+                        );
                     }
                 }
             }
 
+            /// symbol check
+            GUI.enabled = (_InstalledPackageCount == _Packages.Count);
             bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
-
-            if (_InstalledPackageCount == _Packages.Count)
+            GUILayout.Space(8);
+            GUILayout.Label($"Backend Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
+            GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
+            string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist.";
+            if (GUILayout.Button(buttonName))
             {
-                GUILayout.Space(8);
-                GUILayout.Label($"Backend Define Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
-
-                GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
                 if (symbolCheck)
                 {
-                    if (GUILayout.Button("Backend Define Symbol exists."))
-                    {
-                        InfoBox.Create("Are you sure ?",
-                            "You are about to remove the 'Backend Define Symbol' definition!",
-                            "Yes, I know",
-                            "Cancel",
-                            () => BackendDefinitions.RemoveBackendSymbol());
-                    }
+                    InfoBox.ShowConfirmation(
+                        "You are about to remove the 'Backend Define Symbol' definition!",
+                        () => BackendDefinitions.RemoveBackendSymbol()
+                    );
+
+                    return;
                 }
-                else
-                {
-                    if (GUILayout.Button("Backend Define Symbol doesn't exist!"))
-                    {
-                        BackendDefinitions.AddBackendSymbol();
-                    }
-                }
+
+                BackendDefinitions.AddBackendSymbol();
             }
 
+            // steps
             GUI.backgroundColor = default;
 
             GUILayout.Space(8);
@@ -198,7 +193,7 @@ namespace TalusBackendData.Editor.PackageManager
                 }
                 else
                 {
-                    InfoBox.Create("Error :(", _ListPackages.Request.Error.message, "OK");
+                    InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
                 }
 
                 RefreshWindowInstance();
@@ -215,7 +210,7 @@ namespace TalusBackendData.Editor.PackageManager
                 _RemovePackage.Request.PackageIdOrName + " removed successfully!" :
                 _RemovePackage.Request.Error.message;
 
-                InfoBox.Create($"{statusCode} !", message, "OK");
+                InfoBox.Show($"{statusCode} !", message, "OK");
 
                 RefreshWindowInstance();
             });
@@ -233,7 +228,7 @@ namespace TalusBackendData.Editor.PackageManager
                     _AddPackage.Request.Result.packageId + " added successfully!" :
                     _AddPackage.Request.Error.message;
 
-                    InfoBox.Create($"{statusCode} !", message, "OK");
+                    InfoBox.Show($"{statusCode} !", message, "OK");
 
                     RefreshWindowInstance();
                 });
