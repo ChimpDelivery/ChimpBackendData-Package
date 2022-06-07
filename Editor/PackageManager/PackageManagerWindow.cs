@@ -34,7 +34,7 @@ namespace TalusBackendData.Editor.PackageManager
             {
                 InfoBox.Create(
                     "Error :(",
-                    "'Api URL' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
+                    $"'Api URL' can not be empty!\n\n(Edit/Project Settings/{BackendSettings.Path})",
                     "Open Settings",
                     "Close",
                     () => SettingsService.OpenProjectSettings(BackendSettings.Path)
@@ -44,7 +44,7 @@ namespace TalusBackendData.Editor.PackageManager
             {
                 InfoBox.Create(
                     "Error :(",
-                    "'Api Token' can not be empty!\n\n(Edit/Project Settings/Talus Studio/Backend Settings)",
+                    $"'Api Token' can not be empty!\n\n(Edit/Project Settings/{BackendSettings.Path})",
                     "Open Settings",
                     "Close",
                     () => SettingsService.OpenProjectSettings(BackendSettings.Path)
