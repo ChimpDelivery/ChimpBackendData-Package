@@ -111,7 +111,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             /// symbol check
-            GUI.enabled = (_InstalledPackageCount == _Packages.Count);
+            GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
             bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
             GUILayout.Space(8);
             GUILayout.Label($"Backend Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
