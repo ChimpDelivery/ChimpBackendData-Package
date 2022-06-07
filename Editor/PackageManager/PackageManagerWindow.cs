@@ -79,10 +79,11 @@ namespace TalusBackendData.Editor.PackageManager
                 return;
             }
 
-            if (EditorApplication.isCompiling || EditorApplication.isUpdating)
+            if ((s_AddPackageRequest != null && !s_AddPackageRequest.IsCompleted) ||
+                (s_RemovePackageRequest != null && !s_RemovePackageRequest.IsCompleted) ||
+                (EditorApplication.isCompiling || EditorApplication.isUpdating))
             {
                 GUI.backgroundColor = Color.yellow;
-                    ;
                 GUILayout.Space(8);
                 GUILayout.Label("Wait for editor reloading...", EditorStyles.foldoutHeader);
 
@@ -267,6 +268,8 @@ namespace TalusBackendData.Editor.PackageManager
 
             EditorApplication.update -= AddProgress;
             RepaintManagerWindow();
+
+            SaveAssets();
         }
 
         private static void RemoveProgress()
@@ -282,6 +285,8 @@ namespace TalusBackendData.Editor.PackageManager
 
             EditorApplication.update -= RemoveProgress;
             RepaintManagerWindow();
+
+            SaveAssets();
         }
 
         private static void RemoveBackendSymbol()
@@ -305,6 +310,12 @@ namespace TalusBackendData.Editor.PackageManager
             if (s_Instance == null) { return; }
 
             s_Instance.Repaint();
+        }
+
+        private static void SaveAssets()
+        {
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 }
