@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 
+using Debug = UnityEngine.Debug;
+using DefineSymbols = TalusBackendData.Editor.Utility.DefineSymbols;
+
 namespace TalusBackendData.Editor
 {
     public static class BackendDefinitions
@@ -8,7 +11,6 @@ namespace TalusBackendData.Editor
 
         public static readonly string BackendApiUrlPref = "BACKEND_API_URL";
         public static readonly string BackendApiTokenPref = "BACKEND_API_TOKEN";
-
         public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
         public static readonly Dictionary<string, string> Packages = new Dictionary<string, string>
@@ -22,5 +24,21 @@ namespace TalusBackendData.Editor
             { "talus-facebook", "com.talus.talusfacebook" },
             { "talus-elephant", "com.talus.taluselephant" }
         };
+
+        public static void AddBackendSymbol()
+        {
+            if (DefineSymbols.Contains(BackendSymbol)) { return; }
+
+            DefineSymbols.Add(BackendSymbol);
+            Debug.Log($"[TalusBackendData-Package] {BackendSymbol} define symbol adding...");
+        }
+
+        public static void RemoveBackendSymbol()
+        {
+            if (!DefineSymbols.Contains(BackendSymbol)) { return; }
+
+            DefineSymbols.Remove(BackendSymbol);
+            Debug.Log($"[TalusBackendData-Package] {BackendSymbol} define symbol removing...");
+        }
     }
 }
