@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
+using UnityEditor.PackageManager.Requests;
 
 using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.PackageManager.Requests;
-using UnityEditor.PackageManager.Requests;
 
 namespace TalusBackendData.Editor.PackageManager
 {

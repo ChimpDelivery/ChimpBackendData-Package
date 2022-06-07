@@ -6,8 +6,8 @@ namespace TalusBackendData.Editor.PackageManager.Requests
 {
     public class RequestHandler<T> where T : Request
     {
-        public T Request { get; set; }
-        public System.Action<StatusCode> OnComplete { get; set; }
+        public T Request { get; private set; }
+        public System.Action<StatusCode> OnComplete { get; private set; }
 
         public RequestHandler(T request, System.Action<StatusCode> onComplete = null)
         {
