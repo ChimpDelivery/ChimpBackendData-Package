@@ -8,7 +8,6 @@ using UnityEditor.PackageManager.Requests;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using CallbackFunction = UnityEditor.EditorApplication.CallbackFunction;
 
-using TalusBackendData.Editor.User;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.PackageManager
@@ -32,24 +31,24 @@ namespace TalusBackendData.Editor.PackageManager
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
         {
-            if (string.IsNullOrEmpty(BackendSettings.ApiUrl))
+            if (string.IsNullOrEmpty(BackendDefinitions.ApiUrl))
             {
                 InfoBox.Create(
                     "Error :(",
-                    $"'Api URL' can not be empty!\n\n(Edit/Project Settings/{BackendSettings.Path})",
+                    $"'Api URL' can not be empty!\n\n(Edit/Project Settings/{BackendDefinitions.ProviderPath})",
                     "Open Settings",
                     "Close",
-                    () => SettingsService.OpenProjectSettings(BackendSettings.Path)
+                    () => SettingsService.OpenProjectSettings(BackendDefinitions.ProviderPath)
                 );
             }
-            else if (string.IsNullOrEmpty(BackendSettings.ApiToken))
+            else if (string.IsNullOrEmpty(BackendDefinitions.ApiToken))
             {
                 InfoBox.Create(
                     "Error :(",
-                    $"'Api Token' can not be empty!\n\n(Edit/Project Settings/{BackendSettings.Path})",
+                    $"'Api Token' can not be empty!\n\n(Edit/Project Settings/{BackendDefinitions.ProviderPath})",
                     "Open Settings",
                     "Close",
-                    () => SettingsService.OpenProjectSettings(BackendSettings.Path)
+                    () => SettingsService.OpenProjectSettings(BackendDefinitions.ProviderPath)
                 );
             }
             else
