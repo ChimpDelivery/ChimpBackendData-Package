@@ -11,7 +11,8 @@ using TalusBackendData.Editor.PackageManager.Requests;
 namespace TalusBackendData.Editor.PackageManager
 {
     /// <summary>
-    ///     List/Add/Update/Remove Talus Packages
+    ///     <b>Talus Package Manager.</b>
+    ///     Package version information is coming from the backend server.
     /// </summary>
     internal class PackageManagerWindow : EditorWindow
     {
@@ -26,50 +27,25 @@ namespace TalusBackendData.Editor.PackageManager
         private RequestHandler<AddRequest> _AddPackage;
         private RequestHandler<RemoveRequest> _RemovePackage;
 
-        private void RefreshPackages()
-        {
-            _InstalledPackageCount = 0;
-            _UpdatablePackageCount = 0;
-            _Packages.Clear();
-
-            foreach (var package in BackendDefinitions.Packages)
-            {
-                _Packages[package.Value] = new Models.PackageStatus(false, "", false);
-            }
-
-            ListPackages();
-        }
-
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
         {
             if (string.IsNullOrEmpty(BackendDefinitions.ApiUrl))
             {
-                InfoBox.Create(
-                    "Error :(",
-                    $"'Api URL' can not be empty!\n\n(Edit/Project Settings/{BackendDefinitions.ProviderPath})",
-                    "Open Settings",
-                    "Close",
-                    () => SettingsService.OpenProjectSettings(BackendDefinitions.ProviderPath)
-                );
+                InfoBox.ShowBackendParameterError(nameof(BackendDefinitions.ApiUrl));
+                return;
             }
-            else if (string.IsNullOrEmpty(BackendDefinitions.ApiToken))
+
+            if (string.IsNullOrEmpty(BackendDefinitions.ApiToken))
             {
-                InfoBox.Create(
-                    "Error :(",
-                    $"'Api Token' can not be empty!\n\n(Edit/Project Settings/{BackendDefinitions.ProviderPath})",
-                    "Open Settings",
-                    "Close",
-                    () => SettingsService.OpenProjectSettings(BackendDefinitions.ProviderPath)
-                );
+                InfoBox.ShowBackendParameterError(nameof(BackendDefinitions.ApiToken));
+                return;
             }
-            else
-            {
-                s_Instance = GetWindow<PackageManagerWindow>();
-                s_Instance.minSize = new Vector2(500, 400);
-                s_Instance.titleContent = new GUIContent("Talus Package Manager");
-                s_Instance.Show();
-            }
+
+            s_Instance = GetWindow<PackageManagerWindow>();
+            s_Instance.minSize = new Vector2(500, 400);
+            s_Instance.titleContent = new GUIContent("Talus Package Manager");
+            s_Instance.Show();
         }
 
         private void OnEnable()
@@ -97,9 +73,7 @@ namespace TalusBackendData.Editor.PackageManager
                 return;
             }
 
-            if ((_AddPackage != null && !_AddPackage.Request.IsCompleted) ||
-                (_RemovePackage != null && !_RemovePackage.Request.IsCompleted) ||
-                (EditorApplication.isCompiling || EditorApplication.isUpdating))
+            if (IsUnityReloading())
             {
                 GUI.backgroundColor = Color.yellow;
                 GUILayout.Space(8);
@@ -123,7 +97,7 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     if (!isPackageInstalled || isUpdateExist)
                     {
-                        AddBackendPackage(package.Key);
+                        AddPackage(package.Key);
                     }
                     else
                     {
@@ -131,7 +105,7 @@ namespace TalusBackendData.Editor.PackageManager
                             $"You are about to remove the '{package.Key}' package!",
                             "Yes, I know",
                             "Cancel",
-                            () => RemoveBackendPackage(package.Key));
+                            () => RemovePackage(package.Key));
                     }
                 }
             }
@@ -183,6 +157,20 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.EndVertical();
         }
 
+        private void RefreshPackages()
+        {
+            _InstalledPackageCount = 0;
+            _UpdatablePackageCount = 0;
+            _Packages.Clear();
+
+            foreach (var package in BackendDefinitions.Packages)
+            {
+                _Packages[package.Value] = new Models.PackageStatus(false, "", false);
+            }
+
+            ListPackages();
+        }
+
         private void ListPackages()
         {
             if (_ListPackages != null && !_AddPackage.Request.IsCompleted) { return; }
@@ -213,11 +201,11 @@ namespace TalusBackendData.Editor.PackageManager
                     InfoBox.Create("Error :(", _ListPackages.Request.Error.message, "OK");
                 }
 
-                RefreshWindow();
+                RefreshWindowInstance();
             });
         }
 
-        private void RemoveBackendPackage(string packageId)
+        private void RemovePackage(string packageId)
         {
             if (_RemovePackage != null && !_RemovePackage.Request.IsCompleted) { return; }
 
@@ -229,11 +217,11 @@ namespace TalusBackendData.Editor.PackageManager
 
                 InfoBox.Create($"{statusCode} !", message, "OK");
 
-                RefreshWindow();
+                RefreshWindowInstance();
             });
         }
 
-        private void AddBackendPackage(string packageId)
+        private void AddPackage(string packageId)
         {
             if (_AddPackage != null && !_AddPackage.Request.IsCompleted) { return; }
 
@@ -247,7 +235,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                     InfoBox.Create($"{statusCode} !", message, "OK");
 
-                    RefreshWindow();
+                    RefreshWindowInstance();
                 });
             });
         }
@@ -267,14 +255,14 @@ namespace TalusBackendData.Editor.PackageManager
             });
         }
 
-        private void RepaintManagerWindow()
+        private void RepaintWindowInstance()
         {
             if (s_Instance == null) { return; }
 
             s_Instance.Repaint();
         }
 
-        private void RefreshWindow(bool saveAssets = true)
+        private void RefreshWindowInstance(bool saveAssets = true)
         {
             if (saveAssets)
             {
@@ -282,7 +270,14 @@ namespace TalusBackendData.Editor.PackageManager
                 AssetDatabase.Refresh();
             }
 
-            RepaintManagerWindow();
+            RepaintWindowInstance();
+        }
+
+        private bool IsUnityReloading()
+        {
+            return ((_AddPackage != null && !_AddPackage.Request.IsCompleted)
+                    || (_RemovePackage != null && !_RemovePackage.Request.IsCompleted)
+                    || (EditorApplication.isCompiling || EditorApplication.isUpdating));
         }
     }
 }
