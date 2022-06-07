@@ -11,16 +11,16 @@ namespace TalusBackendData.Editor
 
         public static readonly string BackendAppIdPref = "BACKEND_APP_ID";
 
-        public static readonly List<string> Packages = new List<string>
+        public static readonly Dictionary<string, string> Packages = new Dictionary<string, string>
         {
-            "com.talus.talusframework",
-            "com.talus.taluskit",
-            "com.talus.talusbackenddata",
-            "com.talus.talusci",
-            "com.talus.talussettings",
-            "com.talus.talusplayservicesresolver",
-            "com.talus.talusfacebook",
-            "com.talus.taluselephant"
+            { "talus-framework", "com.talus.talusframework" },
+            { "talus-kit", "com.talus.taluskit" },
+            { "talus-backenddata", "com.talus.talusbackenddata" },
+            { "talus-ci", "com.talus.talusci" },
+            { "talus-settings", "com.talus.talussettings" },
+            { "talus-playservicesresolver", "com.talus.talusplayservicesresolver" },
+            { "talus-facebook", "com.talus.talusfacebook" },
+            { "talus-elephant", "com.talus.taluselephant" }
         };
     }
 }

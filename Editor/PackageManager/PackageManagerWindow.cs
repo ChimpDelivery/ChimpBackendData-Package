@@ -195,9 +195,9 @@ namespace TalusBackendData.Editor.PackageManager
             s_RenewablePackageCount = 0;
             s_BackendPackages.Clear();
 
-            foreach (string packageId in BackendDefinitions.Packages)
+            foreach (var package in BackendDefinitions.Packages)
             {
-                s_BackendPackages[packageId] = new PackageStatus(false, "", false);
+                s_BackendPackages[package.Value] = new PackageStatus(false, "", false);
             }
 
             s_ListPackageRequest = Client.List();
