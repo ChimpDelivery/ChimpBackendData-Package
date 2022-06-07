@@ -1,4 +1,4 @@
-namespace TalusBackendData.Editor.PackageManager
+namespace TalusBackendData.Editor.PackageManager.Models
 {
     [System.Serializable]
     internal class PackageStatus
