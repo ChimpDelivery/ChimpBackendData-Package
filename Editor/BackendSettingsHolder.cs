@@ -51,16 +51,6 @@ namespace TalusBackendData.Editor
         }
 
         /// <summary>
-        ///     Talus Packages - Backend Symbol
-        ///     Some packages use this symbol for conditional compilation.
-        /// </summary>
-        private string _BackendSymbol = "ENABLE_BACKEND";
-        public string BackendSymbol
-        {
-            get { return _BackendSymbol; }
-        }
-
-        /// <summary>
         ///     To save AppId.
         /// </summary>
         [SerializeField]
@@ -68,7 +58,21 @@ namespace TalusBackendData.Editor
         public string AppId
         {
             get { return _AppId; }
-            set { _AppId = value; }
+            set
+            {
+                _AppId = value;
+                SaveSettings();
+            }
+        }
+
+        /// <summary>
+        ///     Talus Packages - Backend Symbol
+        ///     Some packages use this symbol for conditional compilation.
+        /// </summary>
+        private string _BackendSymbol = "ENABLE_BACKEND";
+        public string BackendSymbol
+        {
+            get { return _BackendSymbol; }
         }
 
         /// <summary>
