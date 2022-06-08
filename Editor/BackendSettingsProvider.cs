@@ -77,7 +77,6 @@ namespace TalusBackendData.Editor
                 SettingsScope.Project,
                 GetSearchKeywordsFromGUIContentProperties<Styles>()
             );
-
         }
     }
 }

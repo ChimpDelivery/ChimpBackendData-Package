@@ -14,20 +14,14 @@ namespace TalusBackendData.Editor
     [FilePath("ProjectSettings/TalusSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
     {
-        /// <summary>
-        ///     TalusSettings.asset path
-        /// </summary>
+        // TalusSettings.asset path
         public string Path => GetFilePath();
 
-        /// <summary>
-        ///     Unity3D - BackendSettings Panel Path
-        /// </summary>
+        // Unity3D - BackendSettings Panel Path
         private const string _ProviderPath = "Talus Studio/Backend Settings";
         public static string ProviderPath => _ProviderPath;
 
-        /// <summary>
-        ///     Talus Web Dashboard - Api URL
-        /// </summary>
+        // Talus Web Dashboard - Api Root URL
         [SerializeField]
         private string _ApiUrl = "http://34.252.141.173";
         public string ApiUrl
@@ -40,9 +34,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        /// <summary>
-        ///     Talus Web Dashboard - Api Token
-        /// </summary>
+        // Talus Web Dashboard - Api Token
         [SerializeField]
         private string _ApiToken = default;
         public string ApiToken
@@ -55,9 +47,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        /// <summary>
-        ///     To save AppId.
-        /// </summary>
+        // To save AppId.
         [SerializeField]
         private string _AppId;
         public string AppId
@@ -70,19 +60,15 @@ namespace TalusBackendData.Editor
             }
         }
 
-        /// <summary>
-        ///     Talus Packages - Backend Symbol
-        ///     Some packages use this symbol for conditional compilation.
-        /// </summary>
+        // Talus Packages - Backend Symbol
+        // Some packages use this symbol for conditional compilation.
         private string _BackendSymbol = "ENABLE_BACKEND";
         public string BackendSymbol
         {
             get { return _BackendSymbol; }
         }
 
-        /// <summary>
-        ///     Talus Packages - All required packages in prototoypes.
-        /// </summary>
+        // Talus Packages - All required packages in prototoypes.
         public readonly Dictionary<string, string> Packages = new Dictionary<string, string>
         {
             { "talus-framework",    "com.talus.talusframework" },
