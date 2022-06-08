@@ -8,6 +8,8 @@ namespace TalusBackendData.Editor
 {
     internal class BackendSettingsProvider : SettingsProvider
     {
+        private bool _UnlockPanel = true;
+
         private class Styles
         {
             public static readonly GUIContent ApiUrlLabel = EditorGUIUtility.TrTextContent(
@@ -57,6 +59,7 @@ namespace TalusBackendData.Editor
 
                 GUILayout.Space(8);
 
+                GUI.enabled = !_UnlockPanel;
                 {
                     EditorGUI.BeginChangeCheck();
 
@@ -71,6 +74,17 @@ namespace TalusBackendData.Editor
                         _SerializedObject.ApplyModifiedProperties();
                         BackendSettingsHolder.instance.SaveSettings();
                     }
+                }
+
+                GUILayout.FlexibleSpace();
+
+                GUI.enabled = true;
+                GUI.backgroundColor = Color.yellow;
+
+                string lockButtonName = (_UnlockPanel) ? "Unlock Settings" : "Lock Settings";
+                if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
+                {
+                    _UnlockPanel = !_UnlockPanel;
                 }
             }
             EditorGUILayout.EndVertical();
