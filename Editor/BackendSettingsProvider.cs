@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace TalusBackendData.Editor
 {
-    class BackendSettingsProvider : SettingsProvider
+    internal class BackendSettingsProvider : SettingsProvider
     {
         private class Styles
         {
