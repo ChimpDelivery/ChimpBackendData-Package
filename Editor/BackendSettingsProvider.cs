@@ -44,28 +44,35 @@ namespace TalusBackendData.Editor
             _SerializedObject.Update();
 
             EditorGUILayout.BeginVertical();
-
-            GUI.backgroundColor = Color.yellow;
-            EditorGUILayout.HelpBox(
-                string.Join(
-                    "\n\n",
-                    "Talus Backend - Authentication",
-                    "You can get the 'Api Token' from 'Talus Dashboard/Profile'"),
-                MessageType.Info,
-                true
-            );
-
-            EditorGUI.BeginChangeCheck();
-            GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
-            _ApiUrl.stringValue = EditorGUILayout.TextField(Styles.ApiUrlLabel, _ApiUrl.stringValue);
-            GUI.backgroundColor = (BackendSettingsHolder.instance.ApiToken == string.Empty) ? Color.red : Color.green;
-            _ApiToken.stringValue = EditorGUILayout.PasswordField(Styles.ApiTokenLabel, _ApiToken.stringValue);
-            if (EditorGUI.EndChangeCheck())
             {
-                _SerializedObject.ApplyModifiedProperties();
-                BackendSettingsHolder.instance.SaveSettings();
-            }
+                GUI.backgroundColor = Color.yellow;
+                EditorGUILayout.HelpBox(
+                    string.Join(
+                        "\n\n",
+                        "Talus Backend - Authentication",
+                        "You can get the 'Api Token' from 'Talus Dashboard/Profile'"),
+                    MessageType.Info,
+                    true
+                );
 
+                GUILayout.Space(8);
+
+                {
+                    EditorGUI.BeginChangeCheck();
+
+                    GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
+                    _ApiUrl.stringValue = EditorGUILayout.TextField(Styles.ApiUrlLabel, _ApiUrl.stringValue);
+
+                    GUI.backgroundColor = (BackendSettingsHolder.instance.ApiToken == string.Empty) ? Color.red : Color.green;
+                    _ApiToken.stringValue = EditorGUILayout.PasswordField(Styles.ApiTokenLabel, _ApiToken.stringValue);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        _SerializedObject.ApplyModifiedProperties();
+                        BackendSettingsHolder.instance.SaveSettings();
+                    }
+                }
+            }
             EditorGUILayout.EndVertical();
         }
 
