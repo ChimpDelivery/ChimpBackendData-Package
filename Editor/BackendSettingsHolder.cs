@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-using TalusBackendData.Editor.Utility;
-
 using UnityEditor;
 using UnityEngine;
+
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
