@@ -59,9 +59,10 @@ namespace TalusBackendData.Editor
 
                 GUILayout.Space(8);
 
+                EditorGUI.BeginChangeCheck();
+
                 GUI.enabled = !_UnlockPanel;
                 {
-                    EditorGUI.BeginChangeCheck();
 
                     GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
                     _ApiUrl.stringValue = EditorGUILayout.TextField(Styles.ApiUrlLabel, _ApiUrl.stringValue);
