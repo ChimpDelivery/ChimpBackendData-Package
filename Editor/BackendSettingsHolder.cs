@@ -17,12 +17,8 @@ namespace TalusBackendData.Editor
         /// <summary>
         ///     Unity3D - BackendSettings Panel Path
         /// </summary>
-        [SerializeField]
-        private string _ProviderPath = "Talus Studio/Backend Settings";
-        public string SettingsProviderPath
-        {
-            get { return _ProviderPath; }
-        }
+        private const string _ProviderPath = "Talus Studio/Backend Settings";
+        public static string ProviderPath => _ProviderPath;
 
         /// <summary>
         ///     Talus Web Dashboard - Api Url

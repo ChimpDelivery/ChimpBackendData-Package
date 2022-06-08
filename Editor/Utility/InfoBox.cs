@@ -16,10 +16,10 @@ namespace TalusBackendData.Editor.Utility
         {
             Show(
                 "Error :(",
-                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/{BackendSettingsHolder.instance.SettingsProviderPath})",
+                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/{BackendSettingsHolder.ProviderPath})",
                 "Open Settings",
                 "Close",
-                () => SettingsService.OpenProjectSettings(BackendSettingsHolder.instance.SettingsProviderPath)
+                () => SettingsService.OpenProjectSettings(BackendSettingsHolder.ProviderPath)
             );
         }
 

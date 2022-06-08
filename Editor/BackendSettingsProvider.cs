@@ -11,12 +11,12 @@ namespace TalusBackendData.Editor
         private class Styles
         {
             public static readonly GUIContent ApiUrlLabel = EditorGUIUtility.TrTextContent(
-                nameof(BackendSettingsHolder.ApiUrl),
+                "Api URL:",
                 "Talus dashboard url."
             );
 
             public static readonly GUIContent ApiTokenLabel = EditorGUIUtility.TrTextContent(
-                nameof(BackendSettingsHolder.ApiToken),
+                "Api Token:",
                 "Talus dashboard auth token."
             );
         }
@@ -72,7 +72,7 @@ namespace TalusBackendData.Editor
         public static SettingsProvider CreateBackendSettingsProvider()
         {
             return new BackendSettingsProvider(
-                BackendSettingsHolder.instance.SettingsProviderPath,
+                BackendSettingsHolder.ProviderPath,
                 SettingsScope.Project,
                 GetSearchKeywordsFromGUIContentProperties<Styles>()
             );
