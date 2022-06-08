@@ -51,7 +51,7 @@ namespace TalusBackendData.Editor
                 EditorGUILayout.HelpBox(
                     string.Join(
                         "\n\n",
-                        "Talus Backend - Authentication",
+                        $"{BackendSettingsHolder.ProviderPath}",
                         "You can get the 'Api Token' from 'Talus Dashboard/Profile'"),
                     MessageType.Info,
                     true
