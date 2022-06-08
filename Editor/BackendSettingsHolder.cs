@@ -15,13 +15,18 @@ namespace TalusBackendData.Editor
     public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
     {
         /// <summary>
+        ///     TalusSettings.asset path
+        /// </summary>
+        public string Path => GetFilePath();
+
+        /// <summary>
         ///     Unity3D - BackendSettings Panel Path
         /// </summary>
         private const string _ProviderPath = "Talus Studio/Backend Settings";
         public static string ProviderPath => _ProviderPath;
 
         /// <summary>
-        ///     Talus Web Dashboard - Api Url
+        ///     Talus Web Dashboard - Api URL
         /// </summary>
         [SerializeField]
         private string _ApiUrl = "http://34.252.141.173";
@@ -76,7 +81,7 @@ namespace TalusBackendData.Editor
         }
 
         /// <summary>
-        ///     Talus Packages - All Required packages in prototoypes.
+        ///     Talus Packages - All required packages in prototoypes.
         /// </summary>
         public readonly Dictionary<string, string> Packages = new Dictionary<string, string>
         {
@@ -89,11 +94,6 @@ namespace TalusBackendData.Editor
             { "talus-facebook",     "com.talus.talusfacebook" },
             { "talus-elephant",     "com.talus.taluselephant" }
         };
-
-        /// <summary>
-        ///     TalusSettings.asset Path
-        /// </summary>
-        public string Path => GetFilePath();
 
         public void AddBackendSymbol()
         {
