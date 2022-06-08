@@ -30,15 +30,15 @@ namespace TalusBackendData.Editor.PackageManager
         [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
         private static void Init()
         {
-            if (string.IsNullOrEmpty(BackendDefinitions.ApiUrl))
+            if (string.IsNullOrEmpty(BackendSettingsHolder.instance.ApiUrl))
             {
-                InfoBox.ShowBackendParameterError(nameof(BackendDefinitions.ApiUrl));
+                InfoBox.ShowBackendParameterError(nameof(BackendSettingsHolder.instance.ApiUrl));
                 return;
             }
 
-            if (string.IsNullOrEmpty(BackendDefinitions.ApiToken))
+            if (string.IsNullOrEmpty(BackendSettingsHolder.instance.ApiToken))
             {
-                InfoBox.ShowBackendParameterError(nameof(BackendDefinitions.ApiToken));
+                InfoBox.ShowBackendParameterError(nameof(BackendSettingsHolder.instance.ApiToken));
                 return;
             }
 
@@ -112,9 +112,9 @@ namespace TalusBackendData.Editor.PackageManager
 
             /// symbol check
             GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
-            bool symbolCheck = DefineSymbols.Contains(BackendDefinitions.BackendSymbol);
+            bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
             GUILayout.Space(8);
-            GUILayout.Label($"Backend Symbol ({BackendDefinitions.BackendSymbol}):", EditorStyles.boldLabel);
+            GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
             GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
             string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist.";
             if (GUILayout.Button(buttonName))
@@ -123,13 +123,13 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     InfoBox.ShowConfirmation(
                         "You are about to remove the 'Backend Define Symbol' definition!",
-                        () => BackendDefinitions.RemoveBackendSymbol()
+                        () => BackendSettingsHolder.instance.RemoveBackendSymbol()
                     );
 
                     return;
                 }
 
-                BackendDefinitions.AddBackendSymbol();
+                BackendSettingsHolder.instance.AddBackendSymbol();
             }
 
             // steps
@@ -158,7 +158,7 @@ namespace TalusBackendData.Editor.PackageManager
             _UpdatablePackageCount = 0;
             _Packages.Clear();
 
-            foreach (var package in BackendDefinitions.Packages)
+            foreach (var package in BackendSettingsHolder.instance.Packages)
             {
                 _Packages[package.Value] = new Models.PackageStatus(false, "", false);
             }
@@ -220,7 +220,7 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (_AddPackage != null && !_AddPackage.Request.IsCompleted) { return; }
 
-            BackendApi api = new BackendApi(BackendDefinitions.ApiUrl, BackendDefinitions.ApiToken);
+            BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetPackageInfo(packageId, package => {
                 _AddPackage = new RequestHandler<AddRequest>(Client.Add(package.url), (statusCode) =>
                 {
@@ -237,7 +237,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
-            BackendApi api = new BackendApi(BackendDefinitions.ApiUrl, BackendDefinitions.ApiToken);
+            BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetPackageInfo(packageId, package =>
             {
                 bool updateExist = !packageHash.Equals(package.hash);
