@@ -52,6 +52,11 @@ namespace TalusBackendData.Editor
 
                 yield return null;
 
+                if (Application.isBatchMode)
+                {
+                    Debug.Log($"[TalusBackendData-Package] Fetched app: {model}");
+                }
+
                 onFetchComplete(model);
             }
         }
