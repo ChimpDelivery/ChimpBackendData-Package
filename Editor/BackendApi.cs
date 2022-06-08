@@ -37,8 +37,6 @@ namespace TalusBackendData.Editor
 
         private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
         {
-            Debug.Log($"[TalusBackendData-Package] Api url: {url}");
-
             using UnityWebRequest www = UnityWebRequest.Get(url);
             www.SetRequestHeader("api-key", _ApiToken);
 
