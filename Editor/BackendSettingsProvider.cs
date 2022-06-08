@@ -34,6 +34,8 @@ namespace TalusBackendData.Editor
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
+            _UnlockPanel = true;
+            
             BackendSettingsHolder.instance.SaveSettings();
 
             _SerializedObject = new SerializedObject(BackendSettingsHolder.instance);
