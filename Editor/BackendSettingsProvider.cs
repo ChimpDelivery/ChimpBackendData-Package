@@ -63,6 +63,7 @@ namespace TalusBackendData.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 _SerializedObject.ApplyModifiedProperties();
+                BackendSettingsHolder.instance.SaveSettings();
             }
 
             EditorGUILayout.EndVertical();
