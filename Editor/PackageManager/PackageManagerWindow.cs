@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 
-using TalusBackendData.Editor.Utility;
+using UnityEngine;
+
 using TalusBackendData.Editor.PackageManager.Requests;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.PackageManager
 {
@@ -85,69 +86,76 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.BeginVertical();
 
             // package list
-            GUILayout.Space(8);
-            GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
-
-            foreach (var package in _Packages)
             {
-                bool isPackageInstalled = package.Value.Exist;
-                bool isUpdateExist = package.Value.UpdateExist;
+                GUILayout.Space(8);
+                GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
-                GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
-                if (GUILayout.Button(package.Key))
+                foreach (var package in _Packages)
                 {
-                    if (!isPackageInstalled || isUpdateExist)
+                    bool isPackageInstalled = package.Value.Exist;
+                    bool isUpdateExist = package.Value.UpdateExist;
+
+                    GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
+                    if (GUILayout.Button(package.Key))
                     {
-                        AddPackage(package.Key);
-                    }
-                    else
-                    {
-                        InfoBox.ShowConfirmation(
-                            $"You are about to remove the '{package.Key}' package!",
-                            () => RemovePackage(package.Key)
-                        );
+                        if (!isPackageInstalled || isUpdateExist)
+                        {
+                            AddPackage(package.Key);
+                        }
+                        else
+                        {
+                            InfoBox.ShowConfirmation(
+                                $"You are about to remove the '{package.Key}' package!",
+                                () => RemovePackage(package.Key)
+                            );
+                        }
                     }
                 }
             }
 
-            /// symbol check
-            GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
+            // symbol check
             bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
-            GUILayout.Space(8);
-            GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
-            GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
-            string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist.";
-            if (GUILayout.Button(buttonName))
             {
-                if (symbolCheck)
+                GUILayout.Space(8);
+                GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
+                GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
+
+                GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
+                string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist.";
+                if (GUILayout.Button(buttonName))
                 {
-                    InfoBox.ShowConfirmation(
-                        "You are about to remove the 'Backend Define Symbol' definition!",
-                        () => BackendSettingsHolder.instance.RemoveBackendSymbol()
-                    );
+                    if (symbolCheck)
+                    {
+                        InfoBox.ShowConfirmation(
+                            "You are about to remove the 'Backend Define Symbol' definition!",
+                            () => BackendSettingsHolder.instance.RemoveBackendSymbol()
+                        );
 
-                    return;
+                        return;
+                    }
+
+                    BackendSettingsHolder.instance.AddBackendSymbol();
                 }
-
-                BackendSettingsHolder.instance.AddBackendSymbol();
             }
 
             // steps
-            GUI.backgroundColor = default;
+            {
+                GUI.backgroundColor = default;
 
-            GUILayout.Space(8);
-            GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
+                GUILayout.Space(8);
+                GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
 
-            bool packageCheck = (_InstalledPackageCount == _Packages.Count) && _UpdatablePackageCount == 0;
-            GUI.backgroundColor = packageCheck ? Color.green : Color.red;
-            GUILayout.Toggle(packageCheck, "Install & Update all packages");
+                bool packageCheck = (_InstalledPackageCount == _Packages.Count) && _UpdatablePackageCount == 0;
+                GUI.backgroundColor = packageCheck ? Color.green : Color.red;
+                GUILayout.Toggle(packageCheck, "Install & Update all packages");
 
-            GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
-            GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
+                GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
+                GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
 
-            bool dataCheck = !(PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"));
-            GUI.backgroundColor = dataCheck ? Color.green : Color.red;
-            GUILayout.Toggle(dataCheck, "Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
+                bool dataCheck = !(PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"));
+                GUI.backgroundColor = dataCheck ? Color.green : Color.red;
+                GUILayout.Toggle(dataCheck, "Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
+            }
 
             GUILayout.EndVertical();
         }
@@ -221,7 +229,8 @@ namespace TalusBackendData.Editor.PackageManager
             if (_AddPackage != null && !_AddPackage.Request.IsCompleted) { return; }
 
             BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetPackageInfo(packageId, package => {
+            api.GetPackageInfo(packageId, package =>
+            {
                 _AddPackage = new RequestHandler<AddRequest>(Client.Add(package.url), (statusCode) =>
                 {
                     string message = (statusCode == StatusCode.Success) ?
