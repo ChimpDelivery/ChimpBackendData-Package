@@ -8,11 +8,12 @@ using UnityEngine.UIElements;
 namespace TalusBackendData.Editor.Interfaces
 {
     /// <summary>
-    ///     Base Settings Provider (with lock/unlock button)
+    ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider<T> : SettingsProvider
+    public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
     {
-        public bool UnlockPanel { get; protected set; } = true;
+        public virtual bool UnlockPanel { get; set; } = true;
+        public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
         public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null)
             : base(path, scopes, keywords)
@@ -26,6 +27,14 @@ namespace TalusBackendData.Editor.Interfaces
         public override void OnGUI(string searchContext)
         {
             GUILayout.FlexibleSpace();
+
+            GUI.enabled = !UnlockPanel;
+            GUI.backgroundColor = Color.green;
+
+            if (GUILayout.Button("Reset to defaults", GUILayout.MinHeight(50)))
+            {
+                OnSettingsReset.Invoke();
+            }
 
             GUI.enabled = true;
             GUI.backgroundColor = Color.yellow;
