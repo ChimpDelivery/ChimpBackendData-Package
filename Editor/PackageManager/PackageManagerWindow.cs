@@ -255,6 +255,8 @@ namespace TalusBackendData.Editor.PackageManager
                 if (updateExist)
                 {
                     ++_UpdatablePackageCount;
+
+                    RefreshWindowInstance();
                 }
             });
         }
