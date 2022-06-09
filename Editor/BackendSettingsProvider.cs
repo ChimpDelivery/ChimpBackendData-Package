@@ -10,19 +10,6 @@ namespace TalusBackendData.Editor
 {
     internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
     {
-        private class Styles
-        {
-            public static readonly GUIContent ApiUrlLabel = EditorGUIUtility.TrTextContent(
-                "Api URL:",
-                "Talus dashboard url."
-            );
-
-            public static readonly GUIContent ApiTokenLabel = EditorGUIUtility.TrTextContent(
-                "Api Token:",
-                "Talus dashboard auth token."
-            );
-        }
-
         private SerializedObject _SerializedObject;
         private SerializedProperty _ApiUrl;
         private SerializedProperty _ApiToken;
@@ -72,10 +59,10 @@ namespace TalusBackendData.Editor
                 {
 
                     GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
-                    _ApiUrl.stringValue = EditorGUILayout.TextField(Styles.ApiUrlLabel, _ApiUrl.stringValue);
+                    _ApiUrl.stringValue = EditorGUILayout.TextField(GetLabel(_ApiUrl.displayName), _ApiUrl.stringValue);
 
                     GUI.backgroundColor = (BackendSettingsHolder.instance.ApiToken == string.Empty) ? Color.red : Color.green;
-                    _ApiToken.stringValue = EditorGUILayout.PasswordField(Styles.ApiTokenLabel, _ApiToken.stringValue);
+                    _ApiToken.stringValue = EditorGUILayout.PasswordField(GetLabel(_ApiToken.displayName), _ApiToken.stringValue);
                 }
 
                 // unlock button
