@@ -179,7 +179,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void ListPackages()
         {
-            if (_ListPackages != null && !_AddPackage.Request.IsCompleted) { return; }
+            if (_ListPackages != null && !_ListPackages.Request.IsCompleted) { return; }
 
             _ListPackages = new RequestHandler<ListRequest>(Client.List(), (statusCode) =>
             {
