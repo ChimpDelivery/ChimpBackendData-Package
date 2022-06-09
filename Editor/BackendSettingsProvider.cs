@@ -11,8 +11,6 @@ namespace TalusBackendData.Editor
     internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
     {
         private SerializedObject _SerializedObject;
-        private SerializedProperty _ApiUrl;
-        private SerializedProperty _ApiToken;
 
         [SettingsProvider]
         public static SettingsProvider CreateBackendSettingsProvider()
@@ -31,8 +29,6 @@ namespace TalusBackendData.Editor
             BackendSettingsHolder.instance.SaveSettings();
 
             _SerializedObject = new SerializedObject(BackendSettingsHolder.instance);
-            _ApiUrl = _SerializedObject.FindProperty(nameof(_ApiUrl));
-            _ApiToken = _SerializedObject.FindProperty(nameof(_ApiToken));
         }
 
         public override void OnGUI(string searchContext)
@@ -41,6 +37,7 @@ namespace TalusBackendData.Editor
 
             EditorGUILayout.BeginVertical();
             {
+                Color defaultColor = GUI.color;
                 GUI.backgroundColor = Color.yellow;
                 EditorGUILayout.HelpBox(
                     string.Join(
@@ -50,19 +47,23 @@ namespace TalusBackendData.Editor
                     MessageType.Info,
                     true
                 );
+                GUI.backgroundColor = defaultColor;
 
                 GUILayout.Space(8);
-
                 EditorGUI.BeginChangeCheck();
-
                 GUI.enabled = !UnlockPanel;
                 {
+                    SerializedProperty serializedProperty = _SerializedObject.GetIterator();
+                    while (serializedProperty.NextVisible(true))
+                    {
+                        if (serializedProperty.name == "m_Script") { continue; }
+                        if (serializedProperty.name == "_AppId") { continue; }
 
-                    GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
-                    _ApiUrl.stringValue = EditorGUILayout.TextField(GetLabel(_ApiUrl.displayName), _ApiUrl.stringValue);
-
-                    GUI.backgroundColor = (BackendSettingsHolder.instance.ApiToken == string.Empty) ? Color.red : Color.green;
-                    _ApiToken.stringValue = EditorGUILayout.PasswordField(GetLabel(_ApiToken.displayName), _ApiToken.stringValue);
+                        serializedProperty.stringValue = EditorGUILayout.TextField(
+                            GetLabel(serializedProperty.displayName),
+                            serializedProperty.stringValue
+                        );
+                    }
                 }
 
                 // unlock button
