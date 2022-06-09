@@ -24,9 +24,14 @@ namespace TalusBackendData.Editor
         }
 
         private SerializedObject _SerializedObject;
-
         private SerializedProperty _ApiUrl;
         private SerializedProperty _ApiToken;
+
+        [SettingsProvider]
+        public static SettingsProvider CreateBackendSettingsProvider()
+        {
+            return new BackendSettingsProvider(BackendSettingsHolder.ProviderPath, SettingsScope.Project);
+        }
 
         public BackendSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null)
             : base(path, scopes, keywords)
@@ -83,16 +88,6 @@ namespace TalusBackendData.Editor
                 }
             }
             EditorGUILayout.EndVertical();
-        }
-
-        [SettingsProvider]
-        public static SettingsProvider CreateBackendSettingsProvider()
-        {
-            return new BackendSettingsProvider(
-                BackendSettingsHolder.ProviderPath,
-                SettingsScope.Project,
-                GetSearchKeywordsFromGUIContentProperties<Styles>()
-            );
         }
     }
 }

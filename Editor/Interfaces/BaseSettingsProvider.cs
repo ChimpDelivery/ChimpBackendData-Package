@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 
 namespace TalusBackendData.Editor.Interfaces
 {
+    /// <summary>
+    ///     Base Settings Provider (with lock/unlock button)
+    /// </summary>
     public abstract class BaseSettingsProvider<T> : SettingsProvider
     {
         public bool UnlockPanel { get; protected set; } = true;
