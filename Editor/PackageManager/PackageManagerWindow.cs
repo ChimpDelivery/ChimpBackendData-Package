@@ -160,21 +160,22 @@ namespace TalusBackendData.Editor.PackageManager
 
             // steps
             {
+                GUI.enabled = true;
                 GUILayout.FlexibleSpace();
                 GUI.backgroundColor = default;
 
                 GUILayout.Space(8);
-                GUILayout.Label("Backend Integration Steps:", EditorStyles.boldLabel);
+                GUILayout.Label("Backend Integration Status:", EditorStyles.helpBox);
 
                 bool packageCheck = (_InstalledPackageCount == _Packages.Count) && _UpdatablePackageCount == 0;
                 GUI.backgroundColor = packageCheck ? Color.green : Color.red;
-                GUILayout.Toggle(packageCheck, "Install & Update all packages");
+                GUILayout.Toggle(packageCheck, "All packages installed & updated");
 
                 GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
-                GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
+                GUILayout.Toggle(symbolCheck, "Backend define symbol exists");
 
                 GUI.backgroundColor = default;
-                GUILayout.Label("Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
+                GUILayout.Label("After the ticks turn green, Populate 'TalusKit/Backend/Build Settings' and click 'Update Settings' button", EditorStyles.helpBox);
             }
 
             GUILayout.EndVertical();
