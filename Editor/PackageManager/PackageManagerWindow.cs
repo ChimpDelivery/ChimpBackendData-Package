@@ -44,7 +44,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             s_Instance = GetWindow<PackageManagerWindow>();
-            s_Instance.minSize = new Vector2(500, 400);
+            s_Instance.minSize = new Vector2(450, 430);
             s_Instance.titleContent = new GUIContent("Talus Package Manager");
             s_Instance.Show();
         }
@@ -104,7 +104,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             // package list
             {
-                GUILayout.Space(8);
+                GUILayout.Space(16);
                 GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
                 foreach (var package in _Packages)
@@ -136,7 +136,7 @@ namespace TalusBackendData.Editor.PackageManager
             // symbol check
             bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
             {
-                GUILayout.Space(8);
+                GUILayout.Space(16);
                 GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
                 GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
@@ -173,9 +173,8 @@ namespace TalusBackendData.Editor.PackageManager
                 GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
                 GUILayout.Toggle(symbolCheck, "Add Backend Define Symbol");
 
-                bool dataCheck = !(PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS).Equals("com.Talus.TalusTemplateURP"));
-                GUI.backgroundColor = dataCheck ? Color.green : Color.red;
-                GUILayout.Toggle(dataCheck, "Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
+                GUI.backgroundColor = default;
+                GUILayout.Label("Populate 'TalusKit/Backend/App Settings' and click 'Update Settings' button");
             }
 
             GUILayout.EndVertical();
