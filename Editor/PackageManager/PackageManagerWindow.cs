@@ -85,6 +85,23 @@ namespace TalusBackendData.Editor.PackageManager
 
             GUILayout.BeginVertical();
 
+            // package manager info
+            {
+                GUILayout.Space(8);
+                GUILayout.BeginHorizontal();
+
+                GUI.backgroundColor = Color.green;
+                GUILayout.Button("Installed");
+
+                GUI.backgroundColor = Color.yellow;
+                GUILayout.Button("Update available");
+
+                GUI.backgroundColor = Color.red;
+                GUILayout.Button("Not installed");
+
+                GUILayout.EndHorizontal();
+            }
+
             // package list
             {
                 GUILayout.Space(8);
