@@ -59,7 +59,7 @@ namespace TalusBackendData.Editor
                         if (serializedProperty.name == "m_Script") { continue; }
                         if (serializedProperty.name == "_AppId") { continue; }
 
-                        serializedProperty.stringValue = EditorGUILayout.TextField(
+                        serializedProperty.stringValue = EditorGUILayout.PasswordField(
                             GetLabel(serializedProperty.displayName),
                             serializedProperty.stringValue
                         );
