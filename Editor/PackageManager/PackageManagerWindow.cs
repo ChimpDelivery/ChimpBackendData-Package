@@ -96,7 +96,10 @@ namespace TalusBackendData.Editor.PackageManager
                     bool isUpdateExist = package.Value.UpdateExist;
 
                     GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
-                    if (GUILayout.Button(package.Key))
+
+                    string[] splitPackageName = package.Key.Split('.');
+                    string smartPackageName = splitPackageName[splitPackageName.Length - 1];
+                    if (GUILayout.Button(smartPackageName, GUILayout.MinHeight(25)))
                     {
                         if (!isPackageInstalled || isUpdateExist)
                         {
@@ -121,8 +124,8 @@ namespace TalusBackendData.Editor.PackageManager
                 GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
                 GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
-                string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist.";
-                if (GUILayout.Button(buttonName))
+                string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist!";
+                if (GUILayout.Button(buttonName, GUILayout.MinHeight(25)))
                 {
                     if (symbolCheck)
                     {
