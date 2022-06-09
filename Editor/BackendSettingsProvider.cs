@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor;
 
+using TalusBackendData.Editor.Interfaces;
+
 namespace TalusBackendData.Editor
 {
-    internal class BackendSettingsProvider : SettingsProvider
+    internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
     {
-        private bool _UnlockPanel = true;
-
         private class Styles
         {
             public static readonly GUIContent ApiUrlLabel = EditorGUIUtility.TrTextContent(
@@ -34,8 +34,8 @@ namespace TalusBackendData.Editor
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
-            _UnlockPanel = true;
-            
+            base.OnActivate(searchContext, rootElement);
+
             BackendSettingsHolder.instance.SaveSettings();
 
             _SerializedObject = new SerializedObject(BackendSettingsHolder.instance);
@@ -63,7 +63,7 @@ namespace TalusBackendData.Editor
 
                 EditorGUI.BeginChangeCheck();
 
-                GUI.enabled = !_UnlockPanel;
+                GUI.enabled = !UnlockPanel;
                 {
 
                     GUI.backgroundColor = (BackendSettingsHolder.instance.ApiUrl == string.Empty) ? Color.red : Color.green;
@@ -71,23 +71,15 @@ namespace TalusBackendData.Editor
 
                     GUI.backgroundColor = (BackendSettingsHolder.instance.ApiToken == string.Empty) ? Color.red : Color.green;
                     _ApiToken.stringValue = EditorGUILayout.PasswordField(Styles.ApiTokenLabel, _ApiToken.stringValue);
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        _SerializedObject.ApplyModifiedProperties();
-                        BackendSettingsHolder.instance.SaveSettings();
-                    }
                 }
 
-                GUILayout.FlexibleSpace();
+                // unlock button
+                base.OnGUI(searchContext);
 
-                GUI.enabled = true;
-                GUI.backgroundColor = Color.yellow;
-
-                string lockButtonName = (_UnlockPanel) ? "Unlock Settings" : "Lock Settings";
-                if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
+                if (EditorGUI.EndChangeCheck())
                 {
-                    _UnlockPanel = !_UnlockPanel;
+                    _SerializedObject.ApplyModifiedProperties();
+                    BackendSettingsHolder.instance.SaveSettings();
                 }
             }
             EditorGUILayout.EndVertical();
