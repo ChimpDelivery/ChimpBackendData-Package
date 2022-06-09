@@ -160,6 +160,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             // steps
             {
+                GUILayout.FlexibleSpace();
                 GUI.backgroundColor = default;
 
                 GUILayout.Space(8);
