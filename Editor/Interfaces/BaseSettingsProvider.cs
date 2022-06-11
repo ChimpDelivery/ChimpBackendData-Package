@@ -12,9 +12,13 @@ namespace TalusBackendData.Editor.Interfaces
     /// </summary>
     public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
     {
-        public abstract SerializedObject SerializedObject { get; }
+        public abstract string Title { get; }
+        public abstract string Description { get; }
         public virtual bool UnlockPanel { get; set; } = true;
+
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
+
+        public abstract SerializedObject SerializedObject { get; }
 
         public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null)
             : base(path, scopes, keywords)
@@ -27,20 +31,34 @@ namespace TalusBackendData.Editor.Interfaces
 
         public override void OnGUI(string searchContext)
         {
+            EditorGUILayout.BeginVertical();
+
+            // panel info box
+            {
+                Color defaultColor = GUI.color;
+                GUI.backgroundColor = Color.yellow;
+                EditorGUILayout.HelpBox(string.Join("\n\n", Title, Description), MessageType.Info, true);
+                GUI.backgroundColor = defaultColor;
+            }
+
+            // to change properties we need to unlock panel
             GUI.enabled = !UnlockPanel;
 
-            GUILayout.Space(8);
-            EditorGUI.BeginChangeCheck();
-
-            SerializedProperty serializedProperty = SerializedObject.GetIterator();
-            while (serializedProperty.NextVisible(true))
+            // settings holder properties
             {
-                if (serializedProperty.name == "m_Script") { continue; }
+                GUILayout.Space(8);
+                EditorGUI.BeginChangeCheck();
 
-                serializedProperty.stringValue = EditorGUILayout.TextField(
-                    GetLabel(serializedProperty.displayName),
-                    serializedProperty.stringValue
-                );
+                SerializedProperty serializedProperty = SerializedObject.GetIterator();
+                while (serializedProperty.NextVisible(true))
+                {
+                    if (serializedProperty.name == "m_Script") { continue; }
+
+                    serializedProperty.stringValue = EditorGUILayout.TextField(
+                        GetLabel(serializedProperty.displayName),
+                        serializedProperty.stringValue
+                    );
+                }
             }
 
             // stick buttons to the bottom
@@ -68,6 +86,8 @@ namespace TalusBackendData.Editor.Interfaces
                     UnlockPanel = !UnlockPanel;
                 }
             }
+
+            EditorGUILayout.EndVertical();
         }
 
         // helper

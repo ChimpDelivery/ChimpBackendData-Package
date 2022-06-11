@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 
-using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEditor;
+using UnityEngine.UIElements;
 
 using TalusBackendData.Editor.Interfaces;
 
@@ -10,8 +9,11 @@ namespace TalusBackendData.Editor
 {
     internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
     {
-        private SerializedObject _SerializedObject;
+        public override string Title => BackendSettingsHolder.ProviderPath;
+        public override string Description => "You can get the 'Api Token' from 'Talus Dashboard/Profile'";
+
         public override SerializedObject SerializedObject => _SerializedObject;
+        private SerializedObject _SerializedObject;
 
         [SettingsProvider]
         public static SettingsProvider CreateBackendSettingsProvider()
@@ -36,30 +38,13 @@ namespace TalusBackendData.Editor
         {
             _SerializedObject.Update();
 
-            EditorGUILayout.BeginVertical();
+            base.OnGUI(searchContext);
+
+            if (EditorGUI.EndChangeCheck())
             {
-                Color defaultColor = GUI.color;
-                GUI.backgroundColor = Color.yellow;
-                EditorGUILayout.HelpBox(
-                    string.Join(
-                        "\n\n",
-                        $"{BackendSettingsHolder.ProviderPath}",
-                        "You can get the 'Api Token' from 'Talus Dashboard/Profile'"),
-                    MessageType.Info,
-                    true
-                );
-                GUI.backgroundColor = defaultColor;
-
-                // unlock button
-                base.OnGUI(searchContext);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    _SerializedObject.ApplyModifiedProperties();
-                    BackendSettingsHolder.instance.SaveSettings();
-                }
+                _SerializedObject.ApplyModifiedProperties();
+                BackendSettingsHolder.instance.SaveSettings();
             }
-            EditorGUILayout.EndVertical();
         }
     }
 }
