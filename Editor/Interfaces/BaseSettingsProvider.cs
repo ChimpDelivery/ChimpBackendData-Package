@@ -44,10 +44,11 @@ namespace TalusBackendData.Editor.Interfaces
             // to change properties we need to unlock panel
             GUI.enabled = !UnlockPanel;
 
+            EditorGUI.BeginChangeCheck();
+
             // settings holder properties
             {
                 GUILayout.Space(8);
-                EditorGUI.BeginChangeCheck();
 
                 SerializedProperty serializedProperty = SerializedObject.GetIterator();
                 while (serializedProperty.NextVisible(true))
