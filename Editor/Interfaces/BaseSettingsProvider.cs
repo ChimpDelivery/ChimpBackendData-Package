@@ -12,6 +12,7 @@ namespace TalusBackendData.Editor.Interfaces
     /// </summary>
     public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
     {
+        public abstract SerializedObject SerializedObject { get; }
         public virtual bool UnlockPanel { get; set; } = true;
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
@@ -26,23 +27,46 @@ namespace TalusBackendData.Editor.Interfaces
 
         public override void OnGUI(string searchContext)
         {
-            GUILayout.FlexibleSpace();
-
             GUI.enabled = !UnlockPanel;
-            GUI.backgroundColor = Color.green;
 
-            if (GUILayout.Button("Reset to defaults", GUILayout.MinHeight(50)))
+            GUILayout.Space(8);
+            EditorGUI.BeginChangeCheck();
+
+            SerializedProperty serializedProperty = SerializedObject.GetIterator();
+            while (serializedProperty.NextVisible(true))
             {
-                OnSettingsReset.Invoke();
+                if (serializedProperty.name == "m_Script") { continue; }
+
+                serializedProperty.stringValue = EditorGUILayout.TextField(
+                    GetLabel(serializedProperty.displayName),
+                    serializedProperty.stringValue
+                );
             }
 
-            GUI.enabled = true;
-            GUI.backgroundColor = Color.yellow;
+            // stick buttons to the bottom
+            GUILayout.FlexibleSpace();
 
-            string lockButtonName = (UnlockPanel) ? "Unlock Settings" : "Lock Settings";
-            if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
+            // reset button
             {
-                UnlockPanel = !UnlockPanel;
+                GUI.enabled = !UnlockPanel;
+                GUI.backgroundColor = Color.green;
+
+                if (GUILayout.Button("Reset to defaults", GUILayout.MinHeight(50)))
+                {
+                    OnSettingsReset.Invoke();
+                }
+            }
+
+            // unlock button
+            {
+                GUI.enabled = true;
+                GUI.backgroundColor = Color.yellow;
+
+                string lockButtonName = (UnlockPanel) ? "Unlock Settings" : "Lock Settings";
+                if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
+                {
+                    UnlockPanel = !UnlockPanel;
+                }
             }
         }
 

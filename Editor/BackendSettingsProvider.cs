@@ -11,6 +11,7 @@ namespace TalusBackendData.Editor
     internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
     {
         private SerializedObject _SerializedObject;
+        public override SerializedObject SerializedObject => _SerializedObject;
 
         [SettingsProvider]
         public static SettingsProvider CreateBackendSettingsProvider()
@@ -48,23 +49,6 @@ namespace TalusBackendData.Editor
                     true
                 );
                 GUI.backgroundColor = defaultColor;
-
-                GUILayout.Space(8);
-                EditorGUI.BeginChangeCheck();
-                GUI.enabled = !UnlockPanel;
-                {
-                    SerializedProperty serializedProperty = _SerializedObject.GetIterator();
-                    while (serializedProperty.NextVisible(true))
-                    {
-                        if (serializedProperty.name == "m_Script") { continue; }
-                        if (serializedProperty.name == "_AppId") { continue; }
-
-                        serializedProperty.stringValue = EditorGUILayout.PasswordField(
-                            GetLabel(serializedProperty.displayName),
-                            serializedProperty.stringValue
-                        );
-                    }
-                }
 
                 // unlock button
                 base.OnGUI(searchContext);
