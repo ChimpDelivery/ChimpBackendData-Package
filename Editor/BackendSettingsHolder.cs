@@ -47,7 +47,6 @@ namespace TalusBackendData.Editor
             }
         }
 
-        // To save AppId.
         [SerializeField]
         private string _AppId;
         public string AppId
