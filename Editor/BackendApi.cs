@@ -44,7 +44,8 @@ namespace TalusBackendData.Editor
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError(www.error);
+                string logMessage = (www.responseCode == 503) ? "Talus Web Server is under maintenance!" : www.error;
+                Debug.LogError(logMessage);
             }
             else
             {
