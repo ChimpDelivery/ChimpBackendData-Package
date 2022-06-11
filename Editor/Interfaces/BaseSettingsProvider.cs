@@ -12,8 +12,8 @@ namespace TalusBackendData.Editor.Interfaces
     /// </summary>
     public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
     {
-        public abstract string Title { get; }
-        public abstract string Description { get; }
+        public virtual string Title { get; } = "Default Panel Title";
+        public virtual string Description { get; } = "Default Panel Description";
         public virtual bool UnlockPanel { get; set; } = true;
 
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
