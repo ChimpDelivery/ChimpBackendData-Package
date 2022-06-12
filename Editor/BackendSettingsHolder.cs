@@ -29,7 +29,7 @@ namespace TalusBackendData.Editor
             get { return _ApiUrl; }
             set
             {
-                _ApiUrl = value.Trim();
+                _ApiUrl = value;
                 SaveSettings();
             }
         }
@@ -42,7 +42,7 @@ namespace TalusBackendData.Editor
             get { return _ApiToken; }
             set
             {
-                _ApiToken = value.Trim();
+                _ApiToken = value;
                 SaveSettings();
             }
         }
