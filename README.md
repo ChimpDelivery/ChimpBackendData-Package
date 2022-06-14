@@ -1,4 +1,4 @@
-# TalusBackendData Package
+# [![](https://img.shields.io/github/package-json/displayName/talusstudio/talusbackenddata-package?label=Package%3A)](https://github.com/TalusStudio/TalusBackendData-Package)
 - Provides app info fetching and package manager.
 - To work with backend integration.
         
