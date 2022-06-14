@@ -23,7 +23,7 @@ namespace TalusBackendData.Editor
 
         // Talus Web Dashboard - Api Root URL
         [SerializeField]
-        private string _ApiUrl = "http://34.252.141.173";
+        private string _ApiUrl = default;
         public string ApiUrl
         {
             get { return _ApiUrl; }
