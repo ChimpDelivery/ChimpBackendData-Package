@@ -28,7 +28,7 @@ namespace TalusBackendData.Editor.PackageManager
         private RequestHandler<AddRequest> _AddPackage;
         private RequestHandler<RemoveRequest> _RemovePackage;
 
-        [MenuItem("TalusKit/Backend/Package Manager", false, 10000)]
+        [MenuItem("TalusBackend/Package Manager", false, 10000)]
         private static void Init()
         {
             if (string.IsNullOrEmpty(BackendSettingsHolder.instance.ApiUrl))
