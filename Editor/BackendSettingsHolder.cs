@@ -21,12 +21,12 @@ namespace TalusBackendData.Editor
         private const string _ProviderPath = "Talus Studio/Backend Auth";
         public static string ProviderPath => _ProviderPath;
 
-        // Talus Web Dashboard - Api Root URL
+        // {Talus Web Dashboard} - Api Root URL
         [SerializeField]
         private string _ApiUrl = default;
         public string ApiUrl
         {
-            get { return _ApiUrl; }
+            get => _ApiUrl;
             set
             {
                 _ApiUrl = value;
@@ -34,12 +34,12 @@ namespace TalusBackendData.Editor
             }
         }
 
-        // Talus Web Dashboard - Api Token
+        // {Talus Web Dashboard} - Api Token
         [SerializeField]
         private string _ApiToken = default;
         public string ApiToken
         {
-            get { return _ApiToken; }
+            get => _ApiToken;
             set
             {
                 _ApiToken = value;
@@ -51,23 +51,20 @@ namespace TalusBackendData.Editor
         private string _AppId;
         public string AppId
         {
-            get { return _AppId; }
+            get => _AppId;
             set
             {
-                _AppId = value.Trim();
+                _AppId = value;
                 SaveSettings();
             }
         }
 
-        // Talus Packages - Backend Symbol
+        // {Talus Packages} - Backend Symbol
         // Some packages use this symbol for conditional compilation.
-        private string _BackendSymbol = "ENABLE_BACKEND";
-        public string BackendSymbol
-        {
-            get { return _BackendSymbol; }
-        }
+        private readonly string _BackendSymbol = "ENABLE_BACKEND";
+        public string BackendSymbol => _BackendSymbol;
 
-        // Talus Packages - All required packages in prototoypes.
+        // {Talus Packages} - All required packages in prototoypes.
         public readonly Dictionary<string, string> Packages = new Dictionary<string, string>
         {
             { "talus-framework",    "com.talus.talusframework" },
@@ -96,9 +93,6 @@ namespace TalusBackendData.Editor
             Debug.Log($"[TalusBackendData-Package] {BackendSymbol} define symbol removing...");
         }
 
-        public void SaveSettings()
-        {
-            Save(true);
-        }
+        public void SaveSettings() => Save(true);
     }
 }
