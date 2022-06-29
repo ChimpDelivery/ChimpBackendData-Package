@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 
 using TalusBackendData.Editor.Utility;
-using static System.Net.WebRequestMethods;
 
 namespace TalusBackendData.Editor
 {
