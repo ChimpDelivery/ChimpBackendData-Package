@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 using TalusBackendData.Editor.Utility;
+using static System.Net.WebRequestMethods;
 
 namespace TalusBackendData.Editor
 {
@@ -23,7 +24,7 @@ namespace TalusBackendData.Editor
 
         // {Talus Web Dashboard} - Api Root URL
         [SerializeField]
-        private string _ApiUrl = default;
+        private string _ApiUrl = "http://34.252.141.173";
         public string ApiUrl
         {
             get => _ApiUrl;
