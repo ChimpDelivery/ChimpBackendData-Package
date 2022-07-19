@@ -141,7 +141,7 @@ namespace TalusBackendData.Editor.PackageManager
                 GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
                 GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
-                string buttonName = (symbolCheck) ? "Backend Symbol exist :)" : "Backend Symbol doesn't exist!";
+                string buttonName = (symbolCheck) ? "Backend Symbol exist." : "Backend Symbol doesn't exist!";
                 if (GUILayout.Button(buttonName, GUILayout.MinHeight(25)))
                 {
                     if (symbolCheck)
