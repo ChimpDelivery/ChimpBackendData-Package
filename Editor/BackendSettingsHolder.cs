@@ -59,7 +59,7 @@ namespace TalusBackendData.Editor
 
         // {Talus Packages} - Backend Symbol
         // Some packages use this symbol for conditional compilation.
-        private readonly string _BackendSymbol = "ENABLE_BACKEND";
+        private readonly string _BackendSymbol = "TALUS_BACKEND";
         public string BackendSymbol => _BackendSymbol;
 
         public void AddBackendSymbol()
