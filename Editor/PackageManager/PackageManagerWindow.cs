@@ -45,7 +45,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             s_Instance = GetWindow<PackageManagerWindow>();
-            s_Instance.minSize = new Vector2(450, 430);
+            s_Instance.minSize = new Vector2(450, 500);
             s_Instance.titleContent = new GUIContent("Talus Package Manager");
             s_Instance.Show();
         }
@@ -115,9 +115,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                     GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
 
-                    string[] splitPackageName = package.Key.Split('.');
-                    string smartPackageName = splitPackageName[splitPackageName.Length - 1];
-                    if (GUILayout.Button(smartPackageName, GUILayout.MinHeight(25)))
+                    if (GUILayout.Button(GetPrettyPackageName(package.Key), GUILayout.MinHeight(25)))
                     {
                         if (!isPackageInstalled || isUpdateExist)
                         {
@@ -180,6 +178,14 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             GUILayout.EndVertical();
+        }
+
+        private string GetPrettyPackageName(string package)
+        {
+            string[] splitPackageName = package.Split('.');
+            string smartPackageName = splitPackageName[splitPackageName.Length - 1];
+
+            return smartPackageName;
         }
 
         private void PopulatePackages(System.Action onComplete = null)
