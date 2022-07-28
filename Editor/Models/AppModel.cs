@@ -6,8 +6,8 @@
         public string app_bundle;
         public string app_name;
         public string fb_app_id;
-        public string elephant_id;
-        public string elephant_secret;
+        public string ga_id;
+        public string ga_secret;
 
         public override string ToString()
         {
