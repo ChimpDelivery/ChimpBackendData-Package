@@ -35,6 +35,13 @@ namespace TalusBackendData.Editor
             EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
         }
 
+        public void GetAllPackages(Action<PackagesModel> onFetchComplete)
+        {
+            string apiUrl = $"{_ApiUrl}/api/packages/get-packages";
+
+            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
+        }
+
         private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
         {
             using UnityWebRequest www = UnityWebRequest.Get(url);
@@ -55,7 +62,7 @@ namespace TalusBackendData.Editor
 
                 if (Application.isBatchMode)
                 {
-                    Debug.Log($"[TalusBackendData-Package] Fetched app: {model}");
+                    Debug.Log($"[TalusBackendData-Package] Fetched model: {model}");
                 }
 
                 onFetchComplete(model);

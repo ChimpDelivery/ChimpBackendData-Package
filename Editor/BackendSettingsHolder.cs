@@ -64,19 +64,6 @@ namespace TalusBackendData.Editor
         private readonly string _BackendSymbol = "ENABLE_BACKEND";
         public string BackendSymbol => _BackendSymbol;
 
-        // {Talus Packages} - All required packages in prototoypes.
-        public readonly Dictionary<string, string> Packages = new Dictionary<string, string>
-        {
-            { "talus-framework",    "com.talus.talusframework" },
-            { "talus-kit",          "com.talus.taluskit" },
-            { "talus-backenddata",  "com.talus.talusbackenddata" },
-            { "talus-ci",           "com.talus.talusci" },
-            { "talus-settings",     "com.talus.talussettings" },
-            { "talus-playservices", "com.talus.talusplayservicesresolver" },
-            { "talus-facebook",     "com.talus.talusfacebook" },
-            { "talus-elephant",     "com.talus.taluselephant" }
-        };
-
         public void AddBackendSymbol()
         {
             if (DefineSymbols.Contains(BackendSymbol)) { return; }

@@ -1,11 +1,9 @@
 namespace TalusBackendData.Editor.Models
 {
     [System.Serializable]
-    public class PackageModel
+    public class PackagesModel
     {
-        public string package_id;
-        public string url;
-        public string hash;
+        public PackageModel[] packages;
 
         public override string ToString()
         {
