@@ -20,7 +20,7 @@ namespace TalusBackendData.Editor.PackageManager
     {
         private static PackageManagerWindow s_Instance;
 
-        private static readonly Dictionary<string, Models.PackageStatus> s_Packages = new Dictionary<string, Models.PackageStatus>();
+        private readonly Dictionary<string, Models.PackageStatus> _Packages = new Dictionary<string, Models.PackageStatus>();
 
         private int _InstalledPackageCount = 0;
         private int _UpdatablePackageCount = 0;
@@ -106,9 +106,9 @@ namespace TalusBackendData.Editor.PackageManager
             // package list
             {
                 GUILayout.Space(16);
-                GUILayout.Label($"Packages ({s_Packages.Count}):", EditorStyles.boldLabel);
+                GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
-                foreach (var package in s_Packages)
+                foreach (var package in _Packages)
                 {
                     bool isPackageInstalled = package.Value.Exist;
                     bool isUpdateExist = package.Value.UpdateExist;
@@ -141,7 +141,7 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
                 GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
-                GUI.enabled = (_InstalledPackageCount == s_Packages.Count) && (_UpdatablePackageCount == 0);
+                GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
                 string buttonName = (symbolCheck) ? "Backend Symbol exist." : "Backend Symbol doesn't exist!";
                 if (GUILayout.Button(buttonName, GUILayout.MinHeight(25)))
                 {
@@ -168,7 +168,7 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Space(8);
                 GUILayout.Label("Backend Integration Status:", EditorStyles.helpBox);
 
-                bool packageCheck = (_InstalledPackageCount == s_Packages.Count) && _UpdatablePackageCount == 0;
+                bool packageCheck = (_InstalledPackageCount == _Packages.Count) && _UpdatablePackageCount == 0;
                 GUI.backgroundColor = packageCheck ? Color.green : Color.red;
                 GUILayout.Toggle(packageCheck, "All packages installed & updated");
 
@@ -187,11 +187,11 @@ namespace TalusBackendData.Editor.PackageManager
             BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetAllPackages((response) =>
             {
-                s_Packages.Clear();
+                _Packages.Clear();
 
                 foreach (PackageModel model in response.packages)
                 {
-                    s_Packages[model.package_id] = new Models.PackageStatus(false, model.hash, false);
+                    _Packages[model.package_id] = new Models.PackageStatus(false, model.hash, false);
                 }
 
                 onComplete.Invoke();
@@ -216,12 +216,12 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     foreach (var package in _ListPackages.Request.Result)
                     {
-                        if (!s_Packages.ContainsKey(package.name)) { continue; }
+                        if (!_Packages.ContainsKey(package.name)) { continue; }
 
                         bool isGitPackage = (package.source == PackageSource.Git);
                         string gitHash = (isGitPackage) ? package.git.hash : "";
 
-                        s_Packages[package.name] = new Models.PackageStatus(true, gitHash, false);
+                        _Packages[package.name] = new Models.PackageStatus(true, gitHash, false);
 
                         if (isGitPackage)
                         {
@@ -282,7 +282,7 @@ namespace TalusBackendData.Editor.PackageManager
             api.GetPackageInfo(packageId, package =>
             {
                 bool updateExist = !packageHash.Equals(package.hash);
-                s_Packages[packageId].UpdateExist = updateExist;
+                _Packages[packageId].UpdateExist = updateExist;
 
                 if (updateExist)
                 {
