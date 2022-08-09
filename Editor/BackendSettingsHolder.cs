@@ -7,7 +7,7 @@ namespace TalusBackendData.Editor
 {
     /// <summary>
     ///     FilePath must be ignored by GIT!
-    ///     BackendSettingsHolder provides information for other Talus Packages.
+    ///     BackendSettingsHolder provides information for other Packages.
     /// </summary>
     [FilePath("ProjectSettings/TalusSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
@@ -19,7 +19,7 @@ namespace TalusBackendData.Editor
         private const string _ProviderPath = "Talus Studio/Backend Auth";
         public static string ProviderPath => _ProviderPath;
 
-        // {Talus Web Dashboard} - Api Root URL
+        // {Web Dashboard} - Api Root URL
         [SerializeField]
         private string _ApiUrl = "http://34.252.141.173";
         public string ApiUrl
@@ -32,7 +32,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        // {Talus Web Dashboard} - Api Token
+        // {Web Dashboard} - Api Token
         [SerializeField]
         private string _ApiToken = default;
         public string ApiToken
@@ -57,7 +57,6 @@ namespace TalusBackendData.Editor
             }
         }
 
-        // {Talus Packages} - Backend Symbol
         // Some packages use this symbol for conditional compilation.
         private readonly string _BackendSymbol = "ENABLE_BACKEND";
         public string BackendSymbol => _BackendSymbol;
