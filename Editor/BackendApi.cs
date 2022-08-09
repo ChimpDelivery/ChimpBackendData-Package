@@ -23,7 +23,7 @@ namespace TalusBackendData.Editor
 
         public void GetAppInfo(string appId, Action<AppModel> onFetchComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/apps/get-app/{appId}";
+            string apiUrl = $"{_ApiUrl}/api/apps/get-app?id={appId}";
 
             EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
         }
