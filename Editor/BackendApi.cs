@@ -30,7 +30,7 @@ namespace TalusBackendData.Editor
 
         public void GetPackageInfo(string packageId, Action<PackageModel> onFetchComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/packages/get-package/{packageId}";
+            string apiUrl = $"{_ApiUrl}/api/packages/get-package?package_id={packageId}";
 
             EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
         }
