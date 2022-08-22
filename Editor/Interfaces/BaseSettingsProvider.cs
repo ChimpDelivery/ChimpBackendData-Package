@@ -37,7 +37,7 @@ namespace TalusBackendData.Editor.Interfaces
             {
                 Color defaultColor = GUI.color;
                 GUI.backgroundColor = Color.yellow;
-                EditorGUILayout.HelpBox(string.Join("\n\n", Title, Description), MessageType.Info, true);
+                EditorGUILayout.HelpBox(Description, MessageType.Info, true);
                 GUI.backgroundColor = defaultColor;
             }
 
