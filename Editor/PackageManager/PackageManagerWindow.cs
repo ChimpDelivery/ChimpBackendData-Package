@@ -259,11 +259,6 @@ namespace TalusBackendData.Editor.PackageManager
                 InfoBox.Show($"{statusCode} !", message, "OK");
 
                 RefreshWindowInstance();
-
-                if (packageId.Contains("facebook"))
-                {
-                    BackendSettingsHolder.instance.RemoveBackendSymbol();
-                }
             });
         }
 
@@ -283,11 +278,6 @@ namespace TalusBackendData.Editor.PackageManager
                     InfoBox.Show($"{statusCode} !", message, "OK");
 
                     RefreshWindowInstance();
-
-                    if (packageId.Contains("facebook"))
-                    {
-                        BackendSettingsHolder.instance.AddBackendSymbol();
-                    }
                 });
             });
         }
