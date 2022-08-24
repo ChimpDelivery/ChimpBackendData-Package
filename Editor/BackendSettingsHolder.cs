@@ -16,7 +16,7 @@ namespace TalusBackendData.Editor
         public string Path => GetFilePath();
 
         // Unity3D - BackendSettings Panel Path
-        private const string _ProviderPath = "Talus Studio/Backend Auth";
+        private const string _ProviderPath = "Talus Studio/1. Authentication";
         public static string ProviderPath => _ProviderPath;
 
         // {Web Dashboard} - Api Root URL
