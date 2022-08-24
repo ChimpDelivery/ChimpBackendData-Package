@@ -190,7 +190,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void PopulatePackages(System.Action onComplete = null)
         {
-            BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
+            BackendApi api = new(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetAllPackages((response) =>
             {
                 _Packages.Clear();
@@ -259,6 +259,11 @@ namespace TalusBackendData.Editor.PackageManager
                 InfoBox.Show($"{statusCode} !", message, "OK");
 
                 RefreshWindowInstance();
+
+                if (packageId.Contains("facebook"))
+                {
+                    BackendSettingsHolder.instance.RemoveBackendSymbol();
+                }
             });
         }
 
@@ -266,7 +271,7 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (_AddPackage != null && !_AddPackage.Request.IsCompleted) { return; }
 
-            BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
+            BackendApi api = new(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetPackageInfo(packageId, package =>
             {
                 _AddPackage = new RequestHandler<AddRequest>(Client.Add(package.url), (statusCode) =>
@@ -278,13 +283,18 @@ namespace TalusBackendData.Editor.PackageManager
                     InfoBox.Show($"{statusCode} !", message, "OK");
 
                     RefreshWindowInstance();
+
+                    if (packageId.Contains("facebook"))
+                    {
+                        BackendSettingsHolder.instance.AddBackendSymbol();
+                    }
                 });
             });
         }
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
-            BackendApi api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
+            BackendApi api = new(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetPackageInfo(packageId, package =>
             {
                 bool updateExist = !packageHash.Equals(package.hash);
