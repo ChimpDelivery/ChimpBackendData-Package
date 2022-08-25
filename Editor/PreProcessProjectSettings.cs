@@ -18,10 +18,10 @@ namespace TalusBackendData.Editor
         [MenuItem("TalusBackend/Sync Project Settings", priority = 12000)]
         public static void Sync()
         {
-            new PreProcessProjectSettings().SyncSettings();
+            new PreProcessProjectSettings().UpdateSettings();
         }
 
-        private void SyncSettings()
+        private void UpdateSettings()
         {
             Debug.Log($"[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
