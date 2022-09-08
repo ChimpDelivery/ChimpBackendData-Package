@@ -174,7 +174,6 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Toggle(symbolCheck, "Backend define symbol exists");
 
                 GUI.backgroundColor = default;
-                GUILayout.Label("After the ticks turn green, Populate 'TalusBackend/Build Settings' and click 'Update Settings' button", EditorStyles.helpBox);
             }
 
             GUILayout.EndVertical();
