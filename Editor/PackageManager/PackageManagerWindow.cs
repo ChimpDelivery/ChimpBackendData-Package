@@ -174,7 +174,6 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Toggle(symbolCheck, "Backend define symbol exists");
 
                 GUI.backgroundColor = default;
-                GUILayout.Label("After the ticks turn green, Populate 'TalusBackend/Build Settings' and click 'Update Settings' button", EditorStyles.helpBox);
             }
 
             GUILayout.EndVertical();
@@ -183,9 +182,9 @@ namespace TalusBackendData.Editor.PackageManager
         private string GetPrettyPackageName(string package)
         {
             string[] splitPackageName = package.Split('.');
-            string smartPackageName = splitPackageName[splitPackageName.Length - 1];
+            string companyName = splitPackageName[1];
 
-            return smartPackageName;
+            return companyName.Equals("talus") ? splitPackageName[splitPackageName.Length - 1] : package;
         }
 
         private void PopulatePackages(System.Action onComplete = null)
