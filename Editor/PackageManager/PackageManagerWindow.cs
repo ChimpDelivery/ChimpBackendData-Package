@@ -183,9 +183,9 @@ namespace TalusBackendData.Editor.PackageManager
         private string GetPrettyPackageName(string package)
         {
             string[] splitPackageName = package.Split('.');
-            string smartPackageName = splitPackageName[splitPackageName.Length - 1];
+            string companyName = splitPackageName[1];
 
-            return smartPackageName;
+            return companyName.Equals("talus") ? splitPackageName[splitPackageName.Length - 1] : package;
         }
 
         private void PopulatePackages(System.Action onComplete = null)
