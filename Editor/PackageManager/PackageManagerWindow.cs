@@ -139,7 +139,6 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
                 GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
-                GUI.enabled = (_InstalledPackageCount == _Packages.Count) && (_UpdatablePackageCount == 0);
                 string buttonName = (symbolCheck) ? "Backend Symbol exist." : "Backend Symbol doesn't exist!";
                 if (GUILayout.Button(buttonName, GUILayout.MinHeight(25)))
                 {
@@ -159,7 +158,6 @@ namespace TalusBackendData.Editor.PackageManager
 
             // steps
             {
-                GUI.enabled = true;
                 GUILayout.FlexibleSpace();
                 GUI.backgroundColor = default;
 
