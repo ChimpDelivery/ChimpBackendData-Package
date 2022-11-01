@@ -99,13 +99,22 @@ namespace TalusBackendData.Editor.PackageManager
 
                 GUI.backgroundColor = Color.red;
                 GUILayout.Button("Not installed");
+                
+                GUI.backgroundColor = Color.cyan;
 
+                GUILayout.Space(30);
+                if (GUILayout.Button("Refresh", GUILayout.Width(60f)))
+                {
+                    RepaintWindowInstance();
+                }
+                
                 GUILayout.EndHorizontal();
             }
 
             // package list
             {
                 GUILayout.Space(16);
+
                 GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
                 foreach (var package in _Packages)
