@@ -21,21 +21,23 @@ namespace TalusBackendData.Editor
             new PreProcessProjectSettings().UpdateSettings();
         }
 
-        private void UpdateSettings()
+        public void UpdateSettings(System.Action onCustomComplete = null)
         {
-            Debug.Log($"[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
+            Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
             BackendApi api = new(_ApiUrl, _ApiToken);
             api.GetAppInfo(_AppId, (app) =>
             {
                 UpdateProductSettings(app);
+                
                 OnSyncComplete(app);
+                onCustomComplete?.Invoke();
             });
         }
 
         private void UpdateProductSettings(AppModel app)
         {
-            Debug.Log($"[TalusBackendData-Package] update product settings...");
+            Debug.Log("[TalusBackendData-Package] update product settings...");
 
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
@@ -51,7 +53,7 @@ namespace TalusBackendData.Editor
             }
             else
             {
-                Debug.LogError($"[TalusBackendData-Package] AppModel data is null! Product Settings couldn't updated...");
+                Debug.LogError("[TalusBackendData-Package] AppModel data is null! Product Settings couldn't updated...");
             }
 
             AssetDatabase.SaveAssets();
