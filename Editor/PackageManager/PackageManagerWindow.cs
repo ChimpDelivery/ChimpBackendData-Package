@@ -88,7 +88,6 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Button("Not installed");
 
             GUI.backgroundColor = Color.cyan;
-
             GUILayout.Space(30);
 
             if (GUILayout.Button("Refresh", GUILayout.Width(60f)))
@@ -101,7 +100,6 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void ShowFooterMenu()
         {
-            GUILayout.FlexibleSpace();
             GUI.backgroundColor = default;
 
             GUILayout.Space(8);
@@ -153,8 +151,8 @@ namespace TalusBackendData.Editor.PackageManager
         {
             bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
 
-            GUILayout.Space(16);
-            GUILayout.Label($"Backend Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
+            GUILayout.FlexibleSpace();
+            GUILayout.Label($"Backend Define Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
             GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
 
             string buttonName = (symbolCheck) ? "Backend Symbol exist." : "Backend Symbol doesn't exist!";
