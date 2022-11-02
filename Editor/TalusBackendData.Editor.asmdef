@@ -1,6 +1,6 @@
 {
     "name": "TalusBackendData.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "TalusBackendData.Editor",
     "references": [
         "Unity.EditorCoroutines.Editor"
     ],
