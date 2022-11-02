@@ -105,7 +105,7 @@ namespace TalusBackendData.Editor.PackageManager
                 GUILayout.Space(30);
                 if (GUILayout.Button("Refresh", GUILayout.Width(60f)))
                 {
-                    RepaintWindowInstance();
+                    RefreshPackages();
                 }
                 
                 GUILayout.EndHorizontal();
