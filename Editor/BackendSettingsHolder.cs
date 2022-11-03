@@ -7,7 +7,7 @@ namespace TalusBackendData.Editor
     ///     FilePath must be ignored by GIT!
     ///     BackendSettingsHolder provides information for other Packages.
     /// </summary>
-    [FilePath("ProjectSettings/TalusSettings.asset", FilePathAttribute.Location.ProjectFolder)]
+    [FilePath("ProjectSettings/TalusAuth.asset", FilePathAttribute.Location.ProjectFolder)]
     public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
     {
         // TalusSettings.asset path
@@ -58,6 +58,11 @@ namespace TalusBackendData.Editor
         public void SaveSettings()
         {
             Save(true);
+        }
+
+        private void OnEnable()
+        {
+            hideFlags &= ~HideFlags.NotEditable;
         }
     }
 }

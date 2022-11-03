@@ -55,10 +55,7 @@ namespace TalusBackendData.Editor.Interfaces
                 {
                     if (serializedProperty.name == "m_Script") { continue; }
 
-                    serializedProperty.stringValue = EditorGUILayout.TextField(
-                        GetLabel(serializedProperty.displayName),
-                        serializedProperty.stringValue
-                    );
+                    EditorGUILayout.PropertyField(serializedProperty);
                 }
             }
 
