@@ -90,7 +90,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUI.backgroundColor = Color.cyan;
             GUILayout.Space(30);
 
-            if (GUILayout.Button("Refresh", GUILayout.Width(60f)))
+            if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(60f)))
             {
                 RefreshPackages();
             }
