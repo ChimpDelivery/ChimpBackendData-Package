@@ -10,12 +10,16 @@ namespace TalusBackendData.Editor.Interfaces
     /// <summary>
     ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
+    public abstract class BaseSettingsProvider<T> : SettingsProvider
     {
-        public virtual string Title { get; } = "Default Panel Title";
-        public virtual string Description { get; } = "Default Panel Description";
-        public virtual bool UnlockPanel { get; set; } = true;
+        // 
+        public abstract string Title { get; }
+        public abstract string Description { get; }
 
+        // to change properties we need to unlock panel
+        public virtual bool UnlockPanel { get; set; } = true;
+        
+        //
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
         public abstract SerializedObject SerializedObject { get; }
@@ -32,16 +36,9 @@ namespace TalusBackendData.Editor.Interfaces
         public override void OnGUI(string searchContext)
         {
             EditorGUILayout.BeginVertical();
+            
+            ShowInfo();
 
-            // panel info box
-            {
-                Color defaultColor = GUI.color;
-                GUI.backgroundColor = Color.yellow;
-                EditorGUILayout.HelpBox(Description, MessageType.Info, true);
-                GUI.backgroundColor = defaultColor;
-            }
-
-            // to change properties we need to unlock panel
             GUI.enabled = !UnlockPanel;
 
             EditorGUI.BeginChangeCheck();
@@ -61,37 +58,43 @@ namespace TalusBackendData.Editor.Interfaces
 
             // stick buttons to the bottom
             GUILayout.FlexibleSpace();
-
-            // reset button
-            {
-                GUI.enabled = !UnlockPanel;
-                GUI.backgroundColor = Color.green;
-
-                if (GUILayout.Button("Reset to defaults", GUILayout.MinHeight(50)))
-                {
-                    OnSettingsReset.Invoke();
-                }
-            }
-
-            // unlock button
-            {
-                GUI.enabled = true;
-                GUI.backgroundColor = Color.yellow;
-
-                string lockButtonName = (UnlockPanel) ? "Unlock Settings" : "Lock Settings";
-                if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
-                {
-                    UnlockPanel = !UnlockPanel;
-                }
-            }
+            
+            ShowResetButton();
+            ShowLockButton();
 
             EditorGUILayout.EndVertical();
         }
 
-        // helper
-        protected GUIContent GetLabel(string name)
+        private void ShowInfo()
         {
-            return EditorGUIUtility.TrTextContent(name);
+            Color defaultColor = GUI.color;
+            GUI.backgroundColor = Color.yellow;
+            EditorGUILayout.HelpBox(Description, MessageType.Info, true);
+            GUI.backgroundColor = defaultColor;
+        }
+
+        private void ShowResetButton()
+        {
+            GUI.enabled = !UnlockPanel;
+            GUI.backgroundColor = Color.green;
+
+            if (GUILayout.Button("Reset to defaults", GUILayout.MinHeight(50)))
+            {
+                OnSettingsReset.Invoke();
+            }
+        }
+
+        private void ShowLockButton()
+        {
+            GUI.enabled = true;
+            GUI.backgroundColor = Color.yellow;
+
+            string lockButtonName = (UnlockPanel) ? "Unlock Settings" : "Lock Settings";
+
+            if (GUILayout.Button(lockButtonName, GUILayout.MinHeight(50)))
+            {
+                UnlockPanel = !UnlockPanel;
+            }
         }
     }
 }
