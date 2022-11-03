@@ -13,9 +13,9 @@ namespace TalusBackendData.Editor.Interfaces
     public abstract class BaseSettingsProvider<T> : SettingsProvider
     {
         // 
-        public virtual string Title => "Default Panel Title";
-        public virtual string Description => "Default Panel Description";
-        
+        public abstract string Title { get; }
+        public abstract string Description { get; }
+
         // to change properties we need to unlock panel
         public virtual bool UnlockPanel { get; set; } = true;
         
