@@ -1,8 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 
-using TalusBackendData.Editor.Utility;
-
 namespace TalusBackendData.Editor
 {
     /// <summary>
@@ -56,27 +54,10 @@ namespace TalusBackendData.Editor
                 SaveSettings();
             }
         }
-
-        // Some packages use this symbol for conditional compilation.
-        private readonly string _BackendSymbol = "ENABLE_BACKEND";
-        public string BackendSymbol => _BackendSymbol;
-
-        public void AddBackendSymbol()
+        
+        public void SaveSettings()
         {
-            if (DefineSymbols.Contains(BackendSymbol)) { return; }
-
-            DefineSymbols.Add(BackendSymbol);
-            Debug.Log($"[TalusBackendData-Package] {BackendSymbol} define symbol adding...");
+            Save(true);
         }
-
-        public void RemoveBackendSymbol()
-        {
-            if (!DefineSymbols.Contains(BackendSymbol)) { return; }
-
-            DefineSymbols.Remove(BackendSymbol);
-            Debug.Log($"[TalusBackendData-Package] {BackendSymbol} define symbol removing...");
-        }
-
-        public void SaveSettings() => Save(true);
     }
 }
