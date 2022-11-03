@@ -98,25 +98,6 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.EndHorizontal();
         }
 
-        private void ShowFooterMenu()
-        {
-            GUI.backgroundColor = default;
-
-            GUILayout.Space(8);
-            GUILayout.Label("Backend Integration Status:", EditorStyles.helpBox);
-
-            bool packageCheck = (_InstalledPackageCount == _Packages.Count) && _UpdatablePackageCount == 0;
-            GUI.backgroundColor = packageCheck ? Color.green : Color.red;
-            GUILayout.Toggle(packageCheck, "All packages installed & updated");
-
-            bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
-
-            GUI.backgroundColor = symbolCheck ? Color.green : Color.red;
-            GUILayout.Toggle(symbolCheck, "Backend define symbol exists");
-
-            GUI.backgroundColor = default;
-        }
-
         private void ShowPackagesMenu()
         {
             GUILayout.Space(16);
@@ -147,32 +128,6 @@ namespace TalusBackendData.Editor.PackageManager
             }
         }
 
-        private void ShowDefineSymbolMenu()
-        {
-            bool symbolCheck = DefineSymbols.Contains(BackendSettingsHolder.instance.BackendSymbol);
-
-            GUILayout.FlexibleSpace();
-            GUILayout.Label($"Backend Define Symbol ({BackendSettingsHolder.instance.BackendSymbol}):", EditorStyles.boldLabel);
-            GUI.backgroundColor = (symbolCheck) ? Color.green : Color.red;
-
-            string buttonName = (symbolCheck) ? "Backend Symbol exist." : "Backend Symbol doesn't exist!";
-
-            if (GUILayout.Button(buttonName, GUILayout.MinHeight(25)))
-            {
-                if (symbolCheck)
-                {
-                    InfoBox.ShowConfirmation(
-                        "You are about to remove the 'Backend Define Symbol' definition!",
-                        () => BackendSettingsHolder.instance.RemoveBackendSymbol()
-                    );
-
-                    return;
-                }
-
-                BackendSettingsHolder.instance.AddBackendSymbol();
-            }
-        }
-
         private void OnGUI()
         {
             if (_ListPackages == null || !_ListPackages.Request.IsCompleted)
@@ -197,8 +152,6 @@ namespace TalusBackendData.Editor.PackageManager
 
             ShowHeaderMenu();
             ShowPackagesMenu();
-            ShowDefineSymbolMenu();
-            ShowFooterMenu();
 
             GUILayout.EndVertical();
         }
