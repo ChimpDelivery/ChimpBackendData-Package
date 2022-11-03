@@ -111,7 +111,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                 GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
 
-                if (GUILayout.Button(GetPrettyPackageName(package.Key), GUILayout.MinHeight(25)))
+                if (GUILayout.Button(package.Value.DisplayName, GUILayout.MinHeight(25)))
                 {
                     if (!isPackageInstalled || isUpdateExist)
                     {
@@ -166,7 +166,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                 foreach (PackageModel model in response.packages)
                 {
-                    _Packages[model.package_id] = new PackageStatus(false, model.hash, false);
+                    _Packages[model.package_id] = new PackageStatus(false, "no-name", model.hash, false);
                 }
 
                 onComplete?.Invoke();
@@ -202,7 +202,7 @@ namespace TalusBackendData.Editor.PackageManager
                         bool isGitPackage = (package.source == PackageSource.Git);
                         string gitHash = (isGitPackage) ? package.git.hash : "";
 
-                        _Packages[package.name] = new PackageStatus(true, gitHash, false);
+                        _Packages[package.name] = new PackageStatus(true, package.displayName, gitHash, false);
 
                         if (isGitPackage)
                         {
