@@ -166,7 +166,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                 foreach (PackageModel model in response.packages)
                 {
-                    _Packages[model.package_id] = new PackageStatus(false, "no-name", model.hash, false);
+                    _Packages[model.package_id] = new PackageStatus(false, model.package_id, model.hash, false);
                 }
 
                 onComplete?.Invoke();
