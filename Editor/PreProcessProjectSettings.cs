@@ -39,9 +39,6 @@ namespace TalusBackendData.Editor
         {
             Debug.Log("[TalusBackendData-Package] update product settings...");
 
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, ScriptingImplementation.IL2CPP);
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
-
             if (app != null)
             {
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
