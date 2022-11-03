@@ -166,7 +166,13 @@ namespace TalusBackendData.Editor.PackageManager
 
                 foreach (PackageModel model in response.packages)
                 {
-                    _Packages[model.package_id] = new PackageStatus(false, model.package_id, model.hash, false);
+                    _Packages[model.package_id] = new PackageStatus
+                    {
+                        Exist = false,
+                        DisplayName = model.package_id,
+                        Hash = model.hash,
+                        UpdateExist = false
+                    };
                 }
 
                 onComplete?.Invoke();
@@ -202,7 +208,13 @@ namespace TalusBackendData.Editor.PackageManager
                         bool isGitPackage = (package.source == PackageSource.Git);
                         string gitHash = (isGitPackage) ? package.git.hash : "";
 
-                        _Packages[package.name] = new PackageStatus(true, package.displayName, gitHash, false);
+                        _Packages[package.name] = new PackageStatus
+                        {
+                            Exist = true,
+                            DisplayName = package.displayName,
+                            Hash = gitHash,
+                            UpdateExist = false
+                        };
 
                         if (isGitPackage)
                         {
@@ -308,14 +320,6 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             RepaintWindowInstance();
-        }
-
-        private static string GetPrettyPackageName(string package)
-        {
-            string[] splitPackageName = package.Split('.');
-            string companyName = splitPackageName[1];
-
-            return companyName.Equals("talus") ? splitPackageName[splitPackageName.Length - 1] : package;
         }
     }
 }
