@@ -4,13 +4,12 @@ using UnityEngine;
 namespace TalusBackendData.Editor
 {
     /// <summary>
-    ///     FilePath must be ignored by GIT!
-    ///     BackendSettingsHolder provides information for other Packages.
+    ///     BackendSettingsHolder provides auth information to work with Backend API.
     /// </summary>
     [FilePath("ProjectSettings/TalusAuth.asset", FilePathAttribute.Location.ProjectFolder)]
     public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
     {
-        // TalusSettings.asset path
+        // SO(TalusAuth.asset) instance path (must be ignored by GIT)
         public string Path => GetFilePath();
 
         // Unity3D - BackendSettings Panel Path
