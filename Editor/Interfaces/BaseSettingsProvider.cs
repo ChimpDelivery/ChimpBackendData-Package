@@ -10,12 +10,16 @@ namespace TalusBackendData.Editor.Interfaces
     /// <summary>
     ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider<T> : SettingsProvider, ISettingsProvider
+    public abstract class BaseSettingsProvider<T> : SettingsProvider
     {
-        public virtual string Title { get; } = "Default Panel Title";
-        public virtual string Description { get; } = "Default Panel Description";
+        // 
+        public virtual string Title => "Default Panel Title";
+        public virtual string Description => "Default Panel Description";
+        
+        //
         public virtual bool UnlockPanel { get; set; } = true;
-
+        
+        //
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
         public abstract SerializedObject SerializedObject { get; }
@@ -86,12 +90,6 @@ namespace TalusBackendData.Editor.Interfaces
             }
 
             EditorGUILayout.EndVertical();
-        }
-
-        // helper
-        protected GUIContent GetLabel(string name)
-        {
-            return EditorGUIUtility.TrTextContent(name);
         }
     }
 }
