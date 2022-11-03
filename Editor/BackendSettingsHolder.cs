@@ -27,7 +27,7 @@ namespace TalusBackendData.Editor
 
         // {Web Dashboard} - Api Token
         [SerializeField]
-        private string _ApiToken = default;
+        private string _ApiToken;
         public string ApiToken
         {
             get => _ApiToken;
