@@ -1,21 +1,17 @@
 using UnityEditor;
 using UnityEngine;
 
+using TalusBackendData.Editor.Interfaces.TalusBackendData.Editor;
+
 namespace TalusBackendData.Editor
 {
     /// <summary>
     ///     BackendSettingsHolder provides auth information to work with Backend API.
+    ///     SO(TalusAuth.asset) instance path (must be ignored by GIT)
     /// </summary>
     [FilePath("ProjectSettings/TalusAuth.asset", FilePathAttribute.Location.ProjectFolder)]
-    public class BackendSettingsHolder : ScriptableSingleton<BackendSettingsHolder>
+    public class BackendSettingsHolder : BaseSettingsHolder<BackendSettingsHolder>
     {
-        // SO(TalusAuth.asset) instance path (must be ignored by GIT)
-        public string Path => GetFilePath();
-
-        // Unity3D - BackendSettings Panel Path
-        private const string _ProviderPath = "Talus Studio/1. Authentication";
-        public static string ProviderPath => _ProviderPath;
-
         // {Web Dashboard} - Api Root URL
         [SerializeField]
         private string _ApiUrl = "http://34.252.141.173";
@@ -52,16 +48,6 @@ namespace TalusBackendData.Editor
                 _AppId = value;
                 SaveSettings();
             }
-        }
-        
-        public void SaveSettings()
-        {
-            Save(true);
-        }
-
-        private void OnEnable()
-        {
-            hideFlags &= ~HideFlags.NotEditable;
         }
     }
 }
