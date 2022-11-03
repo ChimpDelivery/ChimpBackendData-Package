@@ -8,10 +8,10 @@ namespace TalusBackendData.Editor.Utility
         {
             Show(
                 "Error :(",
-                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/{BackendSettingsHolder.ProviderPath})",
+                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/Talus Studio/Auth)",
                 "Open Settings",
                 "Close",
-                () => SettingsService.OpenProjectSettings(BackendSettingsHolder.ProviderPath)
+                () => SettingsService.OpenProjectSettings("Talus Studio/1. Authentication")
             );
         }
 

@@ -7,9 +7,9 @@ using TalusBackendData.Editor.Interfaces;
 
 namespace TalusBackendData.Editor
 {
-    internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsProvider>
+    internal class BackendSettingsProvider : BaseSettingsProvider
     {
-        public override string Title => BackendSettingsHolder.ProviderPath;
+        public override string Title => "Talus Studio/1. Authentication";
         public override string Description => "You can get the 'Api Token' from 'Talus Dashboard/Profile'";
 
         public override SerializedObject SerializedObject => _SerializedObject;
@@ -18,7 +18,7 @@ namespace TalusBackendData.Editor
         [SettingsProvider]
         public static SettingsProvider CreateBackendSettingsProvider()
         {
-            return new BackendSettingsProvider(BackendSettingsHolder.ProviderPath, SettingsScope.Project);
+            return new BackendSettingsProvider("Talus Studio/1. Authentication", SettingsScope.Project);
         }
 
         public BackendSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null)

@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor.Interfaces
     /// <summary>
     ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider<T> : SettingsProvider
+    public abstract class BaseSettingsProvider : SettingsProvider
     {
         // 
         public abstract string Title { get; }
