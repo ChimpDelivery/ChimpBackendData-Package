@@ -13,6 +13,7 @@ namespace TalusBackendData.Editor
     public class BackendSettingsHolder : BaseSettingsHolder<BackendSettingsHolder>
     {
         // {Web Dashboard} - Api Root URL
+        [Header("Backend Credentials")]
         [SerializeField]
         private string _ApiUrl = "http://34.252.141.173";
         public string ApiUrl
