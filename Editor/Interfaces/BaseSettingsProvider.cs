@@ -12,13 +12,13 @@ namespace TalusBackendData.Editor.Interfaces
     /// </summary>
     public abstract class BaseSettingsProvider : SettingsProvider
     {
-        // 
+        //
         public abstract string Title { get; }
         public abstract string Description { get; }
 
         // to change properties we need to unlock panel
         public virtual bool UnlockPanel { get; set; } = true;
-        
+
         //
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
@@ -36,7 +36,7 @@ namespace TalusBackendData.Editor.Interfaces
         public override void OnGUI(string searchContext)
         {
             EditorGUILayout.BeginVertical();
-            
+
             ShowInfo();
 
             GUI.enabled = !UnlockPanel;
@@ -52,13 +52,14 @@ namespace TalusBackendData.Editor.Interfaces
                 {
                     if (serializedProperty.name == "m_Script") { continue; }
 
+                    EditorGUIUtility.labelWidth = 200f;
                     EditorGUILayout.PropertyField(serializedProperty);
                 }
             }
 
             // stick buttons to the bottom
             GUILayout.FlexibleSpace();
-            
+
             ShowResetButton();
             ShowLockButton();
 
