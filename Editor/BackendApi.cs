@@ -45,7 +45,9 @@ namespace TalusBackendData.Editor
         private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
         {
             using UnityWebRequest www = UnityWebRequest.Get(url);
-            www.SetRequestHeader("api-key", _ApiToken);
+            www.SetRequestHeader("Authorization", $"Bearer {_ApiToken}");
+            www.SetRequestHeader("Accept", "application/json");
+            www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
 
