@@ -196,7 +196,7 @@ namespace TalusBackendData.Editor.PackageManager
                     foreach (PackageInfo package in _ListPackages.Request.Result)
                     {
                         if (!_Packages.ContainsKey(package.name)) { continue; }
-
+                        
                         bool isGitPackage = (package.source == PackageSource.Git);
                         string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
 
@@ -267,7 +267,7 @@ namespace TalusBackendData.Editor.PackageManager
 
                 if (updateExist)
                 {
-                    RefreshWindowInstance();
+                    RefreshWindowInstance(false);
                 }
             });
         }
