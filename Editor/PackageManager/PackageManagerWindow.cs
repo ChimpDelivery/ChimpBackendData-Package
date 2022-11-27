@@ -18,11 +18,21 @@ namespace TalusBackendData.Editor.PackageManager
     internal class PackageManagerWindow : EditorWindow
     {
         private static PackageManagerWindow s_Instance;
+        private static PackageManagerWindow Instance
+        {
+            get
+            {
+                if (s_Instance == null)
+                {
+                    s_Instance = GetWindow<PackageManagerWindow>();
+                }
 
-        private readonly Dictionary<string, PackageStatus> _Packages = new Dictionary<string, Models.PackageStatus>();
+                return s_Instance;
+            }
+        }
 
-        private int _InstalledPackageCount = 0;
-
+        private readonly Dictionary<string, PackageStatus> _Packages = new();
+        
         private RequestHandler<ListRequest> _ListPackages;
         private RequestHandler<AddRequest> _AddPackage;
         private RequestHandler<RemoveRequest> _RemovePackage;
@@ -50,53 +60,48 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void OnEnable()
         {
-            if (_ListPackages != null)
-            {
-                return;
-            }
-
+            if (_ListPackages != null) { return; }
+            
             RefreshPackages();
         }
 
         private void OnFocus()
         {
-            if (_ListPackages != null)
-            {
-                return;
-            }
-
+            if (_ListPackages != null) { return; }
+            
             RefreshPackages();
         }
 
+        private void ShowInfoText(string text, Color color)
+        {
+            GUI.backgroundColor = color;
+            GUILayout.Space(8);
+            GUILayout.Label(text, EditorStyles.foldoutHeader);
+        }
+
+        // shows descriptions of buttons
         private void ShowHeaderMenu()
         {
             GUILayout.Space(8);
             GUILayout.BeginHorizontal();
-
-            GUI.backgroundColor = Color.green;
-            GUILayout.Button("Installed");
-
-            GUI.backgroundColor = Color.yellow;
-            GUILayout.Button("Update available");
-
-            GUI.backgroundColor = Color.red;
-            GUILayout.Button("Not installed");
-
-            GUI.backgroundColor = Color.cyan;
-            GUILayout.Space(30);
-
-            if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(60f)))
             {
-                RefreshPackages();
-            }
+                GUI.backgroundColor = Color.green; GUILayout.Button("Installed");
+                GUI.backgroundColor = Color.yellow; GUILayout.Button("Update available");
+                GUI.backgroundColor = Color.red; GUILayout.Button("Not installed");
+                GUILayout.Space(30);
+                GUI.backgroundColor = Color.cyan;
 
+                if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(60f)))
+                {
+                    RefreshPackages();
+                }
+            }
             GUILayout.EndHorizontal();
         }
 
         private void ShowPackagesMenu()
         {
             GUILayout.Space(16);
-
             GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
 
             foreach (KeyValuePair<string, PackageStatus> package in _Packages)
@@ -104,7 +109,9 @@ namespace TalusBackendData.Editor.PackageManager
                 bool isPackageInstalled = package.Value.Exist;
                 bool isUpdateExist = package.Value.UpdateExist;
 
-                GUI.backgroundColor = (isPackageInstalled) ? ((isUpdateExist) ? Color.yellow : Color.green) : Color.red;
+                GUI.backgroundColor = (isPackageInstalled) 
+                        ? ((isUpdateExist) ? Color.yellow : Color.green) 
+                        : Color.red;
 
                 if (GUILayout.Button(package.Value.DisplayName, GUILayout.MinHeight(25)))
                 {
@@ -127,19 +134,13 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (_ListPackages == null || !_ListPackages.Request.IsCompleted)
             {
-                GUI.backgroundColor = Color.yellow;
-                GUILayout.Space(8);
-                GUILayout.Label("Preparing package list...", EditorStyles.foldoutHeader);
-
+                ShowInfoText("Preparing package list...", Color.yellow);
                 return;
             }
 
             if (IsUnityReloading())
             {
-                GUI.backgroundColor = Color.yellow;
-                GUILayout.Space(8);
-                GUILayout.Label("Wait for editor reloading...", EditorStyles.foldoutHeader);
-
+                ShowInfoText("Wait for editor reloading...", Color.yellow);
                 return;
             }
 
@@ -154,7 +155,6 @@ namespace TalusBackendData.Editor.PackageManager
         private void PopulatePackages(System.Action onComplete = null)
         {
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-
             api.GetAllPackages((response) =>
             {
                 _Packages.Clear();
@@ -176,104 +176,91 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void RefreshPackages()
         {
-            _InstalledPackageCount = 0;
-
             PopulatePackages(ListPackages);
         }
 
         private void ListPackages()
         {
-            if (_ListPackages != null && !_ListPackages.Request.IsCompleted)
-            {
-                return;
-            }
+            if (_ListPackages != null && !_ListPackages.Request.IsCompleted) { return; }
 
-            _ListPackages = new RequestHandler<ListRequest>(Client.List(), (statusCode) =>
-            {
-                if (statusCode == StatusCode.Success)
-                {
-                    foreach (PackageInfo package in _ListPackages.Request.Result)
+            _ListPackages = new RequestHandler<ListRequest>(
+                Client.List(), 
+                (statusCode) => {
+                    
+                    if (statusCode == StatusCode.Success)
                     {
-                        if (!_Packages.ContainsKey(package.name))
+                        foreach (PackageInfo package in _ListPackages.Request.Result)
                         {
-                            continue;
+                            if (!_Packages.ContainsKey(package.name)) { continue; }
+
+                            bool isGitPackage = (package.source == PackageSource.Git);
+                            string gitHash = (isGitPackage) ? package.git.hash : string.Empty;
+
+                            _Packages[package.name] = new PackageStatus {
+                                Exist = true,
+                                DisplayName = package.displayName,
+                                Hash = gitHash,
+                                UpdateExist = false
+                            };
+
+                            if (isGitPackage)
+                            {
+                                CheckPackageVersion(package.name, gitHash);
+                            }
                         }
-
-                        bool isGitPackage = (package.source == PackageSource.Git);
-                        string gitHash = (isGitPackage) ? package.git.hash : "";
-
-                        _Packages[package.name] = new PackageStatus
-                        {
-                            Exist = true,
-                            DisplayName = package.displayName,
-                            Hash = gitHash,
-                            UpdateExist = false
-                        };
-
-                        if (isGitPackage)
-                        {
-                            CheckPackageVersion(package.name, gitHash);
-                        }
-
-                        ++_InstalledPackageCount;
                     }
-                }
-                else
-                {
-                    InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
-                }
+                    else
+                    {
+                        InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
+                    }
 
-                RefreshWindowInstance();
-            });
+                    RefreshWindowInstance(false);
+                }
+            );
         }
 
         private void RemovePackage(string packageId)
         {
-            if (_RemovePackage != null && !_RemovePackage.Request.IsCompleted)
-            {
-                return;
-            }
+            if (_RemovePackage != null && !_RemovePackage.Request.IsCompleted) { return; }
 
-            _RemovePackage = new RequestHandler<RemoveRequest>(Client.Remove(packageId), (statusCode) =>
-            {
-                string message = (statusCode == StatusCode.Success)
-                        ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
-                        : _RemovePackage.Request.Error.message;
+            _RemovePackage = new RequestHandler<RemoveRequest>(
+                Client.Remove(packageId), 
+                (statusCode) => {
+                    
+                    string message = (statusCode == StatusCode.Success)
+                            ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
+                            : _RemovePackage.Request.Error.message;
 
-                InfoBox.Show($"{statusCode} !", message, "OK");
-
-                RefreshWindowInstance();
-            });
+                    InfoBox.Show($"{statusCode} !", message, "OK");
+                    RefreshWindowInstance();
+                }
+            );
         }
 
         private void AddPackage(string packageId)
         {
-            if (_AddPackage != null && !_AddPackage.Request.IsCompleted)
-            {
-                return;
-            }
+            if (_AddPackage != null && !_AddPackage.Request.IsCompleted) { return; }
 
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
+            api.GetPackageInfo(packageId, package => {
+                _AddPackage = new RequestHandler<AddRequest>(
+                    Client.Add(package.url), 
+                    (statusCode) => {
+                        
+                        string message = (statusCode == StatusCode.Success)
+                                ? $"{_AddPackage.Request.Result.packageId} added successfully!"
+                                : _AddPackage.Request.Error.message;
 
-            api.GetPackageInfo(packageId, package =>
-            {
-                _AddPackage = new RequestHandler<AddRequest>(Client.Add(package.url), (statusCode) =>
-                {
-                    string message = (statusCode == StatusCode.Success)
-                            ? $"{_AddPackage.Request.Result.packageId} added successfully!"
-                            : _AddPackage.Request.Error.message;
-
-                    InfoBox.Show($"{statusCode} !", message, "OK");
-
-                    RefreshWindowInstance();
-                });
+                        InfoBox.Show($"{statusCode} !", message, "OK");
+                        RefreshWindowInstance();
+                    }
+                );
             });
         }
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-
             api.GetPackageInfo(packageId, package =>
             {
                 bool updateExist = !packageHash.Equals(package.hash);
@@ -293,16 +280,6 @@ namespace TalusBackendData.Editor.PackageManager
                     || (EditorApplication.isCompiling || EditorApplication.isUpdating));
         }
 
-        private static void RepaintWindowInstance()
-        {
-            if (s_Instance == null)
-            {
-                return;
-            }
-
-            s_Instance.Repaint();
-        }
-
         private static void RefreshWindowInstance(bool saveAssets = true)
         {
             if (saveAssets)
@@ -311,7 +288,7 @@ namespace TalusBackendData.Editor.PackageManager
                 AssetDatabase.Refresh();
             }
 
-            RepaintWindowInstance();
+            Instance.Repaint();
         }
     }
 }
