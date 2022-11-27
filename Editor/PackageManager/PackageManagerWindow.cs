@@ -185,33 +185,32 @@ namespace TalusBackendData.Editor.PackageManager
 
             _ListPackages = new RequestHandler<ListRequest>(
                 Client.List(), 
-                (statusCode) => {
-                    
-                    if (statusCode == StatusCode.Success)
-                    {
-                        foreach (PackageInfo package in _ListPackages.Request.Result)
-                        {
-                            if (!_Packages.ContainsKey(package.name)) { continue; }
+                statusCode => {
 
-                            bool isGitPackage = (package.source == PackageSource.Git);
-                            string gitHash = (isGitPackage) ? package.git.hash : string.Empty;
-
-                            _Packages[package.name] = new PackageStatus {
-                                Exist = true,
-                                DisplayName = package.displayName,
-                                Hash = gitHash,
-                                UpdateExist = false
-                            };
-
-                            if (isGitPackage)
-                            {
-                                CheckPackageVersion(package.name, gitHash);
-                            }
-                        }
-                    }
-                    else
+                    if (statusCode != StatusCode.Success)
                     {
                         InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
+                        return;
+                    }
+
+                    foreach (PackageInfo package in _ListPackages.Request.Result)
+                    {
+                        if (!_Packages.ContainsKey(package.name)) { continue; }
+
+                        bool isGitPackage = (package.source == PackageSource.Git);
+                        string gitHash = (isGitPackage) ? package.git.hash : string.Empty;
+
+                        _Packages[package.name] = new PackageStatus {
+                            Exist = true,
+                            DisplayName = package.displayName,
+                            Hash = gitHash,
+                            UpdateExist = false
+                        };
+
+                        if (isGitPackage)
+                        {
+                            CheckPackageVersion(package.name, gitHash);
+                        }
                     }
 
                     RefreshWindowInstance(false);
@@ -225,7 +224,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             _RemovePackage = new RequestHandler<RemoveRequest>(
                 Client.Remove(packageId), 
-                (statusCode) => {
+                statusCode => {
                     
                     string message = (statusCode == StatusCode.Success)
                             ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
@@ -245,7 +244,7 @@ namespace TalusBackendData.Editor.PackageManager
             api.GetPackageInfo(packageId, package => {
                 _AddPackage = new RequestHandler<AddRequest>(
                     Client.Add(package.url), 
-                    (statusCode) => {
+                    statusCode => {
                         
                         string message = (statusCode == StatusCode.Success)
                                 ? $"{_AddPackage.Request.Result.packageId} added successfully!"
