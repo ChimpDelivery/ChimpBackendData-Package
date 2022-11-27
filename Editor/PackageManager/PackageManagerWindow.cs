@@ -198,18 +198,18 @@ namespace TalusBackendData.Editor.PackageManager
                         if (!_Packages.ContainsKey(package.name)) { continue; }
 
                         bool isGitPackage = (package.source == PackageSource.Git);
-                        string gitHash = (isGitPackage) ? package.git.hash : string.Empty;
+                        string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
 
                         _Packages[package.name] = new PackageStatus {
                             Exist = true,
                             DisplayName = package.displayName,
-                            Hash = gitHash,
+                            Hash = packageHash,
                             UpdateExist = false
                         };
 
                         if (isGitPackage)
                         {
-                            CheckPackageVersion(package.name, gitHash);
+                            CheckPackageVersion(package.name, packageHash);
                         }
                     }
 
