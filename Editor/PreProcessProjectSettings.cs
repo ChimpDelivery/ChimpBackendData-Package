@@ -11,9 +11,17 @@ namespace TalusBackendData.Editor
     {
         public static System.Action<AppModel> OnSyncComplete = delegate { };
 
-        private string _ApiUrl => (Application.isBatchMode) ? CommandLineParser.GetArgument("-apiUrl") : BackendSettingsHolder.instance.ApiUrl;
-        private string _ApiToken => (Application.isBatchMode) ? CommandLineParser.GetArgument("-apiKey") : BackendSettingsHolder.instance.ApiToken;
-        private string _AppId => (Application.isBatchMode) ? CommandLineParser.GetArgument("-appId") : BackendSettingsHolder.instance.AppId;
+        private string ApiUrl => (Application.isBatchMode) 
+                ? CommandLineParser.GetArgument("-apiUrl") 
+                : BackendSettingsHolder.instance.ApiUrl;
+        
+        private string ApiToken => (Application.isBatchMode) 
+                ? CommandLineParser.GetArgument("-apiKey") 
+                : BackendSettingsHolder.instance.ApiToken;
+        
+        private string AppId => (Application.isBatchMode) 
+                ? CommandLineParser.GetArgument("-appId") 
+                : BackendSettingsHolder.instance.AppId;
 
         [MenuItem("TalusBackend/Sync Project Settings", priority = 12000)]
         public static void Sync()
@@ -25,8 +33,8 @@ namespace TalusBackendData.Editor
         {
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
-            BackendApi api = new(_ApiUrl, _ApiToken);
-            api.GetAppInfo(_AppId, (app) =>
+            var api = new BackendApi(ApiUrl, ApiToken);
+            api.GetAppInfo(AppId, (app) =>
             {
                 UpdateProductSettings(app);
                 
