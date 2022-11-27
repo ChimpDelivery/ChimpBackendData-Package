@@ -53,8 +53,7 @@ namespace TalusBackendData.Editor
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                string logMessage = (www.responseCode == 503) ? "Web Dashboard is under maintenance!" : www.error;
-                Debug.LogError($"[TalusBackendData-Package] {logMessage}");
+                Debug.LogError($"[TalusBackendData-Package] Error: {GetResponseMessage(www)}");
             }
             else
             {
@@ -64,11 +63,21 @@ namespace TalusBackendData.Editor
 
                 if (Application.isBatchMode)
                 {
-                    Debug.Log($"[TalusBackendData-Package] Fetched model: {model}");
+                    Debug.Log($"[TalusBackendData-Package] Fetched AppModel: {model}");
                 }
 
                 onFetchComplete(model);
             }
+        }
+
+        private static string GetResponseMessage(UnityWebRequest request)
+        {
+            return request.responseCode switch
+            {
+                503 => "Web Dashboard is under maintenance!",
+                401 => "Unauthorized! Check auth token...",
+                _ => request.error
+            };
         }
     }
 }
