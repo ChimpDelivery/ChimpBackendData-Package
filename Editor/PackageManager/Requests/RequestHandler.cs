@@ -7,7 +7,8 @@ namespace TalusBackendData.Editor.PackageManager.Requests
     public class RequestHandler<T> where T : Request
     {
         public T Request { get; }
-        public System.Action<StatusCode> OnComplete { get; }
+        
+        private System.Action<StatusCode> OnComplete { get; }
 
         public RequestHandler(T request, System.Action<StatusCode> onComplete = null)
         {
@@ -19,7 +20,7 @@ namespace TalusBackendData.Editor.PackageManager.Requests
 
         private void Handler()
         {
-            if (Request != null && !Request.IsCompleted)
+            if (!Request.IsCompleted)
             {
                 return;
             }
