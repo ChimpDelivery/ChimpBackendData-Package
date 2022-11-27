@@ -18,6 +18,8 @@ namespace TalusBackendData.Editor.PackageManager
 {
     internal class PackageManagerWindow : EditorWindow
     {
+        private const string _WindowTitle = "Talus Package Manager";
+
         private static PackageManagerWindow s_Instance;
         private static PackageManagerWindow Instance
         {
@@ -55,7 +57,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             s_Instance = GetWindow<PackageManagerWindow>();
             s_Instance.minSize = new Vector2(450, 500);
-            s_Instance.titleContent = new GUIContent("Talus Package Manager");
+            s_Instance.titleContent = new GUIContent(_WindowTitle);
             s_Instance.Show();
         }
 
@@ -80,8 +82,7 @@ namespace TalusBackendData.Editor.PackageManager
             GUILayout.Label(text, EditorStyles.foldoutHeader);
         }
 
-        // shows descriptions of buttons
-        private void ShowHeaderMenu()
+        private void ShowButtonDescriptions()
         {
             GUILayout.Space(8);
             GUILayout.BeginHorizontal();
@@ -147,7 +148,7 @@ namespace TalusBackendData.Editor.PackageManager
 
             GUILayout.BeginVertical();
 
-            ShowHeaderMenu();
+            ShowButtonDescriptions();
             ShowPackagesMenu();
 
             GUILayout.EndVertical();
@@ -193,8 +194,7 @@ namespace TalusBackendData.Editor.PackageManager
                         InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
                         return;
                     }
-
-
+                    
                     foreach (PackageInfo package in _ListPackages.Request.Result
                         .Where(package => _Packages.ContainsKey(package.name)))
                     {
