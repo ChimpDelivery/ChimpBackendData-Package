@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -193,10 +194,10 @@ namespace TalusBackendData.Editor.PackageManager
                         return;
                     }
 
-                    foreach (PackageInfo package in _ListPackages.Request.Result)
+
+                    foreach (PackageInfo package in _ListPackages.Request.Result
+                        .Where(package => _Packages.ContainsKey(package.name)))
                     {
-                        if (!_Packages.ContainsKey(package.name)) { continue; }
-                        
                         bool isGitPackage = (package.source == PackageSource.Git);
                         string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
 
