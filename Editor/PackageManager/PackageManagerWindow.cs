@@ -15,10 +15,6 @@ using PackageStatus = TalusBackendData.Editor.PackageManager.Models.PackageStatu
 
 namespace TalusBackendData.Editor.PackageManager
 {
-    /// <summary>
-    ///     <b>Talus Package Manager.</b>
-    ///     Package version information is coming from the backend server.
-    /// </summary>
     internal class PackageManagerWindow : EditorWindow
     {
         private static PackageManagerWindow s_Instance;
@@ -26,7 +22,6 @@ namespace TalusBackendData.Editor.PackageManager
         private readonly Dictionary<string, PackageStatus> _Packages = new Dictionary<string, Models.PackageStatus>();
 
         private int _InstalledPackageCount = 0;
-        private int _UpdatablePackageCount = 0;
 
         private RequestHandler<ListRequest> _ListPackages;
         private RequestHandler<AddRequest> _AddPackage;
@@ -182,7 +177,6 @@ namespace TalusBackendData.Editor.PackageManager
         private void RefreshPackages()
         {
             _InstalledPackageCount = 0;
-            _UpdatablePackageCount = 0;
 
             PopulatePackages(ListPackages);
         }
@@ -287,8 +281,6 @@ namespace TalusBackendData.Editor.PackageManager
 
                 if (updateExist)
                 {
-                    ++_UpdatablePackageCount;
-
                     RefreshWindowInstance();
                 }
             });
