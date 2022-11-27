@@ -178,6 +178,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void RefreshPackages()
         {
+            _ListPackages = null;
             PopulatePackages(ListPackages);
         }
 
