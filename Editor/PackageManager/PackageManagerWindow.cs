@@ -64,7 +64,12 @@ namespace TalusBackendData.Editor.PackageManager
         {
             RefreshPackages();
         }
-        
+
+        private void OnInspectorUpdate()
+        {
+            Repaint();
+        }
+
         private void ShowInfoText(string text, Color color)
         {
             GUI.backgroundColor = color;
@@ -206,8 +211,6 @@ namespace TalusBackendData.Editor.PackageManager
                             CheckPackageVersion(package.name, packageHash);
                         }
                     }
-
-                    RefreshWindowInstance(false);
                 }
             );
         }
@@ -225,7 +228,6 @@ namespace TalusBackendData.Editor.PackageManager
                             : _RemovePackage.Request.Error.message;
 
                     InfoBox.Show($"{statusCode} !", message, "OK");
-                    RefreshWindowInstance();
                 }
             );
         }
@@ -245,7 +247,6 @@ namespace TalusBackendData.Editor.PackageManager
                                 : _AddPackage.Request.Error.message;
 
                         InfoBox.Show($"{statusCode} !", message, "OK");
-                        RefreshWindowInstance();
                     }
                 );
             });
@@ -258,11 +259,6 @@ namespace TalusBackendData.Editor.PackageManager
             {
                 bool updateExist = !packageHash.Equals(package.hash);
                 _Packages[packageId].UpdateExist = updateExist;
-
-                if (updateExist)
-                {
-                    RefreshWindowInstance(false);
-                }
             });
         }
 
@@ -271,17 +267,6 @@ namespace TalusBackendData.Editor.PackageManager
             return ((_AddPackage != null && !_AddPackage.Request.IsCompleted)
                     || (_RemovePackage != null && !_RemovePackage.Request.IsCompleted)
                     || (EditorApplication.isCompiling || EditorApplication.isUpdating));
-        }
-
-        private static void RefreshWindowInstance(bool saveAssets = true)
-        {
-            if (saveAssets)
-            {
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-
-            Instance.Repaint();
         }
     }
 }
