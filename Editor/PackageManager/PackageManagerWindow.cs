@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
-
-using UnityEngine;
 
 using TalusBackendData.Editor.PackageManager.Requests;
 using TalusBackendData.Editor.Utility;
@@ -63,18 +62,9 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void OnEnable()
         {
-            if (_ListPackages != null) { return; }
-            
             RefreshPackages();
         }
-
-        private void OnFocus()
-        {
-            if (_ListPackages != null) { return; }
-            
-            RefreshPackages();
-        }
-
+        
         private void ShowInfoText(string text, Color color)
         {
             GUI.backgroundColor = color;
@@ -178,14 +168,13 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void RefreshPackages()
         {
-            _ListPackages = null;
+            if (_ListPackages != null && !_ListPackages.Request.IsCompleted) { return; }
+
             PopulatePackages(ListPackages);
         }
 
         private void ListPackages()
         {
-            if (_ListPackages != null && !_ListPackages.Request.IsCompleted) { return; }
-
             _ListPackages = new RequestHandler<ListRequest>(
                 Client.List(), 
                 statusCode => {
