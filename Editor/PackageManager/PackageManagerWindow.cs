@@ -55,7 +55,7 @@ namespace TalusBackendData.Editor.PackageManager
             }
 
             s_Instance = GetWindow<PackageManagerWindow>();
-            s_Instance.minSize = new Vector2(450, 500);
+            s_Instance.minSize = new Vector2(450, 450);
             s_Instance.titleContent = new GUIContent(_WindowTitle);
             s_Instance.Show();
         }
@@ -74,28 +74,31 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void ShowButtonDescriptions()
         {
-            GUILayout.Space(8);
+            GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
             {
                 GUI.backgroundColor = Color.green; GUILayout.Button("Installed");
                 GUI.backgroundColor = Color.yellow; GUILayout.Button("Update available");
                 GUI.backgroundColor = Color.red; GUILayout.Button("Not installed");
-                GUILayout.Space(30);
-                GUI.backgroundColor = Color.cyan;
-
-                if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(60f)))
-                {
-                    RefreshPackages();
-                }
             }
             GUILayout.EndHorizontal();
         }
 
         private void ShowPackagesMenu()
         {
-            GUILayout.Space(16);
-            GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label($"Packages ({_Packages.Count}):", EditorStyles.boldLabel);
+                GUILayout.FlexibleSpace();
+                GUI.backgroundColor = Color.cyan;
 
+                if (GUILayout.Button(EditorGUIUtility.IconContent("Refresh"), GUILayout.Width(30f)))
+                {
+                    RefreshPackages();
+                }
+            }
+            GUILayout.EndVertical();
+            
             foreach (KeyValuePair<string, PackageStatus> package in _Packages)
             {
                 bool isPackageInstalled = package.Value.Exist;
@@ -138,8 +141,8 @@ namespace TalusBackendData.Editor.PackageManager
 
             GUILayout.BeginVertical();
 
-            ShowButtonDescriptions();
             ShowPackagesMenu();
+            ShowButtonDescriptions();
 
             GUILayout.EndVertical();
         }
