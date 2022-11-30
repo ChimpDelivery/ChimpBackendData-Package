@@ -28,7 +28,7 @@ namespace TalusBackendData.Editor
                     var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
                     if (Application.isBatchMode)
                     {
-                        Debug.Log($"[TalusBackendData-Package] Fetched AppModel: {model}");
+                        Debug.Log($"[TalusBackendData-Package] Fetched Model: {model}");
                     }
                     onFetchComplete(model);
                 }
@@ -42,7 +42,7 @@ namespace TalusBackendData.Editor
                 new DownloadHandlerFile(Configs.TempFile), 
                 onSuccess: () => 
                 {
-                    // request includes custom header that contains downloaded file name
+                    // response includes custom header that contains original filename
                     string fileName = request.GetHeader(Configs.FileNameKey);
                     string filePath = Path.Combine(Configs.ArtifactFolder, fileName);
                     
@@ -54,7 +54,7 @@ namespace TalusBackendData.Editor
                     
                     File.Move(Configs.TempFile, filePath);
                     
-                    onDownloadComplete(fileName);
+                    onDownloadComplete(filePath);
                 }
             ));
         }
