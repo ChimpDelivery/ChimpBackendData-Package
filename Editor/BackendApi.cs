@@ -15,14 +15,8 @@ namespace TalusBackendData.Editor
 {
     public static class BackendApi
     {
-        // file responses includes file names
-        private const string FILE_RESPONSE_KEY = "Dashboard-File-Name";
+        public static readonly BackendApiConfigs Configs = new();
         
-        // we can get filename after response received, so
-        // to match filename between client and server, we are creating temporary folder and file
-        // then update its name.
-        private const string TEMP_FILE = "Assets/_dashboardTemp/temp-file";
-
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete) 
             where TRequest : BaseRequest
             where TModel : BaseModel
@@ -46,25 +40,25 @@ namespace TalusBackendData.Editor
         {
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
                 request, 
-                new DownloadHandlerFile(TEMP_FILE), 
+                new DownloadHandlerFile(Configs.TempFile), 
                 onSuccess: () => 
                 {
                     SyncAssets();
-                        
+
                     // request includes custom header that contains downloaded file name
-                    string fileName = request.Request.GetResponseHeader(FILE_RESPONSE_KEY);
+                    string fileName = request.GetHeader(Configs.FileNameKey);
                     string filePath = $"Assets/Settings/{fileName}";
 
-                    bool isMoved = AssetDatabase.MoveAsset(TEMP_FILE, filePath) == string.Empty;
+                    bool isMoved = AssetDatabase.MoveAsset(Configs.TempFile, filePath) == string.Empty;
                     if (!isMoved)
                     {
                         Debug.LogError(@$"[TalusBackendData-Package] Error: Couldn't moved downloaded file!
-                            Check: {TEMP_FILE} (maybe {fileName} exist on {filePath}...)"
+                            Check: {Configs.TempFile} (maybe {fileName} exist on {filePath}...)"
                         );
                         return;
                     } 
                         
-                    onDownloadComplete($"Check: {TEMP_FILE}");
+                    onDownloadComplete($"Check: {Configs.TempFile}");
                     CleanUpTemp();
                 }
             ));
@@ -88,13 +82,13 @@ namespace TalusBackendData.Editor
         private static void CleanUpTemp()
         {
             // removes temp directory and meta file
-            DirectoryInfo dirInfo = Directory.GetParent(TEMP_FILE);
+            DirectoryInfo dirInfo = Directory.GetParent(Configs.TempFile);
             File.Delete($"Assets/{dirInfo.Name}.meta");
             Directory.Delete(dirInfo.FullName);
             
             SyncAssets();
             
-            Debug.Log($"[TalusCI-Package] Request Temp: {TEMP_FILE} cleaned up!");
+            Debug.Log($"[TalusCI-Package] Request Temp: {Configs.TempFile} cleaned up!");
         }
         
         private static void SyncAssets()
