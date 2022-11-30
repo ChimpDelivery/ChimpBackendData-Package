@@ -1,8 +1,7 @@
 using System;
-using System.IO;
 using System.Collections;
+using System.IO;
 
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -43,23 +42,18 @@ namespace TalusBackendData.Editor
                 new DownloadHandlerFile(Configs.TempFile), 
                 onSuccess: () => 
                 {
-                    SyncAssets();
-
                     // request includes custom header that contains downloaded file name
                     string fileName = request.GetHeader(Configs.FileNameKey);
-                    string filePath = $"Assets/Settings/{fileName}";
 
-                    bool isMoved = AssetDatabase.MoveAsset(Configs.TempFile, filePath) == string.Empty;
-                    if (!isMoved)
+                    // move downloaded file to correct folder
+                    if (!Directory.Exists(Configs.ProvisionUuidKey))
                     {
-                        Debug.LogError(@$"[TalusBackendData-Package] Error: Couldn't moved downloaded file!
-                            Check: {Configs.TempFile} (maybe {fileName} exist on {filePath}...)"
-                        );
-                        return;
-                    } 
-                        
-                    onDownloadComplete($"Check: {Configs.TempFile}");
-                    CleanUpTemp();
+                        Directory.CreateDirectory(Configs.ProvisionUuidKey);
+                    }
+                    
+                    File.Move(Configs.TempFile, $"{Configs.ProvisionFolder}/{fileName}");
+                    
+                    onDownloadComplete(fileName);
                 }
             ));
         }
@@ -77,24 +71,6 @@ namespace TalusBackendData.Editor
             }
  
             onSuccess.Invoke();
-        }
-        
-        private static void CleanUpTemp()
-        {
-            // removes temp directory and meta file
-            DirectoryInfo dirInfo = Directory.GetParent(Configs.TempFile);
-            File.Delete($"Assets/{dirInfo.Name}.meta");
-            Directory.Delete(dirInfo.FullName);
-            
-            SyncAssets();
-            
-            Debug.Log($"[TalusCI-Package] Request Temp: {Configs.TempFile} cleaned up!");
-        }
-        
-        private static void SyncAssets()
-        {
-            AssetDatabase.Refresh();
-            AssetDatabase.SaveAssets();
         }
     }
 }
