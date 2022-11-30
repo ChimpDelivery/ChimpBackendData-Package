@@ -131,8 +131,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void PopulatePackages(System.Action onComplete)
         {
-            var api = new BackendApi();
-            api.GetAllPackages(
+            BackendApi.GetApi<GetPackagesRequest, PackagesModel>(
                 new GetPackagesRequest(),
                 response => {
                     _Packages.Clear();
@@ -214,8 +213,7 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (_AddPackage != null && !_AddPackage.IsCompleted) { return; }
 
-            var api = new BackendApi();
-            api.GetPackageInfo(
+            BackendApi.GetApi<GetPackageRequest, PackageModel>(
                 new GetPackageRequest { PackageId = packageId }, 
                 package => {
                     _AddPackage = new RequestHandler<AddRequest>(
@@ -235,8 +233,7 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
-            var api = new BackendApi();
-            api.GetPackageInfo(
+            BackendApi.GetApi<GetPackageRequest, PackageModel>(
                 new GetPackageRequest { PackageId = packageId }, 
                 package => {
                     bool updateExist = !packageHash.Equals(package.hash);

@@ -1,7 +1,9 @@
-﻿namespace TalusBackendData.Editor.Models
+﻿using TalusBackendData.Editor.Interfaces;
+
+namespace TalusBackendData.Editor.Models
 {
     [System.Serializable]
-    public class AppModel
+    public class AppModel : BaseModel
     {
         public string app_name;
         public string app_bundle;
@@ -10,9 +12,5 @@
         public string ga_id;
         public string ga_secret;
 
-        public override string ToString()
-        {
-            return UnityEngine.JsonUtility.ToJson(this, true);
-        }
     }
 }

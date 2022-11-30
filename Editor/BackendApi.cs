@@ -9,50 +9,36 @@ using UnityEngine.Networking;
 using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
-using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor
 {
     /// <summary>
-    /// - Fetch iOS App information
+    /// - Fetch Dashboard Api
     /// - Download required Certificate & Profile
-    /// - Fetch Unity3D Package information
     /// </summary>
-    public class BackendApi
+    public static class BackendApi
     {
         private const string FILE_RESPONSE_KEY = "Dashboard-File-Name";
         private const string TEMP_FILE = "Assets/_dashboardTemp/temp-file";
 
-        public void GetAppInfo(GetAppRequest request, Action<AppModel> onFetchComplete)
+        public static void GetApi<TRequest, TModel>(
+            TRequest request, 
+            Action<TModel> onFetchComplete
+        ) where TRequest : BaseRequest where TModel : BaseModel
         {
             EditorCoroutineUtility.StartCoroutineOwnerless(
                 GetApiResponse(request, onFetchComplete)
             );
         }
-
-        public void GetPackageInfo(GetPackageRequest request, Action<PackageModel> onFetchComplete)
-        {
-            EditorCoroutineUtility.StartCoroutineOwnerless(
-                GetApiResponse(request, onFetchComplete)
-            );
-        }
-
-        public void GetAllPackages(GetPackagesRequest request, Action<PackagesModel> onFetchComplete)
-        {
-            EditorCoroutineUtility.StartCoroutineOwnerless(
-                GetApiResponse(request, onFetchComplete)
-            );
-        }
-
-        public void DownloadFile(BaseRequest connector, Action<string> onDownloadComplete)
+        
+        public static void DownloadFile(BaseRequest connector, Action<string> onDownloadComplete)
         {
             EditorCoroutineUtility.StartCoroutineOwnerless(
                 GetDownloadResponse(connector, onDownloadComplete)
             );
         }
         
-        private IEnumerator GetApiResponse<T>(BaseRequest request, Action<T> onFetchComplete)
+        private static IEnumerator GetApiResponse<T>(BaseRequest request, Action<T> onFetchComplete)
         {
             using UnityWebRequest www = request.Get();
             yield return www.SendWebRequest();
@@ -77,7 +63,7 @@ namespace TalusBackendData.Editor
             }
         }
 
-        private IEnumerator GetDownloadResponse(BaseRequest request, Action<string> onDownloadComplete)
+        private static IEnumerator GetDownloadResponse(BaseRequest request, Action<string> onDownloadComplete)
         {
             using UnityWebRequest www = request.Get();
             www.downloadHandler = new DownloadHandlerFile(TEMP_FILE);

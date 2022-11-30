@@ -20,23 +20,20 @@ namespace TalusBackendData.Editor
         [MenuItem("TalusBackend/App Signing/Download Cert")]
         public static void DownloadCert()
         {
-            var api = new BackendApi();
-            api.DownloadFile(new CertRequest(), Debug.Log);
+            BackendApi.DownloadFile(new CertRequest(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
-            var api = new BackendApi();
-            api.DownloadFile(new ProvisionProfileRequest(), Debug.Log);  
+            BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);  
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)
         {
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
-            var api = new BackendApi();
-            api.GetAppInfo(
+            BackendApi.GetApi<GetAppRequest, AppModel>(
                 new GetAppRequest(), 
                 app => {
                     UpdateProductSettings(app);
