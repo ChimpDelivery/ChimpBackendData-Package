@@ -53,9 +53,9 @@ namespace TalusBackendData.Editor
             EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
         }
 
-        public void DownloadFile(BaseFileType fileType, Action<string> onDownloadComplete)
+        public void DownloadFile(IFileRequest connector, Action<string> onDownloadComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/{fileType.ApiUrl}";
+            string apiUrl = $"{_ApiUrl}/api/{connector.ApiUrl}";
 
             EditorCoroutineUtility.StartCoroutineOwnerless(GetDownloadResponse(apiUrl, onDownloadComplete));
         }

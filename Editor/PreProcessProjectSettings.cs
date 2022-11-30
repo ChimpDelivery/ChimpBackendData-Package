@@ -34,14 +34,14 @@ namespace TalusBackendData.Editor
         public static void DownloadCert()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadFile(new CertFile(), Debug.Log);
+            api.DownloadFile(new CertFileRequest(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadFile(new ProvisionProfileFile(), Debug.Log);  
+            api.DownloadFile(new ProvisionProfileFileRequest(), Debug.Log);  
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)

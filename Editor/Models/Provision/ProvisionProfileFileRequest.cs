@@ -3,8 +3,8 @@
 namespace TalusBackendData.Editor.Models.Provision
 {
     [System.Serializable]
-    public class CertFile : BaseFileType
+    public class ProvisionProfileFileRequest : IFileRequest
     {
-        public override string ApiUrl => "appstoreconnect/get-cert";
+        public string ApiUrl => "appstoreconnect/get-provision-profile";
     }
 }
