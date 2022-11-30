@@ -104,7 +104,7 @@ namespace TalusBackendData.Editor
                 SyncAssets();
                 if (AssetDatabase.MoveAsset(TEMP_FILE, filePath) == string.Empty)
                 {
-                    DownloadCleanUp();
+                    CleanUpTemp();
                     onDownloadComplete($"Check: {TEMP_FILE}");
                 }
                 else
@@ -124,7 +124,7 @@ namespace TalusBackendData.Editor
             return request;
         }
 
-        private static void DownloadCleanUp()
+        private static void CleanUpTemp()
         {
             DirectoryInfo dirInfo = Directory.GetParent(TEMP_FILE);
             File.Delete($"Assets/{dirInfo.Name}.meta");
