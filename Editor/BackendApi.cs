@@ -44,9 +44,14 @@ namespace TalusBackendData.Editor
                 {
                     // request includes custom header that contains downloaded file name
                     string fileName = request.GetHeader(Configs.FileNameKey);
+                    string filePath = Path.Combine(Configs.ArtifactFolder, fileName);
                     
-                    File.Move(Configs.TempFile, Path.Combine(Configs.ArtifactFolder, fileName));
-                    
+                    // if downloaded file is exist just delete
+                    if (File.Exists(filePath)) 
+                    {
+                        File.Delete(filePath);
+                    }
+
                     onDownloadComplete(fileName);
                 }
             ));
