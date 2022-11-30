@@ -7,7 +7,7 @@ namespace TalusBackendData.Editor.Models.Requests
     {
         public string PackageId { get; set; }
         
-        public override string ApiUrl => "packages/get-package?package_id=" + PackageId;
+        public override string ApiUrl => $"packages/get-package?package_id={PackageId}";
         public override string ContentType => "application/json";
     }
 }

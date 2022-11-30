@@ -11,9 +11,8 @@ namespace TalusBackendData.Editor.Models.Requests
         public string AppId => Application.isBatchMode
                 ? CommandLineParser.GetArgument("-appId")
                 : BackendSettingsHolder.instance.AppId;
-
-        public override string ApiUrl => "apps/get-app?id=" + AppId;
-
+        
+        public override string ApiUrl => $"apps/get-app?id={AppId}";
         public override string ContentType => "application/json";
     }
 }
