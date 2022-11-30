@@ -2,7 +2,7 @@
 
 using UnityEngine.Networking;
 
-namespace TalusBackendData.Editor
+namespace TalusBackendData.Editor.Utility
 {
     public static class WebRequestExtensions
     {

@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
