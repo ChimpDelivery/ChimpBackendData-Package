@@ -11,15 +11,15 @@ namespace TalusBackendData.Editor
     {
         public static System.Action<AppModel> OnSyncComplete = delegate { };
 
-        private string ApiUrl => (Application.isBatchMode) 
+        private static string ApiUrl => (Application.isBatchMode) 
                 ? CommandLineParser.GetArgument("-apiUrl") 
                 : BackendSettingsHolder.instance.ApiUrl;
         
-        private string ApiToken => (Application.isBatchMode) 
+        private static string ApiToken => (Application.isBatchMode) 
                 ? CommandLineParser.GetArgument("-apiKey") 
                 : BackendSettingsHolder.instance.ApiToken;
         
-        private string AppId => (Application.isBatchMode) 
+        private static string AppId => (Application.isBatchMode) 
                 ? CommandLineParser.GetArgument("-appId") 
                 : BackendSettingsHolder.instance.AppId;
 
@@ -27,6 +27,20 @@ namespace TalusBackendData.Editor
         public static void Sync()
         {
             new PreProcessProjectSettings().UpdateSettings();
+        }
+
+        [MenuItem("TalusBackend/App Signing/Download Cert")]
+        public static void DownloadCert()
+        {
+            var api = new BackendApi(ApiUrl, ApiToken);
+            api.DownloadCert(Debug.Log);
+        }
+
+        [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
+        public static void DownloadProvisionProfile()
+        {
+            var api = new BackendApi(ApiUrl, ApiToken);
+            api.DownloadProvisionProfile(Debug.Log);  
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)
