@@ -11,6 +11,5 @@ namespace TalusBackendData.Editor.Models
         public string fb_client_token;
         public string ga_id;
         public string ga_secret;
-
     }
 }
