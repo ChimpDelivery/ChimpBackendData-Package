@@ -14,8 +14,6 @@ namespace TalusBackendData.Editor
 {
     public static class BackendApi
     {
-        public static readonly BackendApiConfigs Configs = new();
-        
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete) 
             where TRequest : BaseRequest
             where TModel : BaseModel
@@ -37,14 +35,16 @@ namespace TalusBackendData.Editor
         
         public static void DownloadFile(BaseRequest request, Action<string> onDownloadComplete)
         {
+            var apiConfigs = BackendApiConfigs.GetInstance();
+            
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
                 request, 
-                new DownloadHandlerFile(Configs.TempFile), 
+                new DownloadHandlerFile(apiConfigs.TempFile), 
                 onSuccess: () => 
                 {
                     // response includes custom header that contains original filename
-                    string fileName = request.GetHeader(Configs.FileNameKey);
-                    string filePath = Path.Combine(Configs.ArtifactFolder, fileName);
+                    string fileName = request.GetHeader(apiConfigs.FileNameKey);
+                    string filePath = Path.Combine(apiConfigs.ArtifactFolder, fileName);
                     
                     // if downloaded file is exist just delete
                     if (File.Exists(filePath)) 
@@ -52,7 +52,7 @@ namespace TalusBackendData.Editor
                         File.Delete(filePath);
                     }
                     
-                    File.Move(Configs.TempFile, filePath);
+                    File.Move(apiConfigs.TempFile, filePath);
                     
                     onDownloadComplete(filePath);
                 }
