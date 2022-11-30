@@ -68,7 +68,7 @@ namespace TalusBackendData.Editor
                 Debug.LogError($"[TalusBackendData-Package] Request Error: { www.GetMsg() }");
                 yield break;
             }
- 
+            
             onSuccess.Invoke();
         }
     }
