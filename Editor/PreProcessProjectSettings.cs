@@ -4,26 +4,13 @@ using UnityEditor;
 
 using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Requests;
-using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
     public class PreProcessProjectSettings
     {
         public static System.Action<AppModel> OnSyncComplete = delegate { };
-
-        private static string ApiUrl => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-apiUrl") 
-                : BackendSettingsHolder.instance.ApiUrl;
         
-        private static string ApiToken => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-apiKey") 
-                : BackendSettingsHolder.instance.ApiToken;
-        
-        private static string AppId => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-appId") 
-                : BackendSettingsHolder.instance.AppId;
-
         [MenuItem("TalusBackend/Sync Project Settings", priority = 12000)]
         public static void Sync()
         {
@@ -33,14 +20,14 @@ namespace TalusBackendData.Editor
         [MenuItem("TalusBackend/App Signing/Download Cert")]
         public static void DownloadCert()
         {
-            var api = new BackendApi(ApiUrl, ApiToken);
+            var api = new BackendApi();
             api.DownloadFile(new CertRequest(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
-            var api = new BackendApi(ApiUrl, ApiToken);
+            var api = new BackendApi();
             api.DownloadFile(new ProvisionProfileRequest(), Debug.Log);  
         }
 
@@ -48,7 +35,7 @@ namespace TalusBackendData.Editor
         {
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
-            var api = new BackendApi(ApiUrl, ApiToken);
+            var api = new BackendApi();
             api.GetAppInfo(
                 new GetAppRequest(), 
                 app => {

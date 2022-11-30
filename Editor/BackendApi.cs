@@ -23,15 +23,6 @@ namespace TalusBackendData.Editor
     {
         private const string FILE_RESPONSE_KEY = "Dashboard-File-Name";
         private const string TEMP_FILE = "Assets/_dashboardTemp/temp-file";
-        
-        private readonly string _ApiUrl;
-        private readonly string _ApiToken;
-
-        public BackendApi(string apiUrl, string apiToken)
-        {
-            _ApiUrl = apiUrl;
-            _ApiToken = apiToken;
-        }
 
         public void GetAppInfo(GetAppRequest request, Action<AppModel> onFetchComplete)
         {
