@@ -75,7 +75,7 @@ namespace TalusBackendData.Editor
 
             if (request.HasError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {www.GetMsg()}");
+                Debug.LogError($"[TalusBackendData-Package] Request Error: { www.GetMsg() }");
                 yield break;
             }
  
@@ -91,7 +91,7 @@ namespace TalusBackendData.Editor
             
             SyncAssets();
             
-            Debug.Log("[TalusCI-Package] Download cleanup finished!");
+            Debug.Log($"[TalusCI-Package] Request Temp: {TEMP_FILE} cleaned up!");
         }
         
         private static void SyncAssets()
