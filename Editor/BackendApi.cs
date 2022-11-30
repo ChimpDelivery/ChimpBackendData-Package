@@ -44,14 +44,8 @@ namespace TalusBackendData.Editor
                 {
                     // request includes custom header that contains downloaded file name
                     string fileName = request.GetHeader(Configs.FileNameKey);
-
-                    // move downloaded file to correct folder
-                    if (!Directory.Exists(Configs.ProvisionUuidKey))
-                    {
-                        Directory.CreateDirectory(Configs.ProvisionUuidKey);
-                    }
                     
-                    File.Move(Configs.TempFile, $"{Configs.ProvisionFolder}/{fileName}");
+                    File.Move(Configs.TempFile, Path.Combine(Configs.ArtifactFolder, fileName));
                     
                     onDownloadComplete(fileName);
                 }
