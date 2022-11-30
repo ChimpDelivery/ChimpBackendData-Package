@@ -76,11 +76,10 @@ namespace TalusBackendData.Editor
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Error: {www.GetMsg()}");
+                yield break;
             }
-            else
-            {
-                onSuccess.Invoke();
-            }
+ 
+            onSuccess.Invoke();
         }
         
         private static void CleanUpTemp()
