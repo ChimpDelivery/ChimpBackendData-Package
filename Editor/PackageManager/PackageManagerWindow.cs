@@ -9,7 +9,7 @@ using UnityEditor.PackageManager.Requests;
 using TalusBackendData.Editor.PackageManager.Requests;
 using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Models.Requests;
+using TalusBackendData.Editor.Requests;
 
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using PackageStatus = TalusBackendData.Editor.PackageManager.Models.PackageStatus;

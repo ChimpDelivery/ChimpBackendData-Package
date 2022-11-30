@@ -1,6 +1,6 @@
 ﻿using TalusBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor.Models.Requests
+namespace TalusBackendData.Editor.Requests
 {
     [System.Serializable]
     public class CertRequest : BaseRequest

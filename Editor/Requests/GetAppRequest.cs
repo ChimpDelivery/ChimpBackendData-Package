@@ -3,7 +3,7 @@
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
 
-namespace TalusBackendData.Editor.Models.Requests
+namespace TalusBackendData.Editor.Requests
 {
     [System.Serializable]
     public class GetAppRequest : BaseRequest

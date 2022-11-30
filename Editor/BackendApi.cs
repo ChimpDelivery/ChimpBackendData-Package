@@ -10,7 +10,7 @@ using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Models.Requests;
+using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor
 {

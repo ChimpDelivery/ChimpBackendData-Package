@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Models.Requests;
+using TalusBackendData.Editor.Requests;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
