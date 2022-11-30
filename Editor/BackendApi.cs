@@ -58,7 +58,9 @@ namespace TalusBackendData.Editor
                     bool isMoved = AssetDatabase.MoveAsset(TEMP_FILE, filePath) == string.Empty;
                     if (!isMoved)
                     {
-                        Debug.LogError($"Error: Couldn't moved downloaded file! Check: {TEMP_FILE} (maybe {fileName} exist on {filePath}...)");
+                        Debug.LogError(@$"[TalusBackendData-Package] Error: Couldn't moved downloaded file!
+                            Check: {TEMP_FILE} (maybe {fileName} exist on {filePath}...)"
+                        );
                         return;
                     } 
                         
