@@ -17,15 +17,18 @@ namespace TalusBackendData.Editor.Interfaces
 
         public abstract string ApiUrl { get; }
         public abstract string ContentType { get; }
+
+        private UnityWebRequest _Request;
+        public UnityWebRequest Request => _Request;
         
         public UnityWebRequest Get()
         {
-            UnityWebRequest request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
-            request.SetRequestHeader("Authorization", $"Bearer {Token}");
-            request.SetRequestHeader("Accept", ContentType);
-            request.SetRequestHeader("Content-Type", ContentType);
+            _Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
+            _Request.SetRequestHeader("Authorization", $"Bearer {Token}");
+            _Request.SetRequestHeader("Accept", ContentType);
+            _Request.SetRequestHeader("Content-Type", ContentType);
 
-            return request;
+            return _Request;
         }
     }
 }
