@@ -7,31 +7,30 @@ namespace TalusBackendData.Editor.Interfaces
 {
     public abstract class BaseRequest
     {
-        public string ServerUrl => Application.isBatchMode
-                ? CommandLineParser.GetArgument("-apiUrl")
-                : BackendSettingsHolder.instance.ApiUrl;
+        public static string ServerUrl => Application.isBatchMode
+            ? CommandLineParser.GetArgument("-apiUrl")
+            : BackendSettingsHolder.instance.ApiUrl;
         
-        public string Token => Application.isBatchMode 
-                ? CommandLineParser.GetArgument("-apiKey")
-                : BackendSettingsHolder.instance.ApiToken;
+        public static string Token => Application.isBatchMode 
+            ? CommandLineParser.GetArgument("-apiKey")
+            : BackendSettingsHolder.instance.ApiToken;
 
         public abstract string ApiUrl { get; }
         public virtual string ContentType => "application/json";
 
-        private UnityWebRequest _Request;
-        public UnityWebRequest Request => _Request;
+        public UnityWebRequest Request { get; private set; }
 
         public bool HasError => Request.result == UnityWebRequest.Result.ConnectionError || 
                                 Request.result == UnityWebRequest.Result.ProtocolError;
         
         public UnityWebRequest Get()
         {
-            _Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
-            _Request.SetRequestHeader("Authorization", $"Bearer {Token}");
-            _Request.SetRequestHeader("Accept", ContentType);
-            _Request.SetRequestHeader("Content-Type", ContentType);
+            Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
+            Request.SetRequestHeader("Authorization", $"Bearer {Token}");
+            Request.SetRequestHeader("Accept", ContentType);
+            Request.SetRequestHeader("Content-Type", ContentType);
 
-            return _Request;
+            return Request;
         }
     }
 }
