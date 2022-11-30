@@ -51,7 +51,9 @@ namespace TalusBackendData.Editor
                     {
                         File.Delete(filePath);
                     }
-
+                    
+                    File.Move(Configs.TempFile, filePath);
+                    
                     onDownloadComplete(fileName);
                 }
             ));
