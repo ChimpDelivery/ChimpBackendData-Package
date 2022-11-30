@@ -10,6 +10,7 @@ using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Models;
+using TalusBackendData.Editor.Models.Requests;
 
 namespace TalusBackendData.Editor
 {
@@ -32,44 +33,43 @@ namespace TalusBackendData.Editor
             _ApiToken = apiToken;
         }
 
-        public void GetAppInfo(string appId, Action<AppModel> onFetchComplete)
+        public void GetAppInfo(GetAppRequest request, Action<AppModel> onFetchComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/apps/get-app?id={appId}";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
+            EditorCoroutineUtility.StartCoroutineOwnerless(
+                GetApiResponse(request, onFetchComplete)
+            );
         }
 
-        public void GetPackageInfo(string packageId, Action<PackageModel> onFetchComplete)
+        public void GetPackageInfo(GetPackageRequest request, Action<PackageModel> onFetchComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/packages/get-package?package_id={packageId}";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
+            EditorCoroutineUtility.StartCoroutineOwnerless(
+                GetApiResponse(request, onFetchComplete)
+            );
         }
 
-        public void GetAllPackages(Action<PackagesModel> onFetchComplete)
+        public void GetAllPackages(GetPackagesRequest request, Action<PackagesModel> onFetchComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/packages/get-packages";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
+            EditorCoroutineUtility.StartCoroutineOwnerless(
+                GetApiResponse(request, onFetchComplete)
+            );
         }
 
-        public void DownloadFile(IFileRequest connector, Action<string> onDownloadComplete)
+        public void DownloadFile(BaseRequest connector, Action<string> onDownloadComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/{connector.ApiUrl}";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetDownloadResponse(apiUrl, onDownloadComplete));
+            EditorCoroutineUtility.StartCoroutineOwnerless(
+                GetDownloadResponse(connector, onDownloadComplete)
+            );
         }
         
-        private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
+        private IEnumerator GetApiResponse<T>(BaseRequest request, Action<T> onFetchComplete)
         {
-            (UnityWebRequest, string) getResolver = WebRequestResolver.Get(url, _ApiToken);
-
-            using UnityWebRequest www = getResolver.Item1;
+            using UnityWebRequest www = request.Get();
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            if (www.result == UnityWebRequest.Result.ConnectionError || 
+                www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {getResolver.Item2}");
+                Debug.LogError($"[TalusBackendData-Package] Error: {www.GetMsg()}");
             }
             else
             {
@@ -86,17 +86,16 @@ namespace TalusBackendData.Editor
             }
         }
 
-        private IEnumerator GetDownloadResponse(string url, Action<string> onDownloadComplete)
+        private IEnumerator GetDownloadResponse(BaseRequest request, Action<string> onDownloadComplete)
         {
-            (UnityWebRequest, string) getResolver = WebRequestResolver.Get(url, _ApiToken);
-            
-            using UnityWebRequest www = getResolver.Item1;
+            using UnityWebRequest www = request.Get();
             www.downloadHandler = new DownloadHandlerFile(TEMP_FILE);
             yield return www.SendWebRequest();
             
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            if (www.result == UnityWebRequest.Result.ConnectionError || 
+                www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {getResolver.Item2}");
+                Debug.LogError($"[TalusBackendData-Package] Error: {www.GetMsg()}");
             }
             else
             {

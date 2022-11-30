@@ -9,6 +9,7 @@ using UnityEditor.PackageManager.Requests;
 using TalusBackendData.Editor.PackageManager.Requests;
 using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.Models;
+using TalusBackendData.Editor.Models.Requests;
 
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using PackageStatus = TalusBackendData.Editor.PackageManager.Models.PackageStatus;
@@ -131,22 +132,24 @@ namespace TalusBackendData.Editor.PackageManager
         private void PopulatePackages(System.Action onComplete)
         {
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetAllPackages(response => {
+            api.GetAllPackages(
+                new GetPackagesRequest(),
+                response => {
+                    _Packages.Clear();
                 
-                _Packages.Clear();
-                
-                foreach (PackageModel model in response.packages)
-                {
-                    _Packages[model.package_id] = new PackageStatus {
-                        Exist = false,
-                        DisplayName = model.package_id,
-                        Hash = model.hash,
-                        UpdateExist = false
-                    };
-                }
+                    foreach (PackageModel model in response.packages)
+                    {
+                        _Packages[model.package_id] = new PackageStatus {
+                            Exist = false,
+                            DisplayName = model.package_id,
+                            Hash = model.hash,
+                            UpdateExist = false
+                        };
+                    }
 
-                onComplete.Invoke();
-            });
+                    onComplete.Invoke();
+                }
+            );
         }
 
         private void RefreshPackages()
@@ -212,26 +215,29 @@ namespace TalusBackendData.Editor.PackageManager
             if (_AddPackage != null && !_AddPackage.IsCompleted) { return; }
 
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetPackageInfo(packageId, package => {
-                _AddPackage = new RequestHandler<AddRequest>(
-                    Client.Add(package.url), 
-                    statusCode => {
-                        
-                        string message = (statusCode == StatusCode.Success)
-                                ? $"{_AddPackage.Request.Result.packageId} added successfully!"
-                                : _AddPackage.Request.Error.message;
+            api.GetPackageInfo(
+                new GetPackageRequest { PackageId = packageId }, 
+                package => {
+                    _AddPackage = new RequestHandler<AddRequest>(
+                        Client.Add(package.url), 
+                        statusCode => {
+                            
+                            string message = (statusCode == StatusCode.Success)
+                                    ? $"{_AddPackage.Request.Result.packageId} added successfully!"
+                                    : _AddPackage.Request.Error.message;
 
-                        InfoBox.Show($"{statusCode} !", message, "OK");
-                    }
-                );
-            });
+                            InfoBox.Show($"{statusCode} !", message, "OK");
+                        }
+                    );
+                }
+            );
         }
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
             var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
             api.GetPackageInfo(
-                packageId, 
+                new GetPackageRequest { PackageId = packageId }, 
                 package => {
                     bool updateExist = !packageHash.Equals(package.hash);
                     _Packages[packageId].UpdateExist = updateExist;

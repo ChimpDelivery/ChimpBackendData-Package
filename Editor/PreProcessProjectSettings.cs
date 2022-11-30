@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Models.Provision;
+using TalusBackendData.Editor.Models.Requests;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
@@ -34,14 +34,14 @@ namespace TalusBackendData.Editor
         public static void DownloadCert()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadFile(new CertFileRequest(), Debug.Log);
+            api.DownloadFile(new CertRequest(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadFile(new ProvisionProfileFileRequest(), Debug.Log);  
+            api.DownloadFile(new ProvisionProfileRequest(), Debug.Log);  
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)
@@ -49,13 +49,15 @@ namespace TalusBackendData.Editor
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.GetAppInfo(AppId, (app) =>
-            {
-                UpdateProductSettings(app);
+            api.GetAppInfo(
+                new GetAppRequest(), 
+                app => {
+                    UpdateProductSettings(app);
                 
-                OnSyncComplete(app);
-                onCustomComplete?.Invoke();
-            });
+                    OnSyncComplete(app);
+                    onCustomComplete?.Invoke();
+                }
+            );
         }
 
         private void UpdateProductSettings(AppModel app)
