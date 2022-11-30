@@ -62,12 +62,14 @@ namespace TalusBackendData.Editor
         
         private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
         {
-            using UnityWebRequest www = GetRequest(url);
+            (UnityWebRequest, string) getResolver = WebRequestResolver.Get(url, _ApiToken);
+
+            using UnityWebRequest www = getResolver.Item1;
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {GetResponseMessage(www)}");
+                Debug.LogError($"[TalusBackendData-Package] Error: {getResolver.Item2}");
             }
             else
             {
@@ -86,13 +88,15 @@ namespace TalusBackendData.Editor
 
         private IEnumerator GetDownloadResponse(string url, Action<string> onDownloadComplete)
         {
-            using UnityWebRequest www = GetRequest(url);
+            (UnityWebRequest, string) getResolver = WebRequestResolver.Get(url, _ApiToken);
+            
+            using UnityWebRequest www = getResolver.Item1;
             www.downloadHandler = new DownloadHandlerFile(TEMP_FILE);
             yield return www.SendWebRequest();
             
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {GetResponseMessage(www)}");
+                Debug.LogError($"[TalusBackendData-Package] Error: {getResolver.Item2}");
             }
             else
             {
@@ -113,17 +117,7 @@ namespace TalusBackendData.Editor
                 }
             }
         }
-
-        private UnityWebRequest GetRequest(string url)
-        {
-            UnityWebRequest request = UnityWebRequest.Get(url);
-            request.SetRequestHeader("Authorization", $"Bearer {_ApiToken}");
-            request.SetRequestHeader("Accept", "application/json");
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            return request;
-        }
-
+        
         private static void CleanUpTemp()
         {
             DirectoryInfo dirInfo = Directory.GetParent(TEMP_FILE);
@@ -134,17 +128,7 @@ namespace TalusBackendData.Editor
             
             Debug.Log("[TalusCI-Package] Download cleanup finished!");
         }
-
-        private static string GetResponseMessage(UnityWebRequest request)
-        {
-            return request.responseCode switch
-            {
-                503 => "Web Dashboard is under maintenance!",
-                401 => "Unauthorized! Check auth token...",
-                _ => request.error
-            };
-        }
-
+        
         private static void SyncAssets()
         {
             AssetDatabase.Refresh();
