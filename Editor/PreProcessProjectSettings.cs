@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 using TalusBackendData.Editor.Models;
+using TalusBackendData.Editor.Models.Provision;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
@@ -33,14 +34,14 @@ namespace TalusBackendData.Editor
         public static void DownloadCert()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadCert(Debug.Log);
+            api.DownloadFile(new CertFile(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
             var api = new BackendApi(ApiUrl, ApiToken);
-            api.DownloadProvisionProfile(Debug.Log);  
+            api.DownloadFile(new ProvisionProfileFile(), Debug.Log);  
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)

@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 using Unity.EditorCoroutines.Editor;
 
+using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Models;
 
 namespace TalusBackendData.Editor
@@ -52,17 +53,10 @@ namespace TalusBackendData.Editor
             EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
         }
 
-        public void DownloadCert(Action<string> onDownloadComplete)
+        public void DownloadFile(BaseFileType fileType, Action<string> onDownloadComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/appstoreconnect/get-cert";
+            string apiUrl = $"{_ApiUrl}/api/{fileType.ApiUrl}";
 
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetDownloadResponse(apiUrl, onDownloadComplete));
-        }
-
-        public void DownloadProvisionProfile(Action<string> onDownloadComplete)
-        {
-            string apiUrl = $"{_ApiUrl}/api/appstoreconnect/get-provision-profile";
-            
             EditorCoroutineUtility.StartCoroutineOwnerless(GetDownloadResponse(apiUrl, onDownloadComplete));
         }
         
