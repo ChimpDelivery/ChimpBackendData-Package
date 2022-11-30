@@ -90,8 +90,8 @@ namespace TalusBackendData.Editor.PackageManager
                 
                 DrawButton(new GUIContent(package.Value.DisplayName), 
                     buttonBgColor, 
-                    () => {
-                        
+                    () => 
+                    {
                         if (!isPackageInstalled || isUpdateExist)
                         {
                             AddPackage(package.Key);
@@ -133,7 +133,8 @@ namespace TalusBackendData.Editor.PackageManager
         {
             BackendApi.GetApi<GetPackagesRequest, PackagesModel>(
                 new GetPackagesRequest(),
-                response => {
+                onFetchComplete: response => 
+                {
                     _Packages.Clear();
                 
                     foreach (PackageModel model in response.packages)
@@ -162,8 +163,8 @@ namespace TalusBackendData.Editor.PackageManager
         {
             _ListPackages = new RequestHandler<ListRequest>(
                 Client.List(), 
-                statusCode => {
-
+                statusCode => 
+                {
                     if (statusCode != StatusCode.Success)
                     {
                         InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
@@ -198,11 +199,11 @@ namespace TalusBackendData.Editor.PackageManager
 
             _RemovePackage = new RequestHandler<RemoveRequest>(
                 Client.Remove(packageId), 
-                statusCode => {
-                    
+                statusCode => 
+                {
                     string message = (statusCode == StatusCode.Success)
-                            ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
-                            : _RemovePackage.Request.Error.message;
+                        ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
+                        : _RemovePackage.Request.Error.message;
 
                     InfoBox.Show($"{statusCode} !", message, "OK");
                 }
@@ -215,14 +216,15 @@ namespace TalusBackendData.Editor.PackageManager
 
             BackendApi.GetApi<GetPackageRequest, PackageModel>(
                 new GetPackageRequest { PackageId = packageId }, 
-                package => {
+                onFetchComplete: package => 
+                {
                     _AddPackage = new RequestHandler<AddRequest>(
                         Client.Add(package.url), 
-                        statusCode => {
-                            
-                            string message = (statusCode == StatusCode.Success)
-                                    ? $"{_AddPackage.Request.Result.packageId} added successfully!"
-                                    : _AddPackage.Request.Error.message;
+                        statusCode => 
+                        {
+                            string message = (statusCode == StatusCode.Success) 
+                                ? $"{_AddPackage.Request.Result.packageId} added successfully!"
+                                : _AddPackage.Request.Error.message;
 
                             InfoBox.Show($"{statusCode} !", message, "OK");
                         }
@@ -235,7 +237,7 @@ namespace TalusBackendData.Editor.PackageManager
         {
             BackendApi.GetApi<GetPackageRequest, PackageModel>(
                 new GetPackageRequest { PackageId = packageId }, 
-                package => {
+                onFetchComplete: package => {
                     bool updateExist = !packageHash.Equals(package.hash);
                     _Packages[packageId].UpdateExist = updateExist;
                 }
