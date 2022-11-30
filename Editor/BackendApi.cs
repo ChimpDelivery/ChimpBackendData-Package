@@ -13,13 +13,14 @@ using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
-    /// <summary>
-    /// - Fetch Dashboard Api
-    /// - Download required Certificate & Profile
-    /// </summary>
     public static class BackendApi
     {
+        // file responses includes file names
         private const string FILE_RESPONSE_KEY = "Dashboard-File-Name";
+        
+        // we can get filename after response received, so
+        // to match filename between client and server, we are creating temporary folder and file
+        // then update its name.
         private const string TEMP_FILE = "Assets/_dashboardTemp/temp-file";
 
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete) 
