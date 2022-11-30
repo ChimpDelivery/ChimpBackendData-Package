@@ -16,7 +16,7 @@ namespace TalusBackendData.Editor.Interfaces
                 : BackendSettingsHolder.instance.ApiToken;
 
         public abstract string ApiUrl { get; }
-        public abstract string ContentType { get; }
+        public virtual string ContentType => "application/json";
 
         private UnityWebRequest _Request;
         public UnityWebRequest Request => _Request;

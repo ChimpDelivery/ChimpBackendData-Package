@@ -13,6 +13,5 @@ namespace TalusBackendData.Editor.Requests
                 : BackendSettingsHolder.instance.AppId;
         
         public override string ApiUrl => $"apps/get-app?id={AppId}";
-        public override string ContentType => "application/json";
     }
 }
