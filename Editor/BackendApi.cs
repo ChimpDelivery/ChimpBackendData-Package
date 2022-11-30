@@ -26,50 +26,45 @@ namespace TalusBackendData.Editor
             where TRequest : BaseRequest
             where TModel : BaseModel
         {
-            EditorCoroutineUtility.StartCoroutineOwnerless(
-                RequestRoutine(
-                    request, 
-                    new DownloadHandlerBuffer(), 
-                    onSuccess: () => 
+            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+                request, 
+                new DownloadHandlerBuffer(), 
+                onSuccess: () => 
+                {
+                    var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
+                    if (Application.isBatchMode)
                     {
-                        var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
-                        if (Application.isBatchMode)
-                        {
-                            Debug.Log($"[TalusBackendData-Package] Fetched AppModel: {model}");
-                        }
-                        onFetchComplete(model);
+                        Debug.Log($"[TalusBackendData-Package] Fetched AppModel: {model}");
                     }
-                )
-            );
+                    onFetchComplete(model);
+                }
+            ));
         }
         
         public static void DownloadFile(BaseRequest request, Action<string> onDownloadComplete)
         {
-            EditorCoroutineUtility.StartCoroutineOwnerless(
-                RequestRoutine(
-                    request, 
-                    new DownloadHandlerFile(TEMP_FILE), 
-                    onSuccess: () => 
-                    {
-                        SyncAssets();
+            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+                request, 
+                new DownloadHandlerFile(TEMP_FILE), 
+                onSuccess: () => 
+                {
+                    SyncAssets();
                         
-                        // request includes custom header that contains downloaded file name
-                        string fileName = request.Request.GetResponseHeader(FILE_RESPONSE_KEY);
-                        string filePath = $"Assets/Settings/{fileName}";
+                    // request includes custom header that contains downloaded file name
+                    string fileName = request.Request.GetResponseHeader(FILE_RESPONSE_KEY);
+                    string filePath = $"Assets/Settings/{fileName}";
 
-                        bool isMoved = AssetDatabase.MoveAsset(TEMP_FILE, filePath) == string.Empty;
-                        if (!isMoved)
-                        {
-                            Debug.LogError($"Error: Couldn't moved downloaded file! Check: {TEMP_FILE} (maybe {fileName} exist on {filePath}...)");
-                            return;
-                        } 
+                    bool isMoved = AssetDatabase.MoveAsset(TEMP_FILE, filePath) == string.Empty;
+                    if (!isMoved)
+                    {
+                        Debug.LogError($"Error: Couldn't moved downloaded file! Check: {TEMP_FILE} (maybe {fileName} exist on {filePath}...)");
+                        return;
+                    } 
                         
-                        onDownloadComplete($"Check: {TEMP_FILE}");
-                        
-                        CleanUpTemp();
-                    }
-                )
-            );
+                    onDownloadComplete($"Check: {TEMP_FILE}");
+                    CleanUpTemp();
+                }
+            ));
         }
         
         private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
