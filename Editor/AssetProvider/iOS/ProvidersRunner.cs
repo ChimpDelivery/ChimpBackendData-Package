@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    public class ProvidersRunner
+    public static class ProvidersRunner
     {
         private static List<IProvider> providers = new()
         {
