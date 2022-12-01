@@ -31,6 +31,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             UnityWebRequest www = UnityWebRequest.Get("http://34.252.141.173/api/appstoreconnect/get-provision-profile");
+            www.downloadHandler = new DownloadHandlerFile(_ApiConfigs.TempFile);
             www.SetRequestHeader("Authorization", $"Bearer {Token}");
             www.SetRequestHeader("Accept", "application/octet-stream");
             www.SetRequestHeader("Content-Type", "application/octet-stream");
@@ -46,7 +47,8 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
-                File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
+                Console.WriteLine("file exits: " + File.Exists(_ApiConfigs.TempFile));
+                // File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
                 www.Dispose();
             }
 
