@@ -37,6 +37,7 @@ namespace TalusBackendData.Editor
         {
             var apiConfigs = BackendApiConfigs.GetInstance();
 
+            Debug.Log($"[TalusBackendData-Package] DownloadFile {request.ContentType}");
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
                 request,
                 new DownloadHandlerBuffer(),
