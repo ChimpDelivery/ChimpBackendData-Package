@@ -9,7 +9,6 @@ using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
 using TalusBackendData.Editor.Utility;
-using DG.Tweening.Plugins.Core.PathCore;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
