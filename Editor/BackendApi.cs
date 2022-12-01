@@ -68,6 +68,9 @@ namespace TalusBackendData.Editor
             Debug.Log($"[TalusBackendData-Package] Request Url: {www.url}");
             yield return www.SendWebRequest();
 
+            Debug.Log($"[TalusBackendData-Package] Request result: {www.result}");
+            Debug.Log($"[TalusBackendData-Package] Request responce code: {www.responseCode}");
+            Debug.Log($"[TalusBackendData-Package] Request downloaded bytes: {www.downloadedBytes}");
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
