@@ -23,7 +23,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             var request = new ProvisionProfileRequest();
-            request.Request.SetRequestHeader("Content-Description", "File Transfer");
             BackendApi.DownloadFile(request, onDownloadComplete: path =>
             {
                 string fileUuid = request.GetHeader(_ApiConfigs.ProvisionUuidKey);
