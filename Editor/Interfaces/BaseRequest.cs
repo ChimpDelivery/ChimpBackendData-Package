@@ -20,8 +20,7 @@ namespace TalusBackendData.Editor.Interfaces
 
         public UnityWebRequest Request { get; private set; }
 
-        public bool HasError => Request.result == UnityWebRequest.Result.ConnectionError ||
-                                Request.result == UnityWebRequest.Result.ProtocolError;
+        public bool HasError => Request.result != UnityWebRequest.Result.Success;
 
         public UnityWebRequest Get()
         {
