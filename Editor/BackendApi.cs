@@ -1,83 +1,77 @@
 using System;
 using System.Collections;
+using System.IO;
 
 using UnityEngine;
 using UnityEngine.Networking;
 
 using Unity.EditorCoroutines.Editor;
 
-using TalusBackendData.Editor.Models;
+using TalusBackendData.Editor.Interfaces;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
-    public class BackendApi
+    public static class BackendApi
     {
-        private readonly string _ApiUrl;
-        private readonly string _ApiToken;
-
-        public BackendApi(string apiUrl, string apiToken)
+        public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete)
+            where TRequest : BaseRequest
+            where TModel : BaseModel
         {
-            _ApiUrl = apiUrl;
-            _ApiToken = apiToken;
+            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+                request,
+                new DownloadHandlerBuffer(),
+                onSuccess: () =>
+                {
+                    var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
+                    if (Application.isBatchMode)
+                    {
+                        Debug.Log($"[TalusBackendData-Package] Fetched Model: {model}");
+                    }
+                    onFetchComplete(model);
+                }
+            ));
         }
 
-        public void GetAppInfo(string appId, Action<AppModel> onFetchComplete)
+        public static void DownloadFile(BaseRequest request, Action<string> onDownloadComplete)
         {
-            string apiUrl = $"{_ApiUrl}/api/apps/get-app?id={appId}";
+            var apiConfigs = BackendApiConfigs.GetInstance();
 
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
+            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+                request,
+                new DownloadHandlerFile(apiConfigs.TempFile),
+                onSuccess: () =>
+                {
+                    // response includes custom header that contains original filename
+                    string fileName = request.GetHeader(apiConfigs.FileNameKey);
+                    string filePath = Path.Combine(apiConfigs.ArtifactFolder, fileName);
+
+                    // if downloaded file is exist just delete
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    File.Move(apiConfigs.TempFile, filePath);
+
+                    onDownloadComplete(filePath);
+                }
+            ));
         }
 
-        public void GetPackageInfo(string packageId, Action<PackageModel> onFetchComplete)
+        private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
-            string apiUrl = $"{_ApiUrl}/api/packages/get-package?package_id={packageId}";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
-        }
-
-        public void GetAllPackages(Action<PackagesModel> onFetchComplete)
-        {
-            string apiUrl = $"{_ApiUrl}/api/packages/get-packages";
-
-            EditorCoroutineUtility.StartCoroutineOwnerless(GetApiResponse(apiUrl, onFetchComplete));
-        }
-
-        private IEnumerator GetApiResponse<T>(string url, Action<T> onFetchComplete)
-        {
-            using UnityWebRequest www = UnityWebRequest.Get(url);
-            www.SetRequestHeader("Authorization", $"Bearer {_ApiToken}");
-            www.SetRequestHeader("Accept", "application/json");
-            www.SetRequestHeader("Content-Type", "application/json");
-
+            using UnityWebRequest www = request.Get();
+            www.downloadHandler = downloadHandler;
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            if (request.HasError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Error: {GetResponseMessage(www)}");
+                Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
+                yield break;
             }
-            else
-            {
-                var model = JsonUtility.FromJson<T>(www.downloadHandler.text);
 
-                yield return null;
-
-                if (Application.isBatchMode)
-                {
-                    Debug.Log($"[TalusBackendData-Package] Fetched AppModel: {model}");
-                }
-
-                onFetchComplete(model);
-            }
-        }
-
-        private static string GetResponseMessage(UnityWebRequest request)
-        {
-            return request.responseCode switch
-            {
-                503 => "Web Dashboard is under maintenance!",
-                401 => "Unauthorized! Check auth token...",
-                _ => request.error
-            };
+            onSuccess.Invoke();
         }
     }
 }

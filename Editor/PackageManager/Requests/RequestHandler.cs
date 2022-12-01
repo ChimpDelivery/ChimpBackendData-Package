@@ -18,7 +18,7 @@ namespace TalusBackendData.Editor.PackageManager.Requests
 
             EditorApplication.update += Handler;
         }
-        
+
         private void Handler()
         {
             if (!Request.IsCompleted) { return; }

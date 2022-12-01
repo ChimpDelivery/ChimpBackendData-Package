@@ -1,13 +1,10 @@
+using TalusBackendData.Editor.Interfaces;
+
 namespace TalusBackendData.Editor.Models
 {
     [System.Serializable]
-    public class PackagesModel
+    public class PackagesModel : BaseModel
     {
         public PackageModel[] packages;
-
-        public override string ToString()
-        {
-            return UnityEngine.JsonUtility.ToJson(this, true);
-        }
     }
 }
