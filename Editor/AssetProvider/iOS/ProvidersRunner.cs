@@ -5,8 +5,6 @@ using Unity.EditorCoroutines.Editor;
 
 using UnityEditor;
 
-using UnityEngine;
-
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public static class ProvidersRunner
@@ -41,19 +39,21 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             providers.ForEach(provider => provider.Provide());
 
             EditorCoroutineUtility.StartCoroutineOwnerless(
-                WaitRoutine(IsSatisfy, () => EditorApplication.Exit(0))
+                WaitRoutine(IsSatisfy)
             );
         }
 
-        private static IEnumerator WaitRoutine(bool condition, System.Action onAfter)
+        private static IEnumerator WaitRoutine(bool condition)
         {
-            while (!condition)
+            while (true)
             {
-                Debug.Log($"IsSatisfy: {IsSatisfy}");
-                yield return null;
-            }
+                if (condition)
+                {
+                    yield return null;
+                }
 
-            onAfter.Invoke();
+                EditorApplication.Exit(0);
+            }
         }
     }
 }
