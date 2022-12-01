@@ -9,6 +9,7 @@ using UnityEditor.PackageManager.Requests;
 using TalusBackendData.Editor.PackageManager.Requests;
 using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.Models;
+using TalusBackendData.Editor.Requests;
 
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using PackageStatus = TalusBackendData.Editor.PackageManager.Models.PackageStatus;
@@ -34,7 +35,7 @@ namespace TalusBackendData.Editor.PackageManager
         }
 
         private readonly Dictionary<string, PackageStatus> _Packages = new();
-        
+
         private RequestHandler<ListRequest> _ListPackages;
         private RequestHandler<AddRequest> _AddPackage;
         private RequestHandler<RemoveRequest> _RemovePackage;
@@ -68,7 +69,7 @@ namespace TalusBackendData.Editor.PackageManager
         {
             Repaint();
         }
-        
+
         private void ShowPackagesMenu()
         {
             GUILayout.BeginHorizontal();
@@ -78,19 +79,19 @@ namespace TalusBackendData.Editor.PackageManager
                 DrawButton(EditorGUIUtility.IconContent("Refresh"), Color.cyan, RefreshPackages);
             }
             GUILayout.EndVertical();
-            
+
             foreach (KeyValuePair<string, PackageStatus> package in _Packages)
             {
                 bool isPackageInstalled = package.Value.Exist;
                 bool isUpdateExist = package.Value.UpdateExist;
-                Color buttonBgColor = (isPackageInstalled) 
-                        ? ((isUpdateExist) ? Color.yellow : Color.green) 
+                Color buttonBgColor = (isPackageInstalled)
+                        ? ((isUpdateExist) ? Color.yellow : Color.green)
                         : Color.red;
-                
-                DrawButton(new GUIContent(package.Value.DisplayName), 
-                    buttonBgColor, 
-                    () => {
-                        
+
+                DrawButton(new GUIContent(package.Value.DisplayName),
+                    buttonBgColor,
+                    () =>
+                    {
                         if (!isPackageInstalled || isUpdateExist)
                         {
                             AddPackage(package.Key);
@@ -130,23 +131,25 @@ namespace TalusBackendData.Editor.PackageManager
 
         private void PopulatePackages(System.Action onComplete)
         {
-            var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetAllPackages(response => {
-                
-                _Packages.Clear();
-                
-                foreach (PackageModel model in response.packages)
+            BackendApi.GetApi<GetPackagesRequest, PackagesModel>(
+                new GetPackagesRequest(),
+                onFetchComplete: response =>
                 {
-                    _Packages[model.package_id] = new PackageStatus {
-                        Exist = false,
-                        DisplayName = model.package_id,
-                        Hash = model.hash,
-                        UpdateExist = false
-                    };
-                }
+                    _Packages.Clear();
 
-                onComplete.Invoke();
-            });
+                    foreach (PackageModel model in response.packages)
+                    {
+                        _Packages[model.package_id] = new PackageStatus {
+                            Exist = false,
+                            DisplayName = model.package_id,
+                            Hash = model.hash,
+                            UpdateExist = false
+                        };
+                    }
+
+                    onComplete.Invoke();
+                }
+            );
         }
 
         private void RefreshPackages()
@@ -159,16 +162,16 @@ namespace TalusBackendData.Editor.PackageManager
         private void ListPackages()
         {
             _ListPackages = new RequestHandler<ListRequest>(
-                Client.List(), 
-                statusCode => {
-
+                Client.List(),
+                statusCode =>
+                {
                     if (statusCode != StatusCode.Success)
                     {
                         InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
                         return;
                     }
-                    
-                    foreach (PackageInfo package 
+
+                    foreach (PackageInfo package
                         in _ListPackages.Request.Result.Where(package => _Packages.ContainsKey(package.name)))
                     {
                         bool isGitPackage = (package.source == PackageSource.Git);
@@ -195,12 +198,12 @@ namespace TalusBackendData.Editor.PackageManager
             if (_RemovePackage != null && !_RemovePackage.IsCompleted) { return; }
 
             _RemovePackage = new RequestHandler<RemoveRequest>(
-                Client.Remove(packageId), 
-                statusCode => {
-                    
+                Client.Remove(packageId),
+                statusCode =>
+                {
                     string message = (statusCode == StatusCode.Success)
-                            ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
-                            : _RemovePackage.Request.Error.message;
+                        ? $"{_RemovePackage.Request.PackageIdOrName} removed successfully!"
+                        : _RemovePackage.Request.Error.message;
 
                     InfoBox.Show($"{statusCode} !", message, "OK");
                 }
@@ -211,28 +214,30 @@ namespace TalusBackendData.Editor.PackageManager
         {
             if (_AddPackage != null && !_AddPackage.IsCompleted) { return; }
 
-            var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetPackageInfo(packageId, package => {
-                _AddPackage = new RequestHandler<AddRequest>(
-                    Client.Add(package.url), 
-                    statusCode => {
-                        
-                        string message = (statusCode == StatusCode.Success)
+            BackendApi.GetApi<GetPackageRequest, PackageModel>(
+                new GetPackageRequest { PackageId = packageId },
+                onFetchComplete: package =>
+                {
+                    _AddPackage = new RequestHandler<AddRequest>(
+                        Client.Add(package.url),
+                        statusCode =>
+                        {
+                            string message = (statusCode == StatusCode.Success)
                                 ? $"{_AddPackage.Request.Result.packageId} added successfully!"
                                 : _AddPackage.Request.Error.message;
 
-                        InfoBox.Show($"{statusCode} !", message, "OK");
-                    }
-                );
-            });
+                            InfoBox.Show($"{statusCode} !", message, "OK");
+                        }
+                    );
+                }
+            );
         }
 
         private void CheckPackageVersion(string packageId, string packageHash)
         {
-            var api = new BackendApi(BackendSettingsHolder.instance.ApiUrl, BackendSettingsHolder.instance.ApiToken);
-            api.GetPackageInfo(
-                packageId, 
-                package => {
+            BackendApi.GetApi<GetPackageRequest, PackageModel>(
+                new GetPackageRequest { PackageId = packageId },
+                onFetchComplete: package => {
                     bool updateExist = !packageHash.Equals(package.hash);
                     _Packages[packageId].UpdateExist = updateExist;
                 }
@@ -245,7 +250,7 @@ namespace TalusBackendData.Editor.PackageManager
                     || (_RemovePackage != null && !_RemovePackage.IsCompleted)
                     || (EditorApplication.isCompiling || EditorApplication.isUpdating));
         }
-        
+
         private static void ShowInfoText(string text, Color color)
         {
             GUI.backgroundColor = color;

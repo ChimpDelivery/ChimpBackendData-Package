@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 using TalusBackendData.Editor.Models;
-using TalusBackendData.Editor.Utility;
+using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor
 {
@@ -11,36 +11,38 @@ namespace TalusBackendData.Editor
     {
         public static System.Action<AppModel> OnSyncComplete = delegate { };
 
-        private string ApiUrl => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-apiUrl") 
-                : BackendSettingsHolder.instance.ApiUrl;
-        
-        private string ApiToken => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-apiKey") 
-                : BackendSettingsHolder.instance.ApiToken;
-        
-        private string AppId => (Application.isBatchMode) 
-                ? CommandLineParser.GetArgument("-appId") 
-                : BackendSettingsHolder.instance.AppId;
-
         [MenuItem("TalusBackend/Sync Project Settings", priority = 12000)]
         public static void Sync()
         {
             new PreProcessProjectSettings().UpdateSettings();
         }
 
+        [MenuItem("TalusBackend/App Signing/Download Cert")]
+        public static void DownloadCert()
+        {
+            BackendApi.DownloadFile(new CertRequest(), Debug.Log);
+        }
+
+        [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
+        public static void DownloadProvisionProfile()
+        {
+            BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);
+        }
+
         public void UpdateSettings(System.Action onCustomComplete = null)
         {
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
-            var api = new BackendApi(ApiUrl, ApiToken);
-            api.GetAppInfo(AppId, (app) =>
-            {
-                UpdateProductSettings(app);
-                
-                OnSyncComplete(app);
-                onCustomComplete?.Invoke();
-            });
+            BackendApi.GetApi<GetAppRequest, AppModel>(
+                new GetAppRequest(),
+                app =>
+                {
+                    UpdateProductSettings(app);
+
+                    OnSyncComplete(app);
+                    onCustomComplete?.Invoke();
+                }
+            );
         }
 
         private void UpdateProductSettings(AppModel app)
