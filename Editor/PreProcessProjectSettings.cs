@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor
     public class PreProcessProjectSettings
     {
         public static System.Action<AppModel> OnSyncComplete = delegate { };
-        
+
         [MenuItem("TalusBackend/Sync Project Settings", priority = 12000)]
         public static void Sync()
         {
@@ -26,7 +26,7 @@ namespace TalusBackendData.Editor
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
-            BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);  
+            BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)
@@ -34,10 +34,10 @@ namespace TalusBackendData.Editor
             Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
 
             BackendApi.GetApi<GetAppRequest, AppModel>(
-                new GetAppRequest(), 
+                new GetAppRequest(),
                 app => {
                     UpdateProductSettings(app);
-                
+
                     OnSyncComplete(app);
                     onCustomComplete?.Invoke();
                 }

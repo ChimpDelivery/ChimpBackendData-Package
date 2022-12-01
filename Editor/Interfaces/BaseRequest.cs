@@ -10,8 +10,8 @@ namespace TalusBackendData.Editor.Interfaces
         public static string ServerUrl => Application.isBatchMode
             ? CommandLineParser.GetArgument("-apiUrl")
             : BackendSettingsHolder.instance.ApiUrl;
-        
-        public static string Token => Application.isBatchMode 
+
+        public static string Token => Application.isBatchMode
             ? CommandLineParser.GetArgument("-apiKey")
             : BackendSettingsHolder.instance.ApiToken;
 
@@ -20,9 +20,9 @@ namespace TalusBackendData.Editor.Interfaces
 
         public UnityWebRequest Request { get; private set; }
 
-        public bool HasError => Request.result == UnityWebRequest.Result.ConnectionError || 
+        public bool HasError => Request.result == UnityWebRequest.Result.ConnectionError ||
                                 Request.result == UnityWebRequest.Result.ProtocolError;
-        
+
         public UnityWebRequest Get()
         {
             Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");

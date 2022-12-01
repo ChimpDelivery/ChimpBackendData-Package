@@ -1,6 +1,4 @@
-﻿using TalusBackendData.Editor.Interfaces;
-
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 namespace TalusBackendData.Editor.Utility
 {

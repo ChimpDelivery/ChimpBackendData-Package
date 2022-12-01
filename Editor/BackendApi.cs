@@ -14,14 +14,14 @@ namespace TalusBackendData.Editor
 {
     public static class BackendApi
     {
-        public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete) 
+        public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete)
             where TRequest : BaseRequest
             where TModel : BaseModel
         {
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
-                request, 
-                new DownloadHandlerBuffer(), 
-                onSuccess: () => 
+                request,
+                new DownloadHandlerBuffer(),
+                onSuccess: () =>
                 {
                     var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
                     if (Application.isBatchMode)
@@ -32,33 +32,33 @@ namespace TalusBackendData.Editor
                 }
             ));
         }
-        
+
         public static void DownloadFile(BaseRequest request, Action<string> onDownloadComplete)
         {
             var apiConfigs = BackendApiConfigs.GetInstance();
-            
+
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
-                request, 
-                new DownloadHandlerFile(apiConfigs.TempFile), 
-                onSuccess: () => 
+                request,
+                new DownloadHandlerFile(apiConfigs.TempFile),
+                onSuccess: () =>
                 {
                     // response includes custom header that contains original filename
                     string fileName = request.GetHeader(apiConfigs.FileNameKey);
                     string filePath = Path.Combine(apiConfigs.ArtifactFolder, fileName);
-                    
+
                     // if downloaded file is exist just delete
-                    if (File.Exists(filePath)) 
+                    if (File.Exists(filePath))
                     {
                         File.Delete(filePath);
                     }
-                    
+
                     File.Move(apiConfigs.TempFile, filePath);
-                    
+
                     onDownloadComplete(filePath);
                 }
             ));
         }
-        
+
         private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
             using UnityWebRequest www = request.Get();
@@ -70,7 +70,7 @@ namespace TalusBackendData.Editor
                 Debug.LogError($"[TalusBackendData-Package] Request Error: { www.GetMsg() }");
                 yield break;
             }
-            
+
             onSuccess.Invoke();
         }
     }

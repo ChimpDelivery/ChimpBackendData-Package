@@ -6,7 +6,7 @@ namespace TalusBackendData.Editor.Requests
     public class GetPackageRequest : BaseRequest
     {
         public string PackageId { get; set; }
-        
+
         public override string ApiUrl => $"packages/get-package?package_id={PackageId}";
     }
 }
