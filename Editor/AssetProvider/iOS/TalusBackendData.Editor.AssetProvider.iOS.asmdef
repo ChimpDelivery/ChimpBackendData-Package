@@ -1,0 +1,21 @@
+{
+    "name": "TalusBackendData.Editor.AssetProvider.iOS",
+    "rootNamespace": "TalusBackendData.Editor.AssetProvider.iOS",
+    "references": [
+        "TalusBackendData.Editor",
+        "Unity.EditorCoroutines.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_IOS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
