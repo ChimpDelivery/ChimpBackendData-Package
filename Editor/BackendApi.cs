@@ -46,12 +46,8 @@ namespace TalusBackendData.Editor
                     string fileName = request.GetHeader(apiConfigs.FileNameKey);
                     string filePath = $"{apiConfigs.ArtifactFolder}/{fileName}";
 
-                    // if downloaded file is exist just delete
-                    if (File.Exists(filePath))
-                    {
-                        File.Delete(filePath);
-                    }
-
+                    Debug.Log($"[TalusBackendData-Package] Temporary file path: {apiConfigs.TempFile}");
+                    Debug.Log($"[TalusBackendData-Package] Real file path: {filePath}");
                     File.Move(apiConfigs.TempFile, filePath);
 
                     onDownloadComplete(filePath);
