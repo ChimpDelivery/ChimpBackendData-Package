@@ -1,10 +1,14 @@
 using System.IO;
 using System.Collections.Generic;
+using System.Threading;
+using System;
 
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
@@ -14,6 +18,10 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
         public bool IsCompleted { get; set; }
 
+        public static string Token => Application.isBatchMode
+            ? CommandLineParser.GetArgument("-apiKey")
+            : BackendSettingsHolder.instance.ApiToken;
+
         public void Provide()
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
@@ -21,6 +29,28 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             {
                 return;
             }
+
+            UnityWebRequest www = UnityWebRequest.Get("http://34.252.141.173/api/appstoreconnect/get-provision-profile");
+            www.SetRequestHeader("Authorization", $"Bearer {Token}");
+            www.SetRequestHeader("Accept", "application/octet-stream");
+            www.SetRequestHeader("Content-Type", "application/octet-stream");
+            www.SendWebRequest();
+
+            while (!www.isDone)
+            {
+                Console.WriteLine("[TalusBackendData-Package] Waiting for response");
+                Thread.Sleep(1000);
+            }
+
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
+                File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
+                www.Dispose();
+            }
+
+            return;
 
             var request = new ProvisionProfileRequest();
             BackendApi.DownloadFile(request, onDownloadComplete: path =>
