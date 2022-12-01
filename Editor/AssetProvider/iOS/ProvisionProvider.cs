@@ -119,7 +119,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 "    <key>method</key>",
                 "    <string>app-store</string>",
                 "    <key>signingCertificate</key>",
-                "    <string>iPhone Distribution</string>",
+                "    <string>iPhone Distribution: Emre Kovanci (R6857T9FN6)</string>",
                 "    <key>signingStyle</key>",
                 "    <string>manual</string>",
                 "    <key>stripSwiftSymbols</key>",
