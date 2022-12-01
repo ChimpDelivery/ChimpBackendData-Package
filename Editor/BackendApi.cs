@@ -73,11 +73,6 @@ namespace TalusBackendData.Editor
                 yield break;
             }
 
-            while (!www.isDone)
-            {
-                yield return null;
-            }
-
             onSuccess.Invoke();
         }
     }
