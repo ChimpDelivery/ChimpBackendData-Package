@@ -48,6 +48,11 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             {
                 Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
                 Console.WriteLine("file exits: " + File.Exists(_ApiConfigs.TempFile));
+
+                File.Move(
+                    _ApiConfigs.TempFile,
+                    Path.GetFileName(_ApiConfigs.TempFile).Split(".mobileprovision")[0]
+                );
                 // File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
                 www.Dispose();
             }
