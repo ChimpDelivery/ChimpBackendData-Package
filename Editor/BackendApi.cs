@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections;
 
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace TalusBackendData.Editor
 
                     Debug.Log($"[TalusBackendData-Package] Temporary file path: {apiConfigs.TempFile}");
                     Debug.Log($"[TalusBackendData-Package] Real file path: {filePath}");
-                    // File.Move(apiConfigs.TempFile, filePath);
+                    File.Move(apiConfigs.TempFile, filePath);
 
                     onDownloadComplete(filePath);
                 }
@@ -58,12 +59,18 @@ namespace TalusBackendData.Editor
         {
             using UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
+            Debug.Log($"[TalusBackendData-Package] Request Url: {www.url}");
             yield return www.SendWebRequest();
 
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
                 yield break;
+            }
+
+            while (!www.isDone)
+            {
+                yield return null;
             }
 
             onSuccess.Invoke();
