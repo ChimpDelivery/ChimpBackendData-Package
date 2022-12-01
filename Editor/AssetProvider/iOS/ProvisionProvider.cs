@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
 using TalusBackendData.Editor.Utility;
+using DG.Tweening.Plugins.Core.PathCore;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
@@ -60,6 +61,12 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
                 Console.WriteLine("file path:" + newPath);
                 // File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
+
+                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile name: {www.GetResponseHeader(_ApiConfigs.FileNameKey)}");
+                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)}");
+
+                PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
+                PlayerSettings.iOS.iOSManualProvisioningProfileID = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
 
                 GenerateExportOptions(
                     www.GetResponseHeader(_ApiConfigs.FileNameKey),
