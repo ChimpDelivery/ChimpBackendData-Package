@@ -5,7 +5,6 @@ using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    [System.Serializable]
     public class VersionSettingsProvider : IProvider
     {
         public bool IsCompleted { get; set; }

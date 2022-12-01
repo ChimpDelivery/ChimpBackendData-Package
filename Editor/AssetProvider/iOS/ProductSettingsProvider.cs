@@ -1,11 +1,11 @@
 using UnityEditor;
 using UnityEngine;
+
 using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    [System.Serializable]
     public class ProductSettingsProvider : IProvider
     {
         public bool IsCompleted { get; set; }
@@ -32,13 +32,13 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 PlayerSettings.productName = app.app_name;
 
                 Debug.Log($"[TalusBackendData-Package] App Model used by Pre Process: {app}");
-
-                IsCompleted = true;
             }
             else
             {
                 Debug.LogError("[TalusBackendData-Package] AppModel data is null! Product Settings couldn't updated...");
             }
+
+            IsCompleted = true;
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

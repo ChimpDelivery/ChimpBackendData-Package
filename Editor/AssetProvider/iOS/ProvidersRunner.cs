@@ -5,6 +5,8 @@ using Unity.EditorCoroutines.Editor;
 
 using UnityEditor;
 
+using UnityEngine;
+
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public static class ProvidersRunner
@@ -47,6 +49,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
         {
             while (!condition)
             {
+                Debug.Log($"IsSatisfy: {IsSatisfy}");
                 yield return null;
             }
 

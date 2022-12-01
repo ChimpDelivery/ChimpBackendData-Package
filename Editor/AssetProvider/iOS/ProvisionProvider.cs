@@ -8,7 +8,6 @@ using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    [System.Serializable]
     public class ProvisionProvider : IProvider
     {
         private readonly BackendApiConfigs _ApiConfigs = BackendApiConfigs.GetInstance();
