@@ -35,7 +35,8 @@ namespace TalusBackendData.Editor
 
             BackendApi.GetApi<GetAppRequest, AppModel>(
                 new GetAppRequest(),
-                app => {
+                app =>
+                {
                     UpdateProductSettings(app);
 
                     OnSyncComplete(app);

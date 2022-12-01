@@ -67,7 +67,7 @@ namespace TalusBackendData.Editor
 
             if (request.HasError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Request Error: { www.GetMsg() }");
+                Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
                 yield break;
             }
 
