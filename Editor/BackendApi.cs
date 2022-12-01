@@ -39,16 +39,21 @@ namespace TalusBackendData.Editor
 
             EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
                 request,
-                new DownloadHandlerFile(apiConfigs.TempFile),
+                new DownloadHandlerBuffer(),
                 onSuccess: () =>
                 {
+                    if (!Directory.Exists(apiConfigs.ArtifactFolder))
+                    {
+                        Directory.CreateDirectory(apiConfigs.ArtifactFolder);
+                    }
+
                     // response includes custom header that contains original filename
                     string fileName = request.GetHeader(apiConfigs.FileNameKey);
                     string filePath = $"{apiConfigs.ArtifactFolder}/{fileName}";
 
                     Debug.Log($"[TalusBackendData-Package] Temporary file path: {apiConfigs.TempFile}");
                     Debug.Log($"[TalusBackendData-Package] Real file path: {filePath}");
-                    File.Move(apiConfigs.TempFile, filePath);
+                    File.WriteAllBytes(filePath, request.Request.downloadHandler.data);
 
                     onDownloadComplete(filePath);
                 }
