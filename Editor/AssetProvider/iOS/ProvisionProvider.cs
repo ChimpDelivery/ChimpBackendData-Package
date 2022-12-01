@@ -60,6 +60,12 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
                 Console.WriteLine("file path:" + newPath);
                 // File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
+
+                GenerateExportOptions(
+                    www.GetResponseHeader(_ApiConfigs.FileNameKey),
+                    www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)
+                );
+
                 www.Dispose();
             }
 
