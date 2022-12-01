@@ -68,7 +68,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 PlayerSettings.iOS.iOSManualProvisioningProfileID = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
 
                 GenerateExportOptions(
-                    www.GetResponseHeader(_ApiConfigs.FileNameKey),
+                    www.GetResponseHeader(_ApiConfigs.FileNameKey).Split(".mobileprovision")[0],
                     www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)
                 );
 
