@@ -6,8 +6,6 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-
-using TalusBackendData.Editor.Requests;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
@@ -59,7 +57,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 );
 
                 Console.WriteLine("file path:" + newPath);
-                // File.WriteAllBytes(_ApiConfigs.TempFile, www.downloadHandler.data);
 
                 Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile name: {www.GetResponseHeader(_ApiConfigs.FileNameKey)}");
                 Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)}");
@@ -76,25 +73,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             return;
-
-            var request = new ProvisionProfileRequest();
-            BackendApi.DownloadFile(request, onDownloadComplete: path =>
-            {
-                string fileUuid = request.GetHeader(_ApiConfigs.ProvisionUuidKey);
-                string fileName = Path.GetFileName(path).Split(".mobileprovision")[0];
-                string teamId = request.GetHeader(_ApiConfigs.TeamIdKey);
-
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile path: {path}");
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile name: {fileName}");
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {fileUuid}");
-
-                PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
-                PlayerSettings.iOS.iOSManualProvisioningProfileID = fileUuid;
-
-                GenerateExportOptions(fileName, teamId);
-            });
-
-            Debug.Log("[TalusCI-Package] iOSProvision Step | Completed!");
         }
 
         // UnityBuild splits into 2 stage on Jenkins.
@@ -113,19 +91,19 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 "    <false/>",
                 "    <key>provisioningProfiles</key>",
                 "    <dict>",
-                $"        <key>{PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS)}</key>",
-                $"        <string>{profileName}</string>",
+               $"        <key>{PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS)}</key>",
+               $"        <string>{profileName}</string>",
                 "    </dict>",
                 "    <key>method</key>",
                 "    <string>app-store</string>",
-                "    <key>signingCertificate</key>",
-                "    <string>iPhone Distribution: Emre Kovanci (R6857T9FN6)</string>",
                 "    <key>signingStyle</key>",
                 "    <string>manual</string>",
+                "    <key>signingCertificate</key>",
+                "    <string>iOS Distribution</string>",
                 "    <key>stripSwiftSymbols</key>",
                 "    <true/>",
                 "    <key>teamID</key>",
-                $"    <string>{teamId}</string>",
+               $"    <string>{teamId}</string>",
                 "    <key>uploadSymbols</key>",
                 "    <false/>",
                 "</dict>",
