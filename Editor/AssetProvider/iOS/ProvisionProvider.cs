@@ -49,7 +49,10 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
                 Console.WriteLine("file exits: " + File.Exists(_ApiConfigs.TempFile));
 
-                string newPath = _ApiConfigs.ArtifactFolder + "/" + Path.GetFileName(_ApiConfigs.TempFile).Split(".mobileprovision")[0];
+                string newPath = _ApiConfigs.ArtifactFolder
+                    + "/"
+                    + www.GetResponseHeader(_ApiConfigs.FileNameKey);
+
                 File.Move(
                     _ApiConfigs.TempFile,
                     newPath
