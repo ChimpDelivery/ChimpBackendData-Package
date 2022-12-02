@@ -20,7 +20,7 @@ namespace TalusBackendData.Editor
             where TRequest : BaseRequest
             where TModel : BaseModel
         {
-            RequestRoutine(
+            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
                 request,
                 new DownloadHandlerBuffer(),
                 onSuccess: () =>
@@ -32,7 +32,7 @@ namespace TalusBackendData.Editor
                     }
                     onFetchComplete(model);
                 }
-            );
+            ));
         }
 
         private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
