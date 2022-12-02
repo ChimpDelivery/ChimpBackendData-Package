@@ -14,7 +14,7 @@ namespace TalusBackendData.Editor.AssetProvider
 
             BackendApi.GetApi<GetAppRequest, AppModel>(
                 new GetAppRequest(),
-                app => UpdateProductSettings(app)
+                onFetchComplete: UpdateProductSettings
             );
         }
 
