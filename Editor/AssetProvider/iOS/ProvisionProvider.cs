@@ -6,7 +6,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
-using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
@@ -14,11 +13,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
     public class ProvisionProvider : BaseProvider
     {
         private readonly BackendApiConfigs _ApiConfigs = BackendApiConfigs.GetInstance();
-
-        public static string Token => Application.isBatchMode
-            ? CommandLineParser.GetArgument("-apiKey")
-            : BackendSettingsHolder.instance.ApiToken;
-
+        
         public override void Provide()
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
@@ -41,15 +36,11 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             {
                 Debug.Log("[TalusBackendData-Package] iOSProvision Step | Provision File exits: " + File.Exists(_ApiConfigs.TempFile));
 
-                string newPath = _ApiConfigs.ArtifactFolder
-                    + "/"
-                    + www.GetResponseHeader(_ApiConfigs.FileNameKey);
-
+                string newPath = $"{_ApiConfigs.ArtifactFolder}/{www.GetResponseHeader(_ApiConfigs.FileNameKey)}";
                 File.Move(_ApiConfigs.TempFile, newPath);
-
-                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File path: {newPath}");
-
+                
                 string profileUuid = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
+                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File path: {newPath}");
                 Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
                 PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
@@ -59,8 +50,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             www.Dispose();
-
-            return;
         }
 
         private void GenerateExportOptions(string profileUuid)
