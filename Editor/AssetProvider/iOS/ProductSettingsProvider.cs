@@ -12,7 +12,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
         public void Provide()
         {
-            Debug.Log("[TalusBackendData-Package] PreProcessProjectSettings::Sync()");
+            Debug.Log("[TalusBackendData-Package] ProductSettingsProvider running...");
 
             BackendApi.GetApi<GetAppRequest, AppModel>(
                 new GetAppRequest(),
@@ -22,26 +22,24 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
         private void UpdateProductSettings(AppModel app)
         {
-            Debug.Log("[TalusBackendData-Package] update product settings...");
+            Debug.Log("[TalusBackendData-Package] Update product settings...");
 
             if (app != null)
             {
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
-                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, app.app_bundle);
-
                 PlayerSettings.productName = app.app_name;
 
-                Debug.Log($"[TalusBackendData-Package] App Model used by Pre Process: {app}");
+                Debug.Log($"[TalusBackendData-Package] App Model used by ProductSettingsProvider: {app}");
             }
             else
             {
                 Debug.LogError("[TalusBackendData-Package] AppModel data is null! Product Settings couldn't updated...");
             }
 
-            IsCompleted = true;
-
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            IsCompleted = true;
         }
     }
 }
