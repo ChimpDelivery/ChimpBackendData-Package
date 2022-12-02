@@ -23,7 +23,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             UnityWebRequest www = new ProvisionProfileRequest().Get();
-            www.timeout = 30;
             www.downloadHandler = new DownloadHandlerFile(_ApiConfigs.TempFile);
             www.SendWebRequest();
 

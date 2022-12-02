@@ -25,6 +25,7 @@ namespace TalusBackendData.Editor.Interfaces
         public UnityWebRequest Get()
         {
             Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
+            Request.timeout = 30;
             Request.SetRequestHeader("Authorization", $"Bearer {Token}");
             Request.SetRequestHeader("Accept", ContentType);
             Request.SetRequestHeader("Content-Type", ContentType);
