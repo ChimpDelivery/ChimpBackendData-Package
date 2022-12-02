@@ -17,10 +17,7 @@ namespace TalusBackendData.Editor
             RequestRoutine(request, new DownloadHandlerBuffer(), onSuccess: () =>
             {
                 var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
-                if (Application.isBatchMode)
-                {
-                    Debug.Log($"[TalusBackendData-Package] Fetched Model: {model}");
-                }
+                BatchMode.Log($"[TalusBackendData-Package] Fetched Model: {model}");
                 onFetchComplete(model);
             });
         }
@@ -31,15 +28,15 @@ namespace TalusBackendData.Editor
             www.downloadHandler = downloadHandler;
             www.SendWebRequest();
 
-            Debug.Log($"[TalusBackendData-Package] Request URL: {www.url}");
+            BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url}");
 
             while (!www.isDone)
             {
-                Debug.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
+                BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
                 Thread.Sleep(100);
             }
 
-            Debug.Log($"[TalusBackendData-Package] Request Result: {www.result}, Response Code: {www.responseCode}");
+            BatchMode.Log($"[TalusBackendData-Package] Request Result: {www.result}, Response Code: {www.responseCode}");
 
             if (request.HasError)
             {

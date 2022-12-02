@@ -12,5 +12,12 @@ namespace TalusBackendData.Editor.Utility
 
             EditorApplication.Exit(exitCode);
         }
+
+        public static void Log(string msg)
+        {
+            if (!Application.isBatchMode) { return; }
+
+            Debug.Log(msg);
+        }
     }
 }
