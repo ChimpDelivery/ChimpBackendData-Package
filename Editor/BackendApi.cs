@@ -8,7 +8,7 @@ using TalusBackendData.Editor.Interfaces;
 
 namespace TalusBackendData.Editor
 {
-    public class BackendApi
+    public static class BackendApi
     {
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete)
             where TRequest : BaseRequest
