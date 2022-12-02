@@ -1,11 +1,9 @@
 using System;
 using System.Threading;
-using System.Collections;
 
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
-
-using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
@@ -18,7 +16,7 @@ namespace TalusBackendData.Editor
             where TRequest : BaseRequest
             where TModel : BaseModel
         {
-            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+            RequestRoutine(
                 request,
                 new DownloadHandlerBuffer(),
                 onSuccess: () =>
@@ -30,10 +28,10 @@ namespace TalusBackendData.Editor
                     }
                     onFetchComplete(model);
                 }
-            ));
+            );
         }
 
-        private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
+        private static void RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
@@ -53,7 +51,10 @@ namespace TalusBackendData.Editor
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
-                yield break;
+                if (Application.isBatchMode)
+                {
+                    EditorApplication.Exit(-1);
+                }
             }
 
             onSuccess.Invoke();
