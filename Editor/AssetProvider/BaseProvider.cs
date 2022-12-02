@@ -1,8 +1,9 @@
 namespace TalusBackendData.Editor.AssetProvider
 {
-    public interface IProvider
+    public abstract class BaseProvider
     {
         public bool IsCompleted { get; set; }
-        public void Provide();
+
+        public abstract void Provide();
     }
 }

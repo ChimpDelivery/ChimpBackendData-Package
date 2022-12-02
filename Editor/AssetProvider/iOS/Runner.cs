@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 using Unity.EditorCoroutines.Editor;
 
-using UnityEditor;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    public static class ProvidersRunner
+    public static class Runner
     {
-        private static List<IProvider> providers = new()
+        private static readonly List<BaseProvider> providers = new()
         {
             new VersionSettingsProvider(),
             new ProductSettingsProvider(),
@@ -52,7 +52,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                     yield return null;
                 }
 
-                EditorApplication.Exit(0);
+                BatchMode.Close(0);
             }
         }
     }

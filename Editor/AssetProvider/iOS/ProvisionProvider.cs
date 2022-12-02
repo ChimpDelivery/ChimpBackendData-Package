@@ -11,17 +11,15 @@ using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
-    public class ProvisionProvider : IProvider
+    public class ProvisionProvider : BaseProvider
     {
         private readonly BackendApiConfigs _ApiConfigs = BackendApiConfigs.GetInstance();
-
-        public bool IsCompleted { get; set; }
 
         public static string Token => Application.isBatchMode
             ? CommandLineParser.GetArgument("-apiKey")
             : BackendSettingsHolder.instance.ApiToken;
 
-        public void Provide()
+        public override void Provide()
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
                 EditorUserBuildSettings.activeBuildTarget != BuildTarget.tvOS)

@@ -4,13 +4,11 @@ using UnityEngine;
 using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Requests;
 
-namespace TalusBackendData.Editor.AssetProvider.iOS
+namespace TalusBackendData.Editor.AssetProvider
 {
-    public class ProductSettingsProvider : IProvider
+    public class ProductSettingsProvider : BaseProvider
     {
-        public bool IsCompleted { get; set; }
-
-        public void Provide()
+        public override void Provide()
         {
             Debug.Log("[TalusBackendData-Package] ProductSettingsProvider running...");
 
@@ -26,8 +24,9 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
             if (app != null)
             {
-                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
                 PlayerSettings.productName = app.app_name;
+                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
+                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, app.app_bundle);
 
                 Debug.Log($"[TalusBackendData-Package] App Model used by ProductSettingsProvider: {app}");
             }
