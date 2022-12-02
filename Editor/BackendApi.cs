@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Collections;
 
 using UnityEngine;
@@ -8,7 +9,6 @@ using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
-using System.Threading;
 
 namespace TalusBackendData.Editor
 {
@@ -37,18 +37,18 @@ namespace TalusBackendData.Editor
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
-            Debug.Log($"[TalusBackendData-Package] Request Url: {www.url}");
             www.SendWebRequest();
+
+            Debug.Log($"[TalusBackendData-Package] Request URL: {www.url}");
 
             while (!www.isDone)
             {
-                Debug.Log($"[TalusBackendData-Package] Request Url: {www.url} | Waiting for response");
+                Debug.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
                 Thread.Sleep(1000);
             }
 
-            Debug.Log($"[TalusBackendData-Package] Request result: {www.result}");
-            Debug.Log($"[TalusBackendData-Package] Request responce code: {www.responseCode}");
-            Debug.Log($"[TalusBackendData-Package] Request downloaded bytes: {www.downloadedBytes}");
+            Debug.Log($"[TalusBackendData-Package] Request Result: {www.result}");
+            Debug.Log($"[TalusBackendData-Package] Request Response Code: {www.responseCode}");
 
             if (request.HasError)
             {
