@@ -26,6 +26,7 @@ namespace TalusBackendData.Editor
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
+            www.timeout = 30;
             www.SendWebRequest();
 
             BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url}");
