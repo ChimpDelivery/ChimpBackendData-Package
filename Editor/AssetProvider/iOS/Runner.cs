@@ -19,7 +19,8 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
         public static bool IsSatisfy => _Providers.Count(t => t.IsCompleted) == _Providers.Count;
 
-        // Jenkins execute this function as a stage
+        // ReSharper disable once UnusedMember.Global
+        // * Jenkins execute this function as a stage
         public static void CollectAssets()
         {
             _Providers.ForEach(provider => provider.Provide());
