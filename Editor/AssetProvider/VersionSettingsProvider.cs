@@ -11,7 +11,7 @@ namespace TalusBackendData.Editor.AssetProvider
         {
             if (!Application.isBatchMode)
             {
-                Debug.Log("[TalusBackendData-Package] Version Provider could not run, only CI/CD supported!");
+                Debug.Log("[TalusBackendData-Package] Version Provider could not run! Only CI/CD pipeline supported!");
                 IsCompleted = true;
                 return;
             }
