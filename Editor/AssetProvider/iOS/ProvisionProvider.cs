@@ -47,10 +47,10 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
                 File.Move(_ApiConfigs.TempFile, newPath);
 
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision File path: {newPath}");
+                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File path: {newPath}");
 
                 string profileUuid = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
+                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
                 PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
                 PlayerSettings.iOS.iOSManualProvisioningProfileID = profileUuid;
@@ -92,7 +92,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
             string exportOptionsPath = $"{BackendApiConfigs.GetInstance().ArtifactFolder}/exportOptions.plist";
             File.WriteAllLines(exportOptionsPath, fileContents.ToArray());
-            Debug.Log($"[TalusCI-Package] exportOptions.plist created at {exportOptionsPath}");
+            Debug.Log($"[TalusBackendData-Package] exportOptions.plist created at {exportOptionsPath}");
 
             IsCompleted = true;
         }
