@@ -1,13 +1,13 @@
-using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Threading;
+using System.Collections.Generic;
 
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Utility;
+using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
@@ -29,23 +29,19 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 return;
             }
 
-            UnityWebRequest www = UnityWebRequest.Get("http://34.252.141.173/api/appstoreconnect/get-provision-profile");
+            UnityWebRequest www = new ProvisionProfileRequest().Get();
             www.downloadHandler = new DownloadHandlerFile(_ApiConfigs.TempFile);
-            www.SetRequestHeader("Authorization", $"Bearer {Token}");
-            www.SetRequestHeader("Accept", "application/octet-stream");
-            www.SetRequestHeader("Content-Type", "application/octet-stream");
             www.SendWebRequest();
 
             while (!www.isDone)
             {
-                Console.WriteLine("[TalusBackendData-Package] Waiting for response");
+                Debug.Log("[TalusBackendData-Package] iOSProvision Step | Waiting for response");
                 Thread.Sleep(1000);
             }
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
-                Console.WriteLine("[TalusBackendData-Package] File exits: " + File.Exists(_ApiConfigs.TempFile));
+                Debug.Log("[TalusBackendData-Package] iOSProvision Step | Provision File exits: " + File.Exists(_ApiConfigs.TempFile));
 
                 string newPath = _ApiConfigs.ArtifactFolder
                     + "/"
@@ -53,7 +49,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
                 File.Move(_ApiConfigs.TempFile, newPath);
 
-                Debug.Log($"[TalusCI-Package] iOSProfile path: {newPath}");
+                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision File path: {newPath}");
 
                 string profileUuid = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
                 Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
@@ -62,9 +58,9 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 PlayerSettings.iOS.iOSManualProvisioningProfileID = profileUuid;
 
                 GenerateExportOptions(profileUuid);
-
-                www.Dispose();
             }
+
+            www.Dispose();
 
             return;
         }
