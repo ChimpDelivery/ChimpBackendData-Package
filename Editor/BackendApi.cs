@@ -1,17 +1,21 @@
 using System;
-using System.Threading;
+using System.Collections;
 
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+
+using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor
 {
-    public static class BackendApi
+    public class BackendApi : EditorWindow
     {
+        private static EditorWaitForSeconds _WaitForSecond = new(1.0f);
+
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete)
             where TRequest : BaseRequest
             where TModel : BaseModel
@@ -31,7 +35,7 @@ namespace TalusBackendData.Editor
             );
         }
 
-        private static void RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
+        private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
@@ -42,7 +46,7 @@ namespace TalusBackendData.Editor
             while (!www.isDone)
             {
                 Debug.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
-                Thread.Sleep(1000);
+                yield return _WaitForSecond;
             }
 
             Debug.Log($"[TalusBackendData-Package] Request Result: {www.result}");
@@ -51,10 +55,7 @@ namespace TalusBackendData.Editor
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
-                if (Application.isBatchMode)
-                {
-                    EditorApplication.Exit(-1);
-                }
+                yield break;
             }
 
             onSuccess.Invoke();
