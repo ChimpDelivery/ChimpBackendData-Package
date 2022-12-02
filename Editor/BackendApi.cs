@@ -1,26 +1,22 @@
 using System;
-using System.Collections;
+using System.Threading;
 
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
-using Unity.EditorCoroutines.Editor;
-
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
+using UnityEditor;
 
 namespace TalusBackendData.Editor
 {
-    public class BackendApi : EditorWindow
+    public class BackendApi
     {
-        private static EditorWaitForSeconds _WaitForSecond = new(1.0f);
-
         public static void GetApi<TRequest, TModel>(TRequest request, Action<TModel> onFetchComplete)
             where TRequest : BaseRequest
             where TModel : BaseModel
         {
-            EditorCoroutineUtility.StartCoroutineOwnerless(RequestRoutine(
+            RequestRoutine(
                 request,
                 new DownloadHandlerBuffer(),
                 onSuccess: () =>
@@ -32,10 +28,10 @@ namespace TalusBackendData.Editor
                     }
                     onFetchComplete(model);
                 }
-            ));
+            );
         }
 
-        private static IEnumerator RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
+        private static void RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
@@ -46,7 +42,7 @@ namespace TalusBackendData.Editor
             while (!www.isDone)
             {
                 Debug.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
-                yield return _WaitForSecond;
+                Thread.Sleep(1000);
             }
 
             Debug.Log($"[TalusBackendData-Package] Request Result: {www.result}");
@@ -55,7 +51,10 @@ namespace TalusBackendData.Editor
             if (request.HasError)
             {
                 Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
-                yield break;
+                if (Application.isBatchMode)
+                {
+                    EditorApplication.Exit(-1);
+                }
             }
 
             onSuccess.Invoke();
