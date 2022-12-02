@@ -65,7 +65,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 PlayerSettings.iOS.iOSManualProvisioningProfileID = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
 
                 GenerateExportOptions(
-                    www.GetResponseHeader(_ApiConfigs.FileNameKey).Split(".mobileprovision")[0],
+                    //www.GetResponseHeader(_ApiConfigs.FileNameKey).Split(".mobileprovision")[0],
                     www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)
                 );
 
@@ -79,7 +79,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
         // 1. Stage => Prepares build configurations
         // 2. Stage => Run build
         // So Bundle id already resolved in the previous step on Jenkins
-        private void GenerateExportOptions(string profileName, string teamId)
+        private void GenerateExportOptions(string profileName)
         {
             var fileContents = new List<string>
             {
