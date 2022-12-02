@@ -31,10 +31,5 @@ namespace TalusBackendData.Editor.Interfaces
 
             return Request;
         }
-
-        public string GetHeader(string key)
-        {
-            return Request.GetResponseHeader(key);
-        }
     }
 }
