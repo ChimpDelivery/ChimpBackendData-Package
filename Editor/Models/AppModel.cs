@@ -1,4 +1,4 @@
-﻿using TalusBackendData.Editor.Interfaces;
+﻿using TalusBackendData.Editor.Models.Interfaces;
 
 namespace TalusBackendData.Editor.Models
 {

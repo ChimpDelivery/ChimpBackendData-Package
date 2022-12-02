@@ -1,4 +1,4 @@
-﻿namespace TalusBackendData.Editor.Interfaces
+﻿namespace TalusBackendData.Editor.Models.Interfaces
 {
     public abstract class BaseModel
     {
