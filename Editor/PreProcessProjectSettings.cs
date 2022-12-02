@@ -20,13 +20,13 @@ namespace TalusBackendData.Editor
         [MenuItem("TalusBackend/App Signing/Download Cert")]
         public static void DownloadCert()
         {
-            BackendApi.DownloadFile(new CertRequest(), Debug.Log);
+            //BackendApi.DownloadFile(new CertRequest(), Debug.Log);
         }
 
         [MenuItem("TalusBackend/App Signing/Download Provision Profile")]
         public static void DownloadProvisionProfile()
         {
-            BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);
+            //BackendApi.DownloadFile(new ProvisionProfileRequest(), Debug.Log);
         }
 
         public void UpdateSettings(System.Action onCustomComplete = null)
