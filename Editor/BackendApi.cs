@@ -42,7 +42,7 @@ namespace TalusBackendData.Editor
             while (!www.isDone)
             {
                 Debug.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
 
             Debug.Log($"[TalusBackendData-Package] Request Result: {www.result}");
