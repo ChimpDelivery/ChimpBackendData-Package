@@ -1,11 +1,12 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading;
-using System;
 
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
+
 using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
@@ -41,33 +42,26 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 Thread.Sleep(1000);
             }
 
-
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Console.WriteLine("[TalusBackendData-Package] Info has been successfully received!");
-                Console.WriteLine("file exits: " + File.Exists(_ApiConfigs.TempFile));
+                Console.WriteLine("[TalusBackendData-Package] File exits: " + File.Exists(_ApiConfigs.TempFile));
 
                 string newPath = _ApiConfigs.ArtifactFolder
                     + "/"
                     + www.GetResponseHeader(_ApiConfigs.FileNameKey);
 
-                File.Move(
-                    _ApiConfigs.TempFile,
-                    newPath
-                );
+                File.Move(_ApiConfigs.TempFile, newPath);
 
-                Console.WriteLine("file path:" + newPath);
+                Debug.Log($"[TalusCI-Package] iOSProfile path: {newPath}");
 
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile name: {www.GetResponseHeader(_ApiConfigs.FileNameKey)}");
-                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)}");
+                string profileUuid = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
+                Debug.Log($"[TalusCI-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
                 PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
-                PlayerSettings.iOS.iOSManualProvisioningProfileID = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
+                PlayerSettings.iOS.iOSManualProvisioningProfileID = profileUuid;
 
-                GenerateExportOptions(
-                    //www.GetResponseHeader(_ApiConfigs.FileNameKey).Split(".mobileprovision")[0],
-                    www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey)
-                );
+                GenerateExportOptions(profileUuid);
 
                 www.Dispose();
             }
@@ -75,11 +69,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             return;
         }
 
-        // UnityBuild splits into 2 stage on Jenkins.
-        // 1. Stage => Prepares build configurations
-        // 2. Stage => Run build
-        // So Bundle id already resolved in the previous step on Jenkins
-        private void GenerateExportOptions(string profileName)
+        private void GenerateExportOptions(string profileUuid)
         {
             var fileContents = new List<string>
             {
@@ -92,7 +82,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 "    <key>provisioningProfiles</key>",
                 "    <dict>",
                $"        <key>{PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS)}</key>",
-               $"        <string>{profileName}</string>",
+               $"        <string>{profileUuid}</string>",
                 "    </dict>",
                 "    <key>method</key>",
                 "    <string>app-store</string>",
