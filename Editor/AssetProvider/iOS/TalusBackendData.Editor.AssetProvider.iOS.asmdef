@@ -2,8 +2,7 @@
     "name": "TalusBackendData.Editor.AssetProvider.iOS",
     "rootNamespace": "TalusBackendData.Editor.AssetProvider.iOS",
     "references": [
-        "TalusBackendData.Editor",
-        "Unity.EditorCoroutines.Editor"
+        "TalusBackendData.Editor"
     ],
     "includePlatforms": [
         "Editor"
