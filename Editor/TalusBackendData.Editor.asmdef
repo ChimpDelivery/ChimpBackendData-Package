@@ -1,9 +1,7 @@
 {
     "name": "TalusBackendData.Editor",
     "rootNamespace": "TalusBackendData.Editor",
-    "references": [
-        "Unity.EditorCoroutines.Editor"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],

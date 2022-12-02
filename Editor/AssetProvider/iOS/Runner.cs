@@ -1,7 +1,5 @@
-using System.Collections;
+using System.Threading;
 using System.Collections.Generic;
-
-using Unity.EditorCoroutines.Editor;
 
 using TalusBackendData.Editor.Utility;
 
@@ -34,26 +32,17 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
         }
 
+        // Jenkins execute this function as a stage
         public static void CollectAssets()
         {
             providers.ForEach(provider => provider.Provide());
 
-            EditorCoroutineUtility.StartCoroutineOwnerless(
-                WaitRoutine(IsSatisfy)
-            );
-        }
-
-        private static IEnumerator WaitRoutine(bool condition)
-        {
-            while (true)
+            while (!IsSatisfy)
             {
-                if (condition)
-                {
-                    yield return null;
-                }
-
-                BatchMode.Close(0);
+                Thread.Sleep(100);
             }
+
+            BatchMode.Close(0);
         }
     }
 }
