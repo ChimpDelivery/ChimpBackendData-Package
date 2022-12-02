@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Interfaces;
 using TalusBackendData.Editor.Utility;
-using UnityEditor;
 
 namespace TalusBackendData.Editor
 {
