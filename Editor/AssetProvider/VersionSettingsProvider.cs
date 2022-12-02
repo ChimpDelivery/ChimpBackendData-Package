@@ -16,16 +16,15 @@ namespace TalusBackendData.Editor.AssetProvider
                 return;
             }
 
-
             string appVersion = CommandLineParser.GetArgument("-buildVersion");
             string bundleVersion = CommandLineParser.GetArgument("-bundleVersion");
-            Debug.Log($"[TalusCI-Package] App Version: {appVersion}, Bundle Version: {bundleVersion}");
+            Debug.Log($"[TalusBackendData-Package] App Version: {appVersion}, Bundle Version: {bundleVersion}");
 
             PlayerSettings.bundleVersion = appVersion;
             PlayerSettings.Android.bundleVersionCode = int.Parse(bundleVersion);
             PlayerSettings.iOS.buildNumber = bundleVersion;
 
-            Debug.Log("[TalusCI-Package] Version settings initialized.");
+            Debug.Log("[TalusBackendData-Package] Version settings initialized.");
 
             IsCompleted = true;
         }
