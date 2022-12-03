@@ -1,3 +1,5 @@
+using System.IO;
+
 using UnityEditor;
 using UnityEngine;
 
@@ -50,5 +52,9 @@ namespace TalusBackendData.Editor
                 SaveSettings();
             }
         }
+        
+        //
+        public string ArtifactFolder => Directory.GetCurrentDirectory() + "/Builds";
+        public string TempFile => ArtifactFolder + "/dashboard-temp-file";
     }
 }

@@ -7,13 +7,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public class ProvisionProvider : BaseProvider
     {
-        private readonly BackendApiConfigs _ApiConfigs = BackendApiConfigs.GetInstance();
-        
         public override void Provide()
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
@@ -23,7 +22,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             UnityWebRequest www = new ProvisionProfileRequest().Get();
-            www.downloadHandler = new DownloadHandlerFile(_ApiConfigs.TempFile);
+            www.downloadHandler = new DownloadHandlerFile(BackendSettingsHolder.instance.TempFile);
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -34,13 +33,8 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("[TalusBackendData-Package] iOSProvision Step | Provision File exits: " + File.Exists(_ApiConfigs.TempFile));
-
-                string newPath = $"{_ApiConfigs.ArtifactFolder}/{www.GetResponseHeader(_ApiConfigs.FileNameKey)}";
-                File.Move(_ApiConfigs.TempFile, newPath);
-                
-                string profileUuid = www.GetResponseHeader(_ApiConfigs.ProvisionUuidKey);
-                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File path: {newPath}");
+                string profileUuid = CommandLineParser.GetArgument("-profileUuid");
+                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempFile)}");
                 Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
                 PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
@@ -79,7 +73,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 "</plist>"
             };
 
-            string exportOptionsPath = $"{BackendApiConfigs.GetInstance().ArtifactFolder}/exportOptions.plist";
+            string exportOptionsPath = $"{BackendSettingsHolder.instance.ArtifactFolder}/exportOptions.plist";
             File.WriteAllLines(exportOptionsPath, fileContents.ToArray());
             Debug.Log($"[TalusBackendData-Package] exportOptions.plist created at {exportOptionsPath}");
 
