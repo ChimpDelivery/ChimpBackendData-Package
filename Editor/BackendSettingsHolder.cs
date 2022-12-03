@@ -55,6 +55,6 @@ namespace TalusBackendData.Editor
         
         //
         public string ArtifactFolder => Directory.GetCurrentDirectory() + "/Builds";
-        public string TempFile => ArtifactFolder + "/dashboard-temp-file";
+        public string TempProvisionProfile => ArtifactFolder + "/temp-provision";
     }
 }

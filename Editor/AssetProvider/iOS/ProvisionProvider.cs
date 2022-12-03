@@ -22,7 +22,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             UnityWebRequest www = new ProvisionProfileRequest().Get();
-            www.downloadHandler = new DownloadHandlerFile(BackendSettingsHolder.instance.TempFile);
+            www.downloadHandler = new DownloadHandlerFile(BackendSettingsHolder.instance.TempProvisionProfile);
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -34,7 +34,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             if (www.result == UnityWebRequest.Result.Success)
             {
                 string profileUuid = CommandLineParser.GetArgument("-profileUuid");
-                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempFile)}");
+                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempProvisionProfile)}");
                 Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
                 PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
