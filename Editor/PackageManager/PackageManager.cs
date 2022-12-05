@@ -117,7 +117,7 @@ namespace TalusBackendData.Editor.PackageManager
             );
         }
 
-        public void AddPackage(string packageId)
+        public void AddPackage(string packageId, System.Action<bool> onComplete = null)
         {
             if (_AddPackage != null && !_AddPackage.IsCompleted) { return; }
 
@@ -129,9 +129,12 @@ namespace TalusBackendData.Editor.PackageManager
                         Client.Add(package.url),
                         statusCode =>
                         {
-                            string message = (statusCode == StatusCode.Success)
+                            bool success = (statusCode == StatusCode.Success);
+                            string message = (success)
                                 ? $"{_AddPackage.Request.Result.packageId} added successfully!"
                                 : _AddPackage.Request.Error.message;
+
+                            onComplete?.Invoke(success);
 
                             InfoBox.Show($"{statusCode} !", message, "OK");
                         }
