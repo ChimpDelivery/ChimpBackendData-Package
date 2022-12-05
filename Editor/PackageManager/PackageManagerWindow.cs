@@ -65,7 +65,11 @@ namespace TalusBackendData.Editor.PackageManager
             {
                 GUILayout.Label($"Packages ({_PackageManager.PackageCount}):", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
-                DrawButton(EditorGUIUtility.IconContent("Refresh"), Color.cyan, _PackageManager.RefreshPackages);
+                DrawButton(
+                    EditorGUIUtility.IconContent("Refresh"), 
+                    Color.cyan, 
+                    () => _PackageManager.RefreshPackages()
+                );
             }
             GUILayout.EndVertical();
 

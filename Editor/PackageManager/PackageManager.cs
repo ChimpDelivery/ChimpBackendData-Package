@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -30,74 +31,16 @@ namespace TalusBackendData.Editor.PackageManager
         private RequestHandler<AddRequest> _AddPackage;
         private RequestHandler<RemoveRequest> _RemovePackage;
 
-        private void PopulatePackages(System.Action onComplete)
+        public bool IsPackageExist(string packageId)
         {
-            BackendApi.GetApi<GetPackagesRequest, PackagesModel>(
-                new GetPackagesRequest(),
-                onFetchComplete: response =>
-                {
-                    Packages.Clear();
-
-                    foreach (PackageModel model in response.packages)
-                    {
-                        Packages[model.package_id] = new PackageStatus
-                        {
-                            Exist = false,
-                            DisplayName = model.package_id,
-                            Hash = model.hash,
-                            UpdateExist = false
-                        };
-                    }
-
-                    onComplete.Invoke();
-                }
-            );
+            return Packages[packageId].Exist;
         }
-
-        public void RefreshPackages()
+        
+        public void RefreshPackages(System.Action onComplete = null)
         {
             if (_ListPackages != null && !_ListPackages.IsCompleted) { return; }
 
-            PopulatePackages(ListPackages);
-        }
-
-        public void ListPackages()
-        {
-            _ListPackages = new RequestHandler<ListRequest>(
-                Client.List(),
-                statusCode =>
-                {
-                    if (statusCode != StatusCode.Success)
-                    {
-                        InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
-                        return;
-                    }
-
-                    var filteredPackages = _ListPackages
-                        .Request
-                        .Result
-                        .Where(package => Packages.ContainsKey(package.name));
-
-                    foreach (PackageInfo package in filteredPackages)
-                    {
-                        bool isGitPackage = (package.source == PackageSource.Git);
-                        string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
-
-                        Packages[package.name] = new PackageStatus
-                        {
-                            Exist = true,
-                            DisplayName = package.displayName,
-                            Hash = packageHash,
-                            UpdateExist = false
-                        };
-
-                        if (isGitPackage)
-                        {
-                            CheckPackageVersion(package.name, packageHash);
-                        }
-                    }
-                }
-            );
+            PopulatePackages(() => ListPackages(onComplete));
         }
 
         public void RemovePackage(string packageId)
@@ -151,6 +94,71 @@ namespace TalusBackendData.Editor.PackageManager
                 {
                     bool updateExist = !packageHash.Equals(package.hash);
                     Packages[packageId].UpdateExist = updateExist;
+                }
+            );
+        }
+
+        private void PopulatePackages(System.Action onComplete)
+        {
+            BackendApi.GetApi<GetPackagesRequest, PackagesModel>(
+                new GetPackagesRequest(),
+                onFetchComplete: response =>
+                {
+                    Packages.Clear();
+
+                    foreach (PackageModel model in response.packages)
+                    {
+                        Packages[model.package_id] = new PackageStatus
+                        {
+                            Exist = false,
+                            DisplayName = model.package_id,
+                            Hash = model.hash,
+                            UpdateExist = false
+                        };
+                    }
+
+                    onComplete.Invoke();
+                }
+            );
+        }
+
+        private void ListPackages(System.Action onComplete = null)
+        {
+            _ListPackages = new RequestHandler<ListRequest>(
+                Client.List(),
+                statusCode =>
+                {
+                    if (statusCode != StatusCode.Success)
+                    {
+                        InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
+                        return;
+                    }
+
+                    var filteredPackages = _ListPackages
+                        .Request
+                        .Result
+                        .Where(package => Packages.ContainsKey(package.name));
+
+                    foreach (PackageInfo package in filteredPackages)
+                    {
+                        bool isGitPackage = (package.source == PackageSource.Git);
+                        string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
+
+                        Packages[package.name] = new PackageStatus
+                        {
+                            Exist = true,
+                            DisplayName = package.displayName,
+                            Hash = packageHash,
+                            UpdateExist = false
+                        };
+
+                        if (isGitPackage)
+                        {
+                            CheckPackageVersion(package.name, packageHash);
+                        }
+                    }
+
+                    onComplete?.Invoke();
                 }
             );
         }
