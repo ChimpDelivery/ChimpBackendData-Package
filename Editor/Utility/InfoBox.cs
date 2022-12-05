@@ -1,5 +1,7 @@
 using UnityEditor;
 
+using UnityEngine;
+
 namespace TalusBackendData.Editor.Utility
 {
     public static class InfoBox
@@ -22,6 +24,7 @@ namespace TalusBackendData.Editor.Utility
 
         public static void Show(string title, string message, string ok, string close = null, System.Action okAction = null)
         {
+            if (Application.isBatchMode) { return; }
             if (EditorUtility.DisplayDialog(title, message, ok, close))
             {
                 okAction?.Invoke();
