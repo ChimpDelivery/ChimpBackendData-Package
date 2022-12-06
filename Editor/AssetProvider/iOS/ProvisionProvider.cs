@@ -15,12 +15,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
     {
         public override void Provide()
         {
-            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
-                EditorUserBuildSettings.activeBuildTarget != BuildTarget.tvOS)
-            {
-                return;
-            }
-
             UnityWebRequest www = new ProvisionProfileRequest().Get();
             www.downloadHandler = new DownloadHandlerFile(BackendSettingsHolder.instance.TempProvisionProfile);
             www.SendWebRequest();
