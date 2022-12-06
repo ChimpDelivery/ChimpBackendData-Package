@@ -13,8 +13,5 @@
     "name": "Talus Studio",
     "email": "info@talusstudio.com",
     "url": "http://www.talusstudio.com"
-  },
-  "dependencies": {
-    "com.unity.editorcoroutines": "1.0.0"
   }
 }
