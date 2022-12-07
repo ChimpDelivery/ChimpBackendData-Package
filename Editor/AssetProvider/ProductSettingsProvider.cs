@@ -8,14 +8,12 @@ namespace TalusBackendData.Editor.AssetProvider
 {
     public class ProductSettingsProvider : BaseProvider
     {
-#if UNITY_EDITOR
         [MenuItem("TalusBackend/Sync Project Settings")]
         public static void Sync()
         {
             new ProductSettingsProvider().Provide();
         }
-#endif
-        
+
         public override void Provide()
         {
             Debug.Log("[TalusBackendData-Package] ProductSettingsProvider running...");
