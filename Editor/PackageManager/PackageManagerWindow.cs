@@ -11,7 +11,7 @@ namespace TalusBackendData.Editor.PackageManager
 {
     internal class PackageManagerWindow : EditorWindow
     {
-        private const string _WindowTitle = "Talus Package Manager";
+        private const string WINDOW_TITLE = "Talus Package Manager";
         
         private readonly PackageManager _PackageManager = new();
 
@@ -30,7 +30,7 @@ namespace TalusBackendData.Editor.PackageManager
                 return;
             }
 
-            var window = GetWindow<PackageManagerWindow>(_WindowTitle);
+            var window = GetWindow<PackageManagerWindow>(WINDOW_TITLE);
             window.minSize = new Vector2(450, 450);
             window.Show();
         }

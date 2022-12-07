@@ -13,7 +13,7 @@ namespace TalusBackendData.Editor.Interfaces
             hideFlags &= ~HideFlags.NotEditable;
         }
 
-        public virtual void SaveSettings()
+        public void SaveSettings()
         {
             Save(true);
         }
