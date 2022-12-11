@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
-using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
@@ -27,7 +26,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                string profileUuid = CommandLineParser.GetArgument("-profileUuid");
+                string profileUuid = www.GetResponseHeader("Dashboard-Provision-Profile-UUID");
                 Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempProvisionProfile)}");
                 Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
