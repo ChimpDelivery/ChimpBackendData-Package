@@ -37,6 +37,8 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             }
 
             www.Dispose();
+
+            IsCompleted = true;
         }
 
         private void GenerateExportOptions(string profileUuid)
@@ -69,8 +71,6 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
             string exportOptionsPath = $"{BackendSettingsHolder.instance.ArtifactFolder}/exportOptions.plist";
             File.WriteAllLines(exportOptionsPath, fileContents.ToArray());
             Debug.Log($"[TalusBackendData-Package] exportOptions.plist created at {exportOptionsPath}");
-
-            IsCompleted = true;
         }
     }
 }
