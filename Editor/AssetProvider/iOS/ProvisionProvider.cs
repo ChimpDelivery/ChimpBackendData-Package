@@ -12,6 +12,12 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public class ProvisionProvider : BaseProvider
     {
+        [MenuItem("TalusBackend/iOS/Download Provision")]
+        public static void Download()
+        {
+            new ProvisionProvider().Provide();
+        }
+        
         public override void Provide()
         {
             UnityWebRequest www = new ProvisionProfileRequest().Get();
