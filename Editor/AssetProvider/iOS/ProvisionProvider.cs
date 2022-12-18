@@ -12,7 +12,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public class ProvisionProvider : BaseProvider
     {
-        [MenuItem("TalusBackend/iOS/Download Provision")]
+        [MenuItem("TalusBackend/Project Settings/iOS/Download Provision")]
         public static void Download()
         {
             new ProvisionProvider().Provide();

@@ -8,7 +8,7 @@ namespace TalusBackendData.Editor.AssetProvider
 {
     public class ProductSettingsProvider : BaseProvider
     {
-        [MenuItem("TalusBackend/Sync Project Settings")]
+        [MenuItem("TalusBackend/Project Settings/Sync", priority = -10000)]
         public static void Sync()
         {
             new ProductSettingsProvider().Provide();
