@@ -128,23 +128,20 @@ namespace TalusBackendData.Editor.PackageManager
                 Client.List(),
                 statusCode =>
                 {
+                    ListRequest request = _ListPackages.Request;
+                    
                     if (statusCode != StatusCode.Success)
                     {
-                        InfoBox.Show("Error :(", _ListPackages.Request.Error.message, "OK");
+                        InfoBox.Show("Error :(", request.Error.message, "OK");
                         return;
                     }
-
-                    var filteredPackages = _ListPackages
-                        .Request
-                        .Result
-                        .Where(package => Packages.ContainsKey(package.name));
-
-                    foreach (PackageInfo package in filteredPackages)
+                    
+                    foreach (PackageInfo package in request.Result.Where(package => Packages.ContainsKey(package.name)))
                     {
-                        bool isGitPackage = (package.source == PackageSource.Git);
-                        string packageHash = (isGitPackage) ? package.git.hash : string.Empty;
+                        bool isGitPackage = package.source == PackageSource.Git;
+                        string packageHash = isGitPackage ? package.git.hash : string.Empty;
 
-                        Packages[package.name] = new PackageStatus
+                        Packages[package.name] = new PackageStatus 
                         {
                             Exist = true,
                             DisplayName = package.displayName,
