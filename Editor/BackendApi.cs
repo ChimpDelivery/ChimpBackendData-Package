@@ -36,7 +36,7 @@ namespace TalusBackendData.Editor
             while (!www.isDone)
             {
                 BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
 
             BatchMode.Log($"[TalusBackendData-Package] Request Result: {www.result}, Response Code: {www.responseCode}");
