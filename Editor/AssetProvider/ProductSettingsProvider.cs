@@ -30,11 +30,13 @@ namespace TalusBackendData.Editor.AssetProvider
 
             if (app != null)
             {
+                Debug.Log($"[TalusBackendData-Package] App Model used by ProductSettingsProvider: {app}");
+
                 PlayerSettings.productName = app.app_name;
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, app.app_bundle);
-
-                Debug.Log($"[TalusBackendData-Package] App Model used by ProductSettingsProvider: {app}");
+                
+                new AppIconUpdater(app);
             }
             else
             {
