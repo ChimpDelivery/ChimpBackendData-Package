@@ -5,6 +5,7 @@ namespace TalusBackendData.Editor.Models
     [System.Serializable]
     public class AppModel : BaseModel
     {
+        public string app_icon;
         public string app_name;
         public string app_bundle;
         public string fb_app_id;
