@@ -51,6 +51,8 @@ namespace TalusBackendData.Editor.AssetProvider
             }
             
             BatchMode.SaveAssets();
+            
+            request.Dispose();
         }
     }
 }
