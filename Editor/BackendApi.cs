@@ -48,6 +48,7 @@ namespace TalusBackendData.Editor
             }
 
             onSuccess.Invoke();
+            www.Dispose();
         }
     }
 }
