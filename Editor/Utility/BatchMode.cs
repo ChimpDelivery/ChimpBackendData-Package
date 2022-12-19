@@ -19,5 +19,11 @@ namespace TalusBackendData.Editor.Utility
 
             Debug.Log(msg);
         }
+
+        public static void SaveAssets()
+        {
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
     }
 }
