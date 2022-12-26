@@ -1,6 +1,6 @@
 # [![](https://img.shields.io/github/package-json/displayName/talusstudio/talusbackenddata-package?label=Package%3A)](https://github.com/TalusStudio/TalusBackendData-Package)
-- App Provision
-- Package Panager.
+- Project Settings Updater
+- App Provisioning
 
 # 💿 Installation
 - In Unity,
