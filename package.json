@@ -1,6 +1,6 @@
 {
   "name": "com.talus.talusbackenddata",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "displayName": "TalusBackendData",
   "description": "Supplement for backend integration",
   "unity": "2020.3",
