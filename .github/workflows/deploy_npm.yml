@@ -27,4 +27,4 @@
        # Publish to npm
        - run: npm publish --access public
          env:
-           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+           NODE_AUTH_TOKEN: ${{secrets.NPM_CI_TOKEN}}
