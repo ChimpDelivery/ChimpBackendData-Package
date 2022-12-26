@@ -1,5 +1,5 @@
 # [![](https://img.shields.io/github/package-json/displayName/talusstudio/talusbackenddata-package?label=Package%3A)](https://github.com/TalusStudio/TalusBackendData-Package)
-- Fetches project settings and provisioning files from Talus Dashboard.
+- Fetches `Project Settings` and `Provisioning Files` from Talus Dashboard.
 
 # 💿 Installation
 - This package uses the scoped registry feature. Open the `Package Manager` page in the `Project Settings` window and add the following entry to the `Scoped Registries` list:
