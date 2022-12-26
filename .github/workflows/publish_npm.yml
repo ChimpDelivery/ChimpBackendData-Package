@@ -1,4 +1,4 @@
-    name: Publish to npm
+    name: Publish to NPM Registry
     
     # Controls when the action will run.
     # In this case, I'm saying on each release event when it's specifically a new release publish, the types: [published] is required here,
