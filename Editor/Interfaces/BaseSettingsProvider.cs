@@ -47,13 +47,14 @@ namespace TalusBackendData.Editor.Interfaces
             {
                 GUILayout.Space(8);
 
-                SerializedProperty serializedProperty = SerializedObject.GetIterator();
-                while (serializedProperty.NextVisible(true))
+                SerializedProperty prop = SerializedObject.GetIterator();
+                if (prop.NextVisible(true))
                 {
-                    if (serializedProperty.name == "m_Script") { continue; }
-
-                    EditorGUIUtility.labelWidth = 200f;
-                    EditorGUILayout.PropertyField(serializedProperty);
+                    do
+                    {
+                        EditorGUILayout.PropertyField(SerializedObject.FindProperty(prop.name), true);
+                    }
+                    while (prop.NextVisible(false));
                 }
             }
 

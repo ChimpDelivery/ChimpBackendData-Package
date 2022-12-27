@@ -5,6 +5,7 @@ using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider
 {
+    [CreateAssetMenu(menuName = "_OTHERS/Data Providers/Version Settings")]
     public class VersionSettingsProvider : BaseProvider
     {
         public override void Provide()

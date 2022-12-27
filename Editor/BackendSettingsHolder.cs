@@ -6,6 +6,8 @@ using UnityEngine;
 using TalusBackendData.Editor.Interfaces;
 
 using SysPath = System.IO.Path;
+using TalusBackendData.Editor.AssetProvider;
+using System.Collections.Generic;
 
 namespace TalusBackendData.Editor
 {
@@ -55,8 +57,33 @@ namespace TalusBackendData.Editor
             }
         }
 
+        [Header("Platform Settings")]
+        [SerializeField]
+        private List<BaseProvider> _AndroidProviders;
+        public List<BaseProvider> AndroidProviders
+        {
+            get => _AndroidProviders;
+            set
+            {
+                _AndroidProviders = value;
+                SaveSettings();
+            }
+        }
+
+        [SerializeField]
+        private List<BaseProvider> _iOSProviders;
+        public List<BaseProvider> iOSProviders
+        {
+            get => _iOSProviders;
+            set
+            {
+                _iOSProviders = value;
+                SaveSettings();
+            }
+        }
+
         public string ProjectFolder => Directory.GetCurrentDirectory();
-        
+
         // build artifacts
         public string ArtifactFolderName => "Builds";
         public string ArtifactFolder => $"{ProjectFolder}/{ArtifactFolderName}";
@@ -64,10 +91,10 @@ namespace TalusBackendData.Editor
         // app-icon
         public string AppIconName => "app-icon.png";
         public string AppIconFullPath => SysPath.Combine(
-            SysPath.Combine(ProjectFolder, "Assets/"), 
+            SysPath.Combine(ProjectFolder, "Assets/"),
             AppIconName
         );
-        
+
         // provision
         public string TempProvisionProfile => ArtifactFolder + "/temp-provision";
     }
