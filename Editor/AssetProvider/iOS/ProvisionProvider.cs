@@ -1,5 +1,4 @@
 using System.IO;
-using System.Threading;
 using System.Collections.Generic;
 
 using UnityEditor;
@@ -14,29 +13,23 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
     {
         public override void Provide()
         {
-            UnityWebRequest www = new ProvisionProfileRequest().Get();
-            www.downloadHandler = new DownloadHandlerFile(BackendSettingsHolder.instance.TempProvisionProfile);
-            www.SendWebRequest();
+            var request = new ProvisionProfileRequest();
 
-            while (!www.isDone)
-            {
-                Debug.Log("[TalusBackendData-Package] iOSProvision Step | Waiting for response");
-                Thread.Sleep(1000);
-            }
+            BackendApi.RequestRoutine(
+                request,
+                new DownloadHandlerFile(BackendSettingsHolder.instance.TempProvisionProfile),
+                onSuccess: () =>
+                {
+                    string profileUuid = request.Request.GetResponseHeader("Dashboard-Provision-Profile-UUID");
+                    Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempProvisionProfile)}");
+                    Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
 
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                string profileUuid = www.GetResponseHeader("Dashboard-Provision-Profile-UUID");
-                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision File exits: {File.Exists(BackendSettingsHolder.instance.TempProvisionProfile)}");
-                Debug.Log($"[TalusBackendData-Package] iOSProvision Step | Provision profile uuid: {profileUuid}");
+                    PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
+                    PlayerSettings.iOS.iOSManualProvisioningProfileID = profileUuid;
 
-                PlayerSettings.iOS.iOSManualProvisioningProfileType = ProvisioningProfileType.Distribution;
-                PlayerSettings.iOS.iOSManualProvisioningProfileID = profileUuid;
-
-                GenerateExportOptions(profileUuid);
-            }
-
-            www.Dispose();
+                    GenerateExportOptions(profileUuid);
+                }
+            );
 
             IsCompleted = true;
         }
