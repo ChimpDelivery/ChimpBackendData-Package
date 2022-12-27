@@ -17,6 +17,7 @@ namespace TalusBackendData.Editor.Requests.Interfaces
 
         public abstract string ApiUrl { get; }
         public virtual string ContentType => "application/json";
+        public virtual bool IsPrivateApi => true;
 
         public UnityWebRequest Request { get; private set; }
 
@@ -24,9 +25,14 @@ namespace TalusBackendData.Editor.Requests.Interfaces
 
         public UnityWebRequest Get()
         {
-            Request = UnityWebRequest.Get($"{ServerUrl}/api/{ApiUrl}");
+            Request = UnityWebRequest.Get(IsPrivateApi ? $"{ServerUrl}/api/{ApiUrl}" : ApiUrl);
             Request.timeout = 30;
-            Request.SetRequestHeader("Authorization", $"Bearer {Token}");
+
+            if (IsPrivateApi)
+            {
+                Request.SetRequestHeader("Authorization", $"Bearer {Token}");
+            }
+
             Request.SetRequestHeader("Accept", ContentType);
             Request.SetRequestHeader("Content-Type", ContentType);
 

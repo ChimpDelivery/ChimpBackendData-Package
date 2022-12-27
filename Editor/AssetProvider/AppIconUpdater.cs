@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading;
 
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,6 +7,7 @@ using UnityEditor;
 
 using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Utility;
+using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.AssetProvider
 {
@@ -32,27 +32,31 @@ namespace TalusBackendData.Editor.AssetProvider
                 Destination {iconPath}"
             );
 
-            UnityWebRequest request = UnityWebRequest.Get(model.app_icon);
-            request.downloadHandler = new DownloadHandlerFile(Path.Combine(Settings.ProjectFolder, iconPath));
-            request.SendWebRequest();
+            BackendApi.RequestRoutine(
+                new AppIconRequest(model.app_icon),
+                new DownloadHandlerFile(Path.Combine(Settings.ProjectFolder, iconPath)),
+                onSuccess: () =>
+                {
+                    BatchMode.SaveAssets();
+                    PlayerSettings.SetIconsForTargetGroup(
+                        BuildTargetGroup.Unknown,
+                        new[] { LoadIcon(iconPath) }
+                    );
+                    BatchMode.SaveAssets();
+                    Debug.Log("[TalusBackendData-Package] Update Project Icon completed!");
+                });
+        }
 
-            while (!request.isDone)
-            {
-                Thread.Sleep(500);
-            }
-
-            BatchMode.SaveAssets();
-
+        private Texture2D LoadIcon(string iconPath)
+        {
             var icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
-            if (icon != null)
+            if (icon == null)
             {
-                PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Unknown, new[] { icon });
-                Debug.Log("[TalusBackendData-Package] Update Project Icon completed!");
+                Debug.LogError("[TalusBackendData-Package] App icon is null!");
+                return null;
             }
 
-            request.Dispose();
-
-            BatchMode.SaveAssets();
+            return icon;
         }
     }
 }

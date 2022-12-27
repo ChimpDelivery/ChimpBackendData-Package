@@ -24,7 +24,7 @@ namespace TalusBackendData.Editor
             });
         }
 
-        private static void RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
+        public static void RequestRoutine(BaseRequest request, DownloadHandler downloadHandler, Action onSuccess)
         {
             UnityWebRequest www = request.Get();
             www.downloadHandler = downloadHandler;
@@ -35,11 +35,8 @@ namespace TalusBackendData.Editor
 
             while (!www.isDone)
             {
-                BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url} | Waiting for response");
                 Thread.Sleep(100);
             }
-
-            BatchMode.Log($"[TalusBackendData-Package] Request Result: {www.result}, Response Code: {www.responseCode}");
 
             if (request.HasError)
             {
