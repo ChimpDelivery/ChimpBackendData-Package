@@ -20,7 +20,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
         public static bool IsSatisfy => _Providers.Count(t => t.IsCompleted) == _Providers.Count;
 
         // Jenkins execute this function as a stage
-        [MenuItem("TalusBackend/Project Settings/iOS/Sync", priority = -10000)]
+        [MenuItem("TalusBackend/Project Settings/iOS", priority = -10000)]
         public static void CollectAssets()
         {
             _Providers.ForEach(provider => provider.Provide());
