@@ -1,10 +1,10 @@
 {
   "name": "com.talus.talusbackenddata",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "displayName": "TalusBackendData",
   "description": "Supplement for backend integration",
-  "unity": "2020.3",
-  "unityRelease": "9f1",
+  "unity": "2021.3",
+  "unityRelease": "5f1",
   "keywords": [
     "talusbackend",
     "project settings"
