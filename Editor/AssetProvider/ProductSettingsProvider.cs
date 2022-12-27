@@ -8,12 +8,6 @@ namespace TalusBackendData.Editor.AssetProvider
 {
     public class ProductSettingsProvider : BaseProvider
     {
-        [MenuItem("TalusBackend/Project Settings/Sync", priority = -10000)]
-        public static void Sync()
-        {
-            new ProductSettingsProvider().Provide();
-        }
-
         public override void Provide()
         {
             Debug.Log("[TalusBackendData-Package] ProductSettingsProvider running...");
@@ -35,7 +29,7 @@ namespace TalusBackendData.Editor.AssetProvider
                 PlayerSettings.productName = app.app_name;
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, app.app_bundle);
                 PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, app.app_bundle);
-                
+
                 new AppIconUpdater(app);
             }
             else

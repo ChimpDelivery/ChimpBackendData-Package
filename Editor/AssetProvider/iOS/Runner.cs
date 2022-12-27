@@ -2,9 +2,9 @@ using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
 
-using TalusBackendData.Editor.Utility;
+using UnityEditor;
 
-// ReSharper disable UnusedType.Global
+using TalusBackendData.Editor.Utility;
 
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
@@ -19,8 +19,8 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 
         public static bool IsSatisfy => _Providers.Count(t => t.IsCompleted) == _Providers.Count;
 
-        // ReSharper disable once UnusedMember.Global
-        // * Jenkins execute this function as a stage
+        // Jenkins execute this function as a stage
+        [MenuItem("TalusBackend/Project Settings/iOS/Sync", priority = -10000)]
         public static void CollectAssets()
         {
             _Providers.ForEach(provider => provider.Provide());
