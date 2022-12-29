@@ -8,7 +8,7 @@ namespace TalusBackendData.Editor.Interfaces
     {
         public string Path => GetFilePath();
 
-        private void OnEnable()
+        private void Awake()
         {
             hideFlags &= ~HideFlags.NotEditable;
         }
