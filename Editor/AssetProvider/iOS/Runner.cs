@@ -10,7 +10,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     public static class Runner
     {
-        private static List<BaseProvider> Providers = IOSSettingsHolder.instance.Providers;
+        private static List<BaseProvider> Providers = PlatformSettingsHolder.instance.Providers;
 
         public static bool IsSatisfy => Providers.Count(t => t.IsCompleted) == Providers.Count;
 

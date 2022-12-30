@@ -8,10 +8,10 @@ using TalusBackendData.Editor.Interfaces;
 namespace TalusBackendData.Editor.AssetProvider.iOS
 {
     /// <summary>
-    ///     IOS Data Providers Holder
+    ///     Platform Data Providers Holder
     /// </summary>
-    [FilePath("ProjectSettings/TalusIOSProvider.asset", FilePathAttribute.Location.ProjectFolder)]
-    public class IOSSettingsHolder : BaseSettingsHolder<IOSSettingsHolder>
+    [FilePath("ProjectSettings/TalusPlatformProvider.asset", FilePathAttribute.Location.ProjectFolder)]
+    public class PlatformSettingsHolder : BaseSettingsHolder<PlatformSettingsHolder>
     {
         [SerializeField]
         private List<BaseProvider> _Providers;

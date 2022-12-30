@@ -10,31 +10,38 @@ namespace TalusBackendData.Editor.Interfaces
     /// <summary>
     ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider : SettingsProvider
+    public abstract class BaseSettingsProvider<T> : SettingsProvider
+        where T : BaseSettingsHolder<T>
     {
-        //
+        // Panel properties
+        public abstract T Holder { get; }
         public abstract string Title { get; }
         public abstract string Description { get; }
 
-        // to change properties we need to unlock panel
+        // To change properties we need to unlock panel
         public virtual bool UnlockPanel { get; set; } = true;
 
         //
         public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
-        public abstract SerializedObject SerializedObject { get; }
+        public SerializedObject SerializedObject { get; set; }
 
-        public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null)
-            : base(path, scopes, keywords)
+        protected BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         { }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
+            base.OnActivate(searchContext, rootElement);
+
+            Holder.SaveSettings();
+            SerializedObject = new SerializedObject(Holder);
             UnlockPanel = true;
         }
 
         public override void OnGUI(string searchContext)
         {
+            base.OnGUI(searchContext);
+
             EditorGUILayout.BeginVertical();
 
             ShowInfo();
@@ -65,6 +72,12 @@ namespace TalusBackendData.Editor.Interfaces
             ShowLockButton();
 
             EditorGUILayout.EndVertical();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                SerializedObject.ApplyModifiedProperties();
+                BackendSettingsHolder.instance.SaveSettings();
+            }
         }
 
         private void ShowInfo()
