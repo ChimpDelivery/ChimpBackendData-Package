@@ -71,7 +71,7 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
                 "</plist>"
             };
 
-            string exportOptionsPath = $"{BackendSettingsHolder.instance.ArtifactFolder}/exportOptions.plist";
+            string exportOptionsPath = Path.Combine(BackendSettingsHolder.instance.ArtifactFolder, "exportOptions.plist");
             File.WriteAllLines(exportOptionsPath, fileContents.ToArray());
             Debug.Log($"[TalusBackendData-Package] exportOptions.plist created at {exportOptionsPath}");
         }

@@ -59,12 +59,12 @@ namespace TalusBackendData.Editor
 
         // build artifacts
         public string ArtifactFolderName => "Builds";
-        public string ArtifactFolder => $"{ProjectFolder}/{ArtifactFolderName}";
+        public string ArtifactFolder => SysPath.Join(ProjectFolder, ArtifactFolderName);
 
         // app-icon
         public string AppIconName => "app-icon.png";
         public string AppIconFullPath => SysPath.Combine(
-            SysPath.Combine(ProjectFolder, "Assets/"),
+            SysPath.Join(ProjectFolder, "Assets"),
             AppIconName
         );
 
