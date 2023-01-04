@@ -14,6 +14,15 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
     {
         public override void Provide()
         {
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS &&
+                EditorUserBuildSettings.activeBuildTarget != BuildTarget.tvOS)
+            {
+                IsCompleted = true;
+
+                Debug.Log($"[TalusBackendData-Package] Current build target is not iOS! iOSProvision Step skipped...");
+                return;
+            }
+
             var request = new ProvisionProfileRequest();
 
             BackendApi.RequestRoutine(
