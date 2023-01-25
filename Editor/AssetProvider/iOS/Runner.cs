@@ -18,6 +18,12 @@ namespace TalusBackendData.Editor.AssetProvider.iOS
         [MenuItem("TalusBackend/Project Settings/iOS")]
         public static void CollectAssets()
         {
+            BatchMode.Log("[TalusBackendData-Package] CollectAssets() is running for iOS...");
+            if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS))
+            {
+                BatchMode.Close(-1);
+            }
+
             Providers.ForEach(provider => provider.Provide());
 
             while (!IsSatisfy)
