@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30d14a976f611bd4eb16c4fb7076e843, type: 3}
-  m_Name: DataProvider_iOSProvision
+  m_Name: AssetProvider_iOSProvision
   m_EditorClassIdentifier: 

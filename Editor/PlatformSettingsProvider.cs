@@ -4,7 +4,7 @@ using UnityEditor;
 
 using TalusBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor.AssetProvider.iOS
+namespace TalusBackendData.Editor
 {
     internal class PlatformSettingsProvider : BaseSettingsProvider<PlatformSettingsHolder>
     {

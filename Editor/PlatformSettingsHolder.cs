@@ -4,8 +4,9 @@ using UnityEditor;
 using UnityEngine;
 
 using TalusBackendData.Editor.Interfaces;
+using TalusBackendData.Editor.Providers;
 
-namespace TalusBackendData.Editor.AssetProvider.iOS
+namespace TalusBackendData.Editor
 {
     /// <summary>
     ///     Platform Data Providers Holder

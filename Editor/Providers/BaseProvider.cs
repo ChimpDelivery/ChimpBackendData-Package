@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TalusBackendData.Editor.AssetProvider
+namespace TalusBackendData.Editor.Providers
 {
     public abstract class BaseProvider : ScriptableObject
     {
@@ -11,7 +11,7 @@ namespace TalusBackendData.Editor.AssetProvider
 #endif
         public abstract void Provide();
 
-        private void OnEnable()
+        private void Awake()
         {
             hideFlags &= ~HideFlags.NotEditable;
         }

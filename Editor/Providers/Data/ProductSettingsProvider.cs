@@ -3,8 +3,9 @@ using UnityEngine;
 
 using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Requests;
+using TalusBackendData.Editor.Providers.Asset;
 
-namespace TalusBackendData.Editor.AssetProvider
+namespace TalusBackendData.Editor.Providers.Data
 {
     [CreateAssetMenu(menuName = "_OTHERS/Data Providers/Product Settings")]
     public class ProductSettingsProvider : BaseProvider

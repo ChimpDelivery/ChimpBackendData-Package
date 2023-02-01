@@ -9,7 +9,7 @@ using TalusBackendData.Editor.Models;
 using TalusBackendData.Editor.Utility;
 using TalusBackendData.Editor.Requests;
 
-namespace TalusBackendData.Editor.AssetProvider
+namespace TalusBackendData.Editor.Providers.Asset
 {
     /// <summary>
     /// Download and update project icon

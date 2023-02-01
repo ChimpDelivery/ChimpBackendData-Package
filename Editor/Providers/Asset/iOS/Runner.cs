@@ -6,7 +6,7 @@ using UnityEditor;
 
 using TalusBackendData.Editor.Utility;
 
-namespace TalusBackendData.Editor.AssetProvider.iOS
+namespace TalusBackendData.Editor.Providers.Asset.iOS
 {
     public static class Runner
     {

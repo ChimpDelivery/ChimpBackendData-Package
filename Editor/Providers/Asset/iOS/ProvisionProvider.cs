@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Requests;
 
-namespace TalusBackendData.Editor.AssetProvider.iOS
+namespace TalusBackendData.Editor.Providers.Asset.iOS
 {
     [CreateAssetMenu(menuName = "_OTHERS/Data Providers/iOS Provision")]
     public class ProvisionProvider : BaseProvider
