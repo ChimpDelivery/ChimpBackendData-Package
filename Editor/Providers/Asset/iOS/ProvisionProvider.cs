@@ -19,7 +19,7 @@ namespace TalusBackendData.Editor.Providers.Asset.iOS
             {
                 IsCompleted = true;
 
-                Debug.Log($"[TalusBackendData-Package] Current build target is not iOS! iOSProvision Step skipped...");
+                Debug.LogWarning($"[TalusBackendData-Package] Current build target is not iOS! iOSProvision Step skipped...");
                 return;
             }
 
