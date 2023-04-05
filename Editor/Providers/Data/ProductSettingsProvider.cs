@@ -7,7 +7,7 @@ using TalusBackendData.Editor.Providers.Asset;
 
 namespace TalusBackendData.Editor.Providers.Data
 {
-    [CreateAssetMenu(menuName = "Talus/Data Providers/Product Settings")]
+    [CreateAssetMenu(menuName = "Talus/Build/Data Providers/Product Settings")]
     public class ProductSettingsProvider : BaseProvider
     {
         public override void Provide()
