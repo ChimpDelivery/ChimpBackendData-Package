@@ -9,7 +9,7 @@ using TalusBackendData.Editor.Requests;
 
 namespace TalusBackendData.Editor.Providers.Asset.iOS
 {
-    [CreateAssetMenu(menuName = "_OTHERS/Data Providers/iOS Provision")]
+    [CreateAssetMenu(menuName = "Talus/Data Providers/iOS Provision")]
     public class ProvisionProvider : BaseProvider
     {
         public override void Provide()
