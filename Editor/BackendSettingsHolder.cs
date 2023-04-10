@@ -10,7 +10,7 @@ using SysPath = System.IO.Path;
 namespace TalusBackendData.Editor
 {
     /// <summary>
-    ///     BackendSettingsHolder provides auth information to work with Backend API.
+    ///     BackendSettingsHolder provides authentication with Dashboard.
     ///     SO(TalusAuth.asset) instance path (must be ignored by GIT)
     /// </summary>
     [FilePath("ProjectSettings/TalusAuth.asset", FilePathAttribute.Location.ProjectFolder)]

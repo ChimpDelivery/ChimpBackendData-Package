@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 using TalusBackendData.Editor.Utility;
-using TalusBackendData.Editor.Requests.Interfaces;
+using TalusBackendData.Editor.Interfaces;
 
 namespace TalusBackendData.Editor.Requests
 {

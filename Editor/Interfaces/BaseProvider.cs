@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TalusBackendData.Editor.Providers
+namespace TalusBackendData.Editor.Interfaces
 {
     public abstract class BaseProvider : ScriptableObject
     {

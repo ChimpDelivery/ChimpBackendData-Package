@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 using TalusBackendData.Editor.Utility;
 
-namespace TalusBackendData.Editor.Requests.Interfaces
+namespace TalusBackendData.Editor.Interfaces
 {
     public abstract class BaseRequest
     {
