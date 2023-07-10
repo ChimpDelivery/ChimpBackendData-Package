@@ -1,18 +1,18 @@
 {
-  "name": "com.talus.talusbackenddata",
+  "name": "com.chimp.chimpbackenddata",
   "version": "2.2.9",
-  "displayName": "TalusBackendData",
+  "displayName": "ChimpBackendData",
   "description": "Supplement for backend integration",
   "unity": "2021.3",
   "unityRelease": "5f1",
   "keywords": [
-    "talusbackend",
+    "chimp delivery",
     "project settings"
   ],
   "author": {
-    "name": "Talus Studio",
-    "email": "info@talusstudio.com",
-    "url": "http://www.talusstudio.com"
+    "name": "Emre Kovanci",
+    "email": "kovanciemre@gmail.com",
+    "url": "https://emrekovanci.github.io"
   },
-  "repository": "github:talusstudio/TalusBackendData-Package"
+  "repository": "github:ChimpDelivery/ChimpBackendData-Package"
 }
