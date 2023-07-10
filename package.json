@@ -1,6 +1,6 @@
 {
   "name": "com.chimp.chimpbackenddata",
-  "version": "2.2.9",
+  "version": "1.0.0",
   "displayName": "ChimpBackendData",
   "description": "Supplement for backend integration",
   "unity": "2021.3",
