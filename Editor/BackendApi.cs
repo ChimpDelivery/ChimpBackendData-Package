@@ -18,7 +18,7 @@ namespace ChimpBackendData.Editor
             RequestRoutine(request, new DownloadHandlerBuffer(), onSuccess: () =>
             {
                 var model = JsonUtility.FromJson<TModel>(request.Request.downloadHandler.text);
-                BatchMode.Log($"[TalusBackendData-Package] Fetched Model: {model}");
+                BatchMode.Log($"[ChimpBackendData-Package] Fetched Model: {model}");
                 onFetchComplete(model);
             });
         }
@@ -30,7 +30,7 @@ namespace ChimpBackendData.Editor
             www.timeout = 30;
             www.SendWebRequest();
 
-            BatchMode.Log($"[TalusBackendData-Package] Request URL: {www.url}");
+            BatchMode.Log($"[ChimpBackendData-Package] Request URL: {www.url}");
 
             while (!www.isDone)
             {
@@ -39,7 +39,7 @@ namespace ChimpBackendData.Editor
 
             if (request.HasError)
             {
-                Debug.LogError($"[TalusBackendData-Package] Request Error: {www.GetMsg()}");
+                Debug.LogError($"[ChimpBackendData-Package] Request Error: {www.GetMsg()}");
                 BatchMode.Close(-1);
             }
 
