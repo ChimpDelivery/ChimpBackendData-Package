@@ -75,7 +75,7 @@ namespace ChimpBackendData.Editor.Interfaces
             if (EditorGUI.EndChangeCheck())
             {
                 SerializedObject.ApplyModifiedProperties();
-                BackendSettingsHolder.instance.SaveSettings();
+                Holder.SaveSettings();
             }
         }
 
