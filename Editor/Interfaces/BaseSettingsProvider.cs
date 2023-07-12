@@ -27,6 +27,8 @@ namespace ChimpBackendData.Editor.Interfaces
 
         public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
+            // ScriptableSingleton changes SO hideflags internally
+            // We manually set hideflags to make editable in inspector
             if ((Holder.hideFlags & HideFlags.NotEditable) != 0)
             {
                 Holder.hideFlags &= ~HideFlags.NotEditable;
