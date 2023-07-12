@@ -10,8 +10,7 @@ namespace ChimpBackendData.Editor.Interfaces
     /// <summary>
     ///     Base Settings Provider
     /// </summary>
-    public abstract class BaseSettingsProvider<T> : SettingsProvider
-        where T : BaseSettingsHolder<T>
+    public abstract class BaseSettingsProvider<T> : SettingsProvider where T : BaseSettingsHolder<T>
     {
         // Panel properties
         public abstract T Holder { get; }
