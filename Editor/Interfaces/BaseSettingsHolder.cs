@@ -8,12 +8,6 @@ namespace ChimpBackendData.Editor.Interfaces
     {
         public string Path => GetFilePath();
 
-        private void OnEnable()
-        {
-            hideFlags &= ~HideFlags.NotEditable;
-            SaveSettings();
-        }
-
         public void SaveSettings()
         {
             Save(true);

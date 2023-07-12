@@ -26,7 +26,13 @@ namespace ChimpBackendData.Editor.Interfaces
         public SerializedObject SerializedObject { get; set; }
 
         public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
-        { }
+        {
+            if ((Holder.hideFlags & HideFlags.NotEditable) != 0)
+            {
+                Holder.hideFlags &= ~HideFlags.NotEditable;
+                Holder.SaveSettings();
+            }
+        }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {

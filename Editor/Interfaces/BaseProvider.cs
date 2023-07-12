@@ -10,10 +10,5 @@ namespace ChimpBackendData.Editor.Interfaces
         [Sirenix.OdinInspector.Button]
 #endif
         public abstract void Provide();
-
-        private void OnEnable()
-        {
-            hideFlags &= ~HideFlags.NotEditable;
-        }
     }
 }
