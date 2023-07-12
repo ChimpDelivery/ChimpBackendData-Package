@@ -1,6 +1,6 @@
 {
   "name": "com.chimpdelivery.backenddata",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Chimp Delivery - Backend Data",
   "description": "Supplement for backend integration",
   "unity": "2021.3",
