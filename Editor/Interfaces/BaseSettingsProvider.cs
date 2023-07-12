@@ -25,7 +25,7 @@ namespace ChimpBackendData.Editor.Interfaces
 
         public SerializedObject SerializedObject { get; set; }
 
-        protected BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
+        public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         { }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
