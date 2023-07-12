@@ -4,10 +4,10 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 
-using TalusBackendData.Editor.Utility;
-using TalusBackendData.Editor.Interfaces;
+using ChimpBackendData.Editor.Utility;
+using ChimpBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor
+namespace ChimpBackendData.Editor
 {
     public static class BackendApi
     {

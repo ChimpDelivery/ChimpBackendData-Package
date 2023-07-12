@@ -2,7 +2,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace TalusBackendData.Editor.Utility
+namespace ChimpBackendData.Editor.Utility
 {
     public static class InfoBox
     {
@@ -10,10 +10,10 @@ namespace TalusBackendData.Editor.Utility
         {
             Show(
                 "Error :(",
-                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/Talus Studio/Auth)",
+                $"{parameterName} can not be empty!\n\n(Edit/Project Settings/Chimp Delivery/Auth)",
                 "Open Settings",
                 "Close",
-                () => SettingsService.OpenProjectSettings("Talus Studio/1. Authentication")
+                () => SettingsService.OpenProjectSettings("Chimp Delivery/1. Authentication")
             );
         }
 

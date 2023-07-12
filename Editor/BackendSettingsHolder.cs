@@ -3,17 +3,17 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-using TalusBackendData.Editor.Interfaces;
+using ChimpBackendData.Editor.Interfaces;
 
 using SysPath = System.IO.Path;
 
-namespace TalusBackendData.Editor
+namespace ChimpBackendData.Editor
 {
     /// <summary>
     ///     BackendSettingsHolder provides authentication with Dashboard.
-    ///     SO(TalusAuth.asset) instance path (must be ignored by GIT)
+    ///     SO(ChimpAuth.asset) instance path (must be ignored by GIT)
     /// </summary>
-    [FilePath("ProjectSettings/TalusAuth.asset", FilePathAttribute.Location.ProjectFolder)]
+    [FilePath("ProjectSettings/ChimpAuth.asset", FilePathAttribute.Location.ProjectFolder)]
     public class BackendSettingsHolder : BaseSettingsHolder<BackendSettingsHolder>
     {
         // {Web Dashboard} - Api Root URL

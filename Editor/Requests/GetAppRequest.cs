@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-using TalusBackendData.Editor.Utility;
-using TalusBackendData.Editor.Interfaces;
+using ChimpBackendData.Editor.Utility;
+using ChimpBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor.Requests
+namespace ChimpBackendData.Editor.Requests
 {
     [System.Serializable]
     public class GetAppRequest : BaseRequest

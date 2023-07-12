@@ -1,6 +1,6 @@
 {
-    "name": "TalusBackendData.Editor",
-    "rootNamespace": "TalusBackendData.Editor",
+    "name": "ChimpBackendData.Editor",
+    "rootNamespace": "ChimpBackendData.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"

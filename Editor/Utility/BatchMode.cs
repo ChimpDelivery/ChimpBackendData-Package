@@ -2,7 +2,7 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace TalusBackendData.Editor.Utility
+namespace ChimpBackendData.Editor.Utility
 {
     public static class BatchMode
     {

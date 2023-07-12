@@ -1,4 +1,4 @@
-﻿namespace TalusBackendData.Editor.Interfaces
+﻿namespace ChimpBackendData.Editor.Interfaces
 {
     public abstract class BaseModel
     {

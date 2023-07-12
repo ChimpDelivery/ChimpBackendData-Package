@@ -1,6 +1,6 @@
-﻿using TalusBackendData.Editor.Interfaces;
+﻿using ChimpBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor.Models
+namespace ChimpBackendData.Editor.Models
 {
     [System.Serializable]
     public class AppModel : BaseModel

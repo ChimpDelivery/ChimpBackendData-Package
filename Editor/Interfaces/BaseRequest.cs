@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-using TalusBackendData.Editor.Utility;
+using ChimpBackendData.Editor.Utility;
 
-namespace TalusBackendData.Editor.Interfaces
+namespace ChimpBackendData.Editor.Interfaces
 {
     public abstract class BaseRequest
     {

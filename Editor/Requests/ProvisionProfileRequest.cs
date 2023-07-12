@@ -1,6 +1,6 @@
-﻿using TalusBackendData.Editor.Interfaces;
+﻿using ChimpBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor.Requests
+namespace ChimpBackendData.Editor.Requests
 {
     [System.Serializable]
     public class ProvisionProfileRequest : BaseRequest

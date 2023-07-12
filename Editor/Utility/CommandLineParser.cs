@@ -1,4 +1,4 @@
-﻿namespace TalusBackendData.Editor.Utility
+﻿namespace ChimpBackendData.Editor.Utility
 {
     public static class CommandLineParser
     {

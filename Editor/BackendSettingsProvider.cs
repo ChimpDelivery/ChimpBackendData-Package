@@ -2,16 +2,16 @@ using System.Collections.Generic;
 
 using UnityEditor;
 
-using TalusBackendData.Editor.Interfaces;
+using ChimpBackendData.Editor.Interfaces;
 
-namespace TalusBackendData.Editor
+namespace ChimpBackendData.Editor
 {
     internal class BackendSettingsProvider : BaseSettingsProvider<BackendSettingsHolder>
     {
         public override BackendSettingsHolder Holder => BackendSettingsHolder.instance;
 
-        public override string Title => "Talus Studio/1. Authentication";
-        public override string Description => "You can get the 'Api Token' from 'Talus Dashboard/Profile'";
+        public override string Title => "Chimp Delivery/1. Authentication";
+        public override string Description => "You can get the 'Api Token' from 'Dashboard/Profile'";
 
         public BackendSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         { }
@@ -19,7 +19,7 @@ namespace TalusBackendData.Editor
         [SettingsProvider]
         public static SettingsProvider CreateProvider()
         {
-            return new BackendSettingsProvider("Talus Studio/1. Authentication", SettingsScope.Project);
+            return new BackendSettingsProvider("Chimp Delivery/1. Authentication", SettingsScope.Project);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace TalusBackendData.Editor.Interfaces
+namespace ChimpBackendData.Editor.Interfaces
 {
     /// <summary>
     ///     Base Settings Provider
