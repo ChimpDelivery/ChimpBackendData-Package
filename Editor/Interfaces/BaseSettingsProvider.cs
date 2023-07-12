@@ -32,7 +32,6 @@ namespace ChimpBackendData.Editor.Interfaces
         {
             base.OnActivate(searchContext, rootElement);
 
-            Holder.SaveSettings();
             SerializedObject = new SerializedObject(Holder);
             UnlockPanel = true;
         }
