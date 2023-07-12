@@ -11,6 +11,7 @@ namespace ChimpBackendData.Editor.Interfaces
         private void OnEnable()
         {
             hideFlags &= ~HideFlags.NotEditable;
+            SaveSettings();
         }
 
         public void SaveSettings()
