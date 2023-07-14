@@ -24,14 +24,21 @@ namespace ChimpBackendData.Editor.Interfaces
                 Holder.hideFlags &= ~HideFlags.NotEditable;
                 Holder.SaveSettings();
             }
-
-            SerializedObject = new SerializedObject(Holder);
         }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             base.OnActivate(searchContext, rootElement);
+
+            SerializedObject = new SerializedObject(Holder);
             UnlockPanel = true;
+        }
+
+        public override void OnDeactivate()
+        {
+            base.OnDeactivate();
+
+            SerializedObject = null;
         }
 
         public override void OnGUI(string searchContext)
