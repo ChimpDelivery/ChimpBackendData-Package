@@ -7,17 +7,13 @@ namespace ChimpBackendData.Editor.Interfaces
 {
     public abstract class BaseSettingsProvider<T> : SettingsProvider where T : BaseSettingsHolder<T>
     {
-        // Panel properties
-        public abstract T Holder { get; }
-        public abstract string Description { get; }
-
-        // To change properties we need to unlock panel
-        public virtual bool UnlockPanel { get; set; } = true;
-
-        //
-        public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
-
+        public T Holder => BaseSettingsHolder<T>.instance;
         public SerializedObject SerializedObject { get; set; }
+
+        // Panel properties
+        public abstract string Description { get; }
+        public virtual bool UnlockPanel { get; set; } = true;
+        public virtual System.Action OnSettingsReset => delegate { Debug.LogError("Not implemented!"); };
 
         public BaseSettingsProvider(string path) : base(path, SettingsScope.Project)
         {
