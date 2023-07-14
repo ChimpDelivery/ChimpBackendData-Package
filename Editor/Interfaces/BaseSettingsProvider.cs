@@ -38,35 +38,14 @@ namespace ChimpBackendData.Editor.Interfaces
         {
             base.OnGUI(searchContext);
 
-            EditorGUILayout.BeginVertical();
-
-            ShowInfo();
-
-            GUI.enabled = !UnlockPanel;
-
             EditorGUI.BeginChangeCheck();
 
-            // settings holder properties
-            {
-                GUILayout.Space(8);
-
-                SerializedProperty prop = SerializedObject.GetIterator();
-                if (prop.NextVisible(true))
-                {
-                    do
-                    {
-                        EditorGUILayout.PropertyField(SerializedObject.FindProperty(prop.name), true);
-                    }
-                    while (prop.NextVisible(false));
-                }
-            }
-
-            // stick buttons to the bottom
-            GUILayout.FlexibleSpace();
-
+            EditorGUILayout.BeginVertical();
+            ShowInfo();
+            ShowHolderProperties();
+            GUILayout.FlexibleSpace(); // stick buttons to the bottom
             ShowResetButton();
             ShowLockButton();
-
             EditorGUILayout.EndVertical();
 
             if (EditorGUI.EndChangeCheck())
@@ -82,6 +61,21 @@ namespace ChimpBackendData.Editor.Interfaces
             GUI.backgroundColor = Color.yellow;
             EditorGUILayout.HelpBox(Description, MessageType.Info, true);
             GUI.backgroundColor = defaultColor;
+        }
+
+        private void ShowHolderProperties()
+        {
+            GUI.enabled = !UnlockPanel;
+
+            SerializedProperty prop = SerializedObject.GetIterator();
+            if (prop.NextVisible(true))
+            {
+                do
+                {
+                    EditorGUILayout.PropertyField(SerializedObject.FindProperty(prop.name), true);
+                }
+                while (prop.NextVisible(false));
+            }
         }
 
         private void ShowResetButton()
