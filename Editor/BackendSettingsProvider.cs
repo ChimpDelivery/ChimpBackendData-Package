@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using UnityEditor;
 
 using ChimpBackendData.Editor.Interfaces;
