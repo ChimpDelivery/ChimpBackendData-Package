@@ -1,3 +1,5 @@
+using UnityEditor;
+
 using UnityEngine;
 
 namespace ChimpBackendData.Editor.Interfaces
@@ -6,9 +8,21 @@ namespace ChimpBackendData.Editor.Interfaces
     {
         public bool IsCompleted { get; protected set; }
 
-#if ODIN_INSPECTOR_3
-        [Sirenix.OdinInspector.Button]
-#endif
         public abstract void Provide();
+    }
+
+    [CustomEditor(typeof(BaseProvider), editorForChildClasses: true)]
+    public class ProviderEditor : UnityEditor.Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            BaseProvider provider = target as BaseProvider;
+            if (GUILayout.Button("Provide"))
+            {
+                provider.Provide();
+            }
+        }
     }
 }
