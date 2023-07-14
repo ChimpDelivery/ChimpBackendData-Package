@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using UnityEditor;
 
 using UnityEngine;
@@ -11,7 +9,6 @@ namespace ChimpBackendData.Editor.Interfaces
     {
         // Panel properties
         public abstract T Holder { get; }
-        public abstract string Title { get; }
         public abstract string Description { get; }
 
         // To change properties we need to unlock panel
@@ -22,7 +19,7 @@ namespace ChimpBackendData.Editor.Interfaces
 
         public SerializedObject SerializedObject { get; set; }
 
-        public BaseSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
+        public BaseSettingsProvider(string path) : base(path, SettingsScope.Project)
         {
             // ScriptableSingleton changes SO hideflags internally
             // We manually set hideflags to make editable in inspector
